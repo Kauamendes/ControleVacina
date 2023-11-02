@@ -24,6 +24,7 @@ Este arquivo descreve as tarefas do projeto de controle de vacinas por bairro.
 1. Criar endpoint de listar por bairro em `RelatorioController` com a anotação `@GetMapping` para o caminho `/listar-por-bairros`.
 2. O endpoint deve receber um objeto `Relatorio` com os campos que devem ser buscados as vacinas.
 3. (Opcional) Caso não tenham nenhuma vacina naquele bairro, ainda deve exibir mensagem informando o usuário.
+4. (Opcional) Caso o front envie os dados de dataInicial, dataFinal e doença alvo adicionar esses filtros na busca.
 
 ## Frontend
 
@@ -41,9 +42,10 @@ Este arquivo descreve as tarefas do projeto de controle de vacinas por bairro.
 
 ### Criar página de relatório
 
-1. Criar uma página de relatório que chama o endpoint `/listar-por-bairros` do backend.
+1. Criar uma página de relatório que chama o endpoint `/listar-por-bairros` do backend, passando uma lista com os ids dos bairros.
 2. A página deve exibir uma lista de vacinas por bairro.
 3. A página deve obter os dados da lista do endpoint `/listar-por-bairros` do backend.
+4. (Opcional) enviar para o controller dataInicial, dataFinal e Doenca alvo da vacina.
 
 ## Prototipo
 
