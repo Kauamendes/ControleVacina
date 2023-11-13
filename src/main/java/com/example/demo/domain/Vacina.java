@@ -9,4 +9,8 @@ import lombok.*;
 @Builder
 @EqualsAndHashCode(of = "id")
 public class Vacina {
+
+    private Long id;
+    private String nome;
+    private String lote;
 }

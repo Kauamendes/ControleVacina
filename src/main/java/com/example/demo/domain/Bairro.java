@@ -9,4 +9,7 @@ import lombok.*;
 @Builder
 @EqualsAndHashCode(of = "id")
 public class Bairro {
+
+    private Long id;
+    private String nome;
 }
