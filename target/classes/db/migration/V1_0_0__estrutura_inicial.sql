@@ -1,0 +1,1 @@
+--Aqui ficarão todos os scripts de criação das tabelas do sistema, ai sempre que rodar a aplicação caso não exista as tabelas ele cria.

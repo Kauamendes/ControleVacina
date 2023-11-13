@@ -12,6 +12,4 @@ import java.util.List;
 @EqualsAndHashCode(of = "id")
 public class Usuario {
 
-
-
 }
