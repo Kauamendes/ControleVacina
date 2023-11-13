@@ -2,8 +2,6 @@ package com.example.demo.domain;
 
 import lombok.*;
 
-import java.util.List;
-
 @Getter
 @Setter
 @AllArgsConstructor
@@ -12,6 +10,8 @@ import java.util.List;
 @EqualsAndHashCode(of = "id")
 public class Usuario {
 
-
-
+    private Long id;
+    private String login;
+    private String senha;
+    private String cargo;
 }
