@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/login")
+@RequestMapping("/")
 public class LoginController {
 
     @Autowired
     private UsuarioRepository repository;
 
-    @PostMapping
+    @PostMapping("/login")
     public String insert(Usuario login) {
         if (!repository.findByLogin(login)) {
             return "redirect:/login";
