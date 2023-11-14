@@ -32,4 +32,22 @@ INSERT INTO BAIRRO (nome) VALUES ('São Cristóvão');
 INSERT INTO BAIRRO (nome) VALUES ('Congonhas');
 INSERT INTO BAIRRO (nome) VALUES ('São Martinho');
 
-INSERT INTO VACINA (NOME) VALUES ();
+INSERT INTO VACINA (NOME) VALUES ('BCG');
+INSERT INTO VACINA (NOME) VALUES ('Hepatite B');
+INSERT INTO VACINA (NOME) VALUES ('Pentavalente (DTP/Hib/Hep B)');
+INSERT INTO VACINA (NOME) VALUES ('Vacina Pneumocócica 10 valente');
+INSERT INTO VACINA (NOME) VALUES ('VIP (Vacina Inativada Poliomielite)');
+INSERT INTO VACINA (NOME) VALUES ('VRH (Vacina Rotavírus Humano)');
+INSERT INTO VACINA (NOME) VALUES ('Meningocócica C (conjugada)');
+INSERT INTO VACINA (NOME) VALUES ('VOP (Vacina Oral Poliomielite)');
+INSERT INTO VACINA (NOME) VALUES ('Febre amarela');
+INSERT INTO VACINA (NOME) VALUES ('Tríplice viral (Sarampo, rubéola, caxumba)');
+INSERT INTO VACINA (NOME) VALUES ('Tetraviral (Sarampo, rubéola, caxumba, varicela)');
+INSERT INTO VACINA (NOME) VALUES ('Hepatite A');
+INSERT INTO VACINA (NOME) VALUES ('DTP (tríplice bacteriana)');
+INSERT INTO VACINA (NOME) VALUES ('Varicela');
+INSERT INTO VACINA (NOME) VALUES ('HPV quadrivalente (Papilomavírus Humano)');
+INSERT INTO VACINA (NOME) VALUES ('(DTP)/Hepatite B (V3P)');
+INSERT INTO VACINA (NOME) VALUES ('Influenza');
+INSERT INTO VACINA (NOME) VALUES ('Pneumocoque');
+

@@ -34,7 +34,7 @@ INSERT INTO BAIRRO (nome) VALUES ('São Martinho');
 
 INSERT INTO VACINA (NOME) VALUES ('BCG');
 INSERT INTO VACINA (NOME) VALUES ('Hepatite B');
-INSERT INTO VACINA (NOME) VALUES ('Penta (DTP/Hib/Hep B)');
+INSERT INTO VACINA (NOME) VALUES ('Pentavalente (DTP/Hib/Hep B)');
 INSERT INTO VACINA (NOME) VALUES ('Vacina Pneumocócica 10 valente');
 INSERT INTO VACINA (NOME) VALUES ('VIP (Vacina Inativada Poliomielite)');
 INSERT INTO VACINA (NOME) VALUES ('VRH (Vacina Rotavírus Humano)');
@@ -47,3 +47,7 @@ INSERT INTO VACINA (NOME) VALUES ('Hepatite A');
 INSERT INTO VACINA (NOME) VALUES ('DTP (tríplice bacteriana)');
 INSERT INTO VACINA (NOME) VALUES ('Varicela');
 INSERT INTO VACINA (NOME) VALUES ('HPV quadrivalente (Papilomavírus Humano)');
+INSERT INTO VACINA (NOME) VALUES ('(DTP)/Hepatite B (V3P)');
+INSERT INTO VACINA (NOME) VALUES ('Influenza');
+INSERT INTO VACINA (NOME) VALUES ('Pneumocoque');
+
