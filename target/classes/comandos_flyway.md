@@ -1,0 +1,1 @@
+Tem que deletar todas as tabelas
