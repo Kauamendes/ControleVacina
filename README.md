@@ -50,8 +50,7 @@ Este arquivo descreve as tarefas do projeto de controle de vacinas por bairro.
 ## Prototipo
 
 O protótipo de todas as telas está disponível no link abaixo:
-
-https://www.figma.com/file/ubAY40IcEr6Ci6ZUlbn0zi/Projeto-Controle-de-Vacinas-Por-Bairro
+https://www.figma.com/file/NWIDXrMATVasYz3ydkrByV/Untitled?type=design&node-id=1%3A4&mode=design&t=YAAYSnzwnRS6fs2K-1
 
 ## Observações
 
