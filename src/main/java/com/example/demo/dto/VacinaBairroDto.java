@@ -5,10 +5,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class RelatorioDto {
+public class VacinaBairroDto {
 
-    private String dataInicio;
-    private String dataFim;
+    private Long id;
     private String bairro;
-
+    private String vacina;
 }
