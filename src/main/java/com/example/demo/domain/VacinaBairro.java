@@ -14,4 +14,5 @@ public class VacinaBairro {
     private Long id;
     private Long vacina_id;
     private Long bairro_id;
+    private String data_aplicacao;
 }

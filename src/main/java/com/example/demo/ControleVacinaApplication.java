@@ -9,5 +9,4 @@ public class ControleVacinaApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ControleVacinaApplication.class, args);
 	}
-
 }

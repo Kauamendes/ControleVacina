@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.example.demo.domain.Usuario;
+import com.example.demo.repository.UsuarioRepository;
+
 @Controller
 @RequestMapping("/")
 public class LoginController {
