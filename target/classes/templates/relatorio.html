@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Resultados</h1>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Bairro</th>
+                    <th scope="col">Vacina</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-th-each="vacina: ${vacinasBairros}">
+                    <td data-th-text="${vacina.id}"></td>
+                    <td data-th-text="${vacina.bairro}"></td>
+                    <td data-th-text="${vacina.vacina}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>
