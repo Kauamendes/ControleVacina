@@ -21,9 +21,9 @@ public class VacinaBairroRepository {
                     " VALUES(?,?,?)";
 
             PreparedStatement ps = conn.prepareStatement(query);
-            ps.setLong(1, vacinaBairro.getVacina_id());
-            ps.setLong(2, vacinaBairro.getBairro_id());
-            ps.setDate(3, Date.valueOf(vacinaBairro.getData_aplicacao()));
+            ps.setLong(1, vacinaBairro.getVacinaId());
+            ps.setLong(2, vacinaBairro.getBairroId());
+            ps.setDate(3, Date.valueOf(vacinaBairro.getDataAplicacao()));
             ps.execute();
         } catch (Exception e) {
             System.out.println(e);

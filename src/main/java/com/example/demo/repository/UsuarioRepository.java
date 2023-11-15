@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.example.demo.dto.LoginDto;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.config.Conexao;
@@ -13,7 +14,7 @@ import com.example.demo.domain.Usuario;
 @Repository
 public class UsuarioRepository {
 
-    public boolean findByLogin(Usuario login) {
+    public boolean findByLogin(LoginDto login) {
         Conexao conexao = new Conexao();
         Connection conn = conexao.conectar();
         boolean logado = false;

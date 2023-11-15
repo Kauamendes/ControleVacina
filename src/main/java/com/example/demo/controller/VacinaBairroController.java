@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.VacinaBairroDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,8 +23,8 @@ public class VacinaBairroController {
     }
 
     @PostMapping
-    public String insert(VacinaBairro vacinaBairro) throws Exception {
-        service.insert(vacinaBairro);
+    public String insert(VacinaBairroDto vacinaBairroDto) throws Exception {
+        service.insert(vacinaBairroDto);
         return "redirect:/vacinas";
     }
 }

@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import com.example.demo.dto.VacinaBairroDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +14,12 @@ public class VacinaBairroService {
     @Autowired
     private VacinaBairroRepository repository;
 
-    public void insert(VacinaBairro vacinaBairro) throws Exception {
-        String data = DateUtils.getStringDataHoraAtual();
-        vacinaBairro.setData_aplicacao(data);
+    public void insert(VacinaBairroDto vacinaBairroDto) {
+        VacinaBairro vacinaBairro = VacinaBairro.builder()
+                .bairroId(Long.valueOf(vacinaBairroDto.getBairro()))
+                .vacinaId(Long.valueOf(vacinaBairroDto.getVacina()))
+                .dataAplicacao(DateUtils.getStringDataHoraAtual())
+                .build();
         repository.insert(vacinaBairro);
     }
 }
