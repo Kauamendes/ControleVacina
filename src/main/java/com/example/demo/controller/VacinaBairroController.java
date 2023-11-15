@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.example.demo.dto.VacinaBairroDto;
+import com.example.demo.domain.VacinaBairro;
 import com.example.demo.services.VacinaBairroService;
 
 @Controller
@@ -22,9 +22,8 @@ public class VacinaBairroController {
     }
 
     @PostMapping
-    public String insert(VacinaBairroDto vacinaBairroDto) throws Exception {
-        service.insert(vacinaBairroDto);
+    public String insert(VacinaBairro vacinaBairro) throws Exception {
+        service.insert(vacinaBairro);
         return "redirect:/vacinas";
     }
-
 }

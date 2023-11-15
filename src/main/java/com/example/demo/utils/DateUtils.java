@@ -14,7 +14,7 @@ public class DateUtils {
     }
 
     public static String parseDateToString(Date data) {
-        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
         return formato.format(data);
     }
 }

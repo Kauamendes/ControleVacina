@@ -3,14 +3,11 @@ package com.example.demo.repository;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
-import java.time.LocalDate;
 
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.config.Conexao;
 import com.example.demo.domain.VacinaBairro;
-import com.example.demo.utils.DateUtils;
 
 @Repository
 public class VacinaBairroRepository {
