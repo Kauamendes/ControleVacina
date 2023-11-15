@@ -12,6 +12,7 @@ import com.example.demo.config.Conexao;
 @Repository
 public class BairroRepository {
 
+    // REMOVER
     public boolean existsById(Long id) {
         Conexao conexao = new Conexao();
         Connection conn = conexao.conectar();
