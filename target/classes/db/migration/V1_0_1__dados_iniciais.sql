@@ -32,26 +32,28 @@ INSERT INTO BAIRRO (NOME) VALUES ('São Cristóvão');
 INSERT INTO BAIRRO (NOME) VALUES ('Congonhas');
 INSERT INTO BAIRRO (NOME) VALUES ('São Martinho');
 
-INSERT INTO VACINA (NOME) VALUES ('BCG');
-INSERT INTO VACINA (NOME) VALUES ('Hepatite B');
-INSERT INTO VACINA (NOME) VALUES ('Pentavalente (DTP/Hib/Hep B)');
-INSERT INTO VACINA (NOME) VALUES ('Vacina Pneumocócica 10 valente');
-INSERT INTO VACINA (NOME) VALUES ('VIP (Vacina Inativada Poliomielite)');
-INSERT INTO VACINA (NOME) VALUES ('VRH (Vacina Rotavírus Humano)');
-INSERT INTO VACINA (NOME) VALUES ('Meningocócica C (conjugada)');
-INSERT INTO VACINA (NOME) VALUES ('VOP (Vacina Oral Poliomielite)');
-INSERT INTO VACINA (NOME) VALUES ('Febre amarela');
-INSERT INTO VACINA (NOME) VALUES ('Tríplice viral (Sarampo, rubéola, caxumba)');
-INSERT INTO VACINA (NOME) VALUES ('Tetraviral (Sarampo, rubéola, caxumba, varicela)');
-INSERT INTO VACINA (NOME) VALUES ('Hepatite A');
-INSERT INTO VACINA (NOME) VALUES ('DTP (tríplice bacteriana)');
-INSERT INTO VACINA (NOME) VALUES ('Varicela');
-INSERT INTO VACINA (NOME) VALUES ('HPV quadrivalente (Papilomavírus Humano)');
-INSERT INTO VACINA (NOME) VALUES ('(DTP)/Hepatite B (V3P)');
-INSERT INTO VACINA (NOME) VALUES ('Influenza');
-INSERT INTO VACINA (NOME) VALUES ('Pneumocoque');
+INSERT INTO VACINA (NOME, DOENCAS_EVITADAS) VALUES ('BCG', 'Proteção contra formas graves da tuberculose (miliar e meníngea)');
+INSERT INTO VACINA (NOME, DOENCAS_EVITADAS) VALUES ('Hepatite B', 'Proteção contra Hepatite B');
+INSERT INTO VACINA (NOME, DOENCAS_EVITADAS) VALUES ('Pentavalente (DTP/Hib/Hep B)', 'Proteção contra Difteria, Tétano, Coqueluche, Hepatite B e infecções causadas pelo Haemophilus influenzae B');
+INSERT INTO VACINA (NOME, DOENCAS_EVITADAS) VALUES ('Pneumocócica 10 valente', 'Proteção contra infecções invasivas (como meningite e pneumonia) e otite média aguda, causadas pelos 10 sorotipos de Streptococus pneumoniae');
+INSERT INTO VACINA (NOME, DOENCAS_EVITADAS) VALUES ('VIP (Vacina Inativada Poliomielite)', 'Proteção contra Poliomielite');
+INSERT INTO VACINA (NOME, DOENCAS_EVITADAS) VALUES ('VRH (Vacina Rotavírus Humano)', 'Proteção contra diarreia por rotavírus (Gastroenterites)');
+INSERT INTO VACINA (NOME, DOENCAS_EVITADAS) VALUES ('Meningocócica C (conjugada)', 'Proteção contra doença invasiva causada pela Neisseria meningitidis do sorogrupo C');
+INSERT INTO VACINA (NOME, DOENCAS_EVITADAS) VALUES ('Poliomielite 1 e 3 (atenuada) - (VOPb)', 'Proteção contra Poliomielite');
+INSERT INTO VACINA (NOME, DOENCAS_EVITADAS) VALUES ('Febre Amarela (atenuada) - (FA)', 'Proteção contra Febre Amarela');
+INSERT INTO VACINA (NOME, DOENCAS_EVITADAS) VALUES ('Tríplice viral (Sarampo, rubéola, caxumba)', 'Proteção contra Sarampo, Caxumba e Rubéola');
+INSERT INTO VACINA (NOME, DOENCAS_EVITADAS) VALUES ('Tetraviral (Sarampo, rubéola, caxumba, varicela)', 'Proteção contra Sarampo, Caxumba, Rubéola e varicela');
+INSERT INTO VACINA (NOME, DOENCAS_EVITADAS) VALUES ('Hepatite A (HA - inativada)', 'Proteção contra Hepatite A');
+INSERT INTO VACINA (NOME, DOENCAS_EVITADAS) VALUES ('DTP (tríplice bacteriana)', 'Proteção contra Difteria, Tétano, Coqueluche');
+INSERT INTO VACINA (NOME, DOENCAS_EVITADAS) VALUES ('(DTP)/Hepatite B (V3P)', 'Proteção contra Difteria, Tétano, Coqueluche');
+INSERT INTO VACINA (NOME, DOENCAS_EVITADAS) VALUES ('Influenza', 'Proteção contra infecções pelo vírus influenza');
+INSERT INTO VACINA (NOME, DOENCAS_EVITADAS) VALUES ('Pneumocócica 23-valente - (Pneumo 23)', 'Proteção contra infecções invasivas pelo pneumococo na população indígena');
+INSERT INTO VACINA (NOME, DOENCAS_EVITADAS) VALUES ('HPV Papilomavírus humano 6, 11, 16 e 18 (HPV4 - recombinante)', 'Proteção contra Papilomavírus Humano 6, 11, 16 e 18');
+
 
 INSERT INTO USUARIO (LOGIN, SENHA, CARGO)
-VALUES ('a', 'a', 'admin');
+VALUES ('aplicador', '1', 'Aplicador');
 INSERT INTO USUARIO (LOGIN, SENHA, CARGO)
-VALUES ('b', 'b', null);
+VALUES ('leonardo', '1', 'Aplicador');
+INSERT INTO USUARIO (LOGIN, SENHA, CARGO)
+VALUES ('kaua', '1', 'Gestor');
