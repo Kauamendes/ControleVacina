@@ -19,7 +19,7 @@ public class RelatorioRepository {
     public List<VacinaBairroDto> buscar(RelatorioDto relatorioDto) throws SQLException {
         List<VacinaBairroDto> vacinas = new ArrayList<>();
 
-        if (relatorioDto.getBairro().isBlank()) {
+        if (relatorioDto.getBairro() != null) {
             relatorioDto.setBairro(null);
         }
 
@@ -30,10 +30,10 @@ public class RelatorioRepository {
                     " INNER JOIN bairro c ON c.id = b.bairro_id " +
                     " WHERE ("+ relatorioDto.getBairro() +" IS NULL OR "+ relatorioDto.getBairro() +" = c.nome)";
 
-        if (!relatorioDto.getDataInicio().isBlank()) {
+        if (relatorioDto.getDataInicio() != null) {
             query += "AND '" + relatorioDto.getDataInicio() + "' > b.data_aplicacao";
         }
-        if (!relatorioDto.getDataFim().isBlank()) {
+        if (relatorioDto.getDataFim() != null) {
             query += "AND '" + relatorioDto.getDataFim() + "' > b.data_aplicacao";
         }
 
