@@ -5,21 +5,66 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Cadastro de Vacina</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
-    <script src='main.js'></script>
 </head>
 <body>
     <h1>Cadastro de Vacina</h1>
     <form action="/vacinas" method="post">
         <div>
             <label for="bairro_id">Bairro:</label>
-            <input type="text" name="bairro_id">
+            <input id="bairro_id" name="bairro_id" type="text">
         </div>
         <div>
             <label for="vacina_id">Vacina:</label>
-            <input type="text" name="vacina_id">
+            <input id="vacina_id" name="vacina_id" type="text">
         </div>
         <button type="submit">Cadastrar</button>
     </form>
 </body>
+<script>
+
+    function obterLocalizacao() {
+        if (navigator.geolocation && navigator.userAgent == 'Android' || navigator.userAgent == 'Iphone') {
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    let latitude = position.coords.latitude;
+                    let longitude = position.coords.longitude;
+
+                    // Use a API de Geocodificação do Google Maps para obter o bairro
+                    let geocodingApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyATbuo_zzaHENrFJKKMLzwP6Hu_nzaFUqc`;
+
+                    fetch(geocodingApiUrl)
+                        .then(response => response.json())
+                        .then(data => {
+                            let bairro = extrairBairro(data);
+                            console.log("Bairro: " + bairro);
+                            return bairro;
+                        })
+                        .catch(error => {
+                            console.error("Erro ao obter informações de geocodificação: " + error);
+                        });
+                },
+                function (error) {
+                    console.error("Erro ao obter a localização: " + error.message);
+                }
+            );
+        } else {
+            console.error("Geolocalização não suportada pelo navegador.");
+        }
+    }
+
+    function extrairBairro(geocodingData) {
+        // Implemente a lógica para extrair o nome do bairro a partir dos resultados
+        // Aqui, estamos assumindo que o nome do bairro está na primeira parte do endereço
+        if (geocodingData.results.length > 0) {
+            console.log(geocodingData.results);
+            return geocodingData.results[0].address_components[0].long_name;
+        }
+        return "Bairro não encontrado";
+    }
+
+    var campo = document.getElementById("bairro_id");
+    console.log(campo);
+    campo.innerText(obterLocalizacao());
+
+</script>
 </html>
