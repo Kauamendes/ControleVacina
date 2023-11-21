@@ -36,4 +36,5 @@ function extrairBairro(geocodingData) {
     }
     return "Bairro não encontrado";
 }
+
 document.getElementById("bairro_id").innerHTML(obterLocalizacao());

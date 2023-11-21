@@ -11,19 +11,19 @@
     <form action="/vacinas" method="post">
         <div>
             <label for="bairro_id">Bairro:</label>
-            <input id="bairro_id" type="text" name="bairro_id">
+            <input id="bairro_id" name="bairro_id" type="text">
         </div>
         <div>
             <label for="vacina_id">Vacina:</label>
-            <input id="vacina_id" type="text" name="vacina_id">
+            <input id="vacina_id" name="vacina_id" type="text">
         </div>
         <button type="submit">Cadastrar</button>
     </form>
 </body>
 <script>
-
+obterLocalizacao()
     function obterLocalizacao() {
-        if (navigator.geolocation && ) {
+        if (navigator.geolocation) {// && navigator.userAgent === 'Android' || navigator.userAgent === 'Iphone') {
             navigator.geolocation.getCurrentPosition(
                 function (position) {
                     let latitude = position.coords.latitude;
@@ -53,17 +53,12 @@
     }
 
     function extrairBairro(geocodingData) {
-        // Implemente a lógica para extrair o nome do bairro a partir dos resultados
-        // Aqui, estamos assumindo que o nome do bairro está na primeira parte do endereço
         if (geocodingData.results.length > 0) {
             console.log(geocodingData.results);
             return geocodingData.results[0].address_components[0].long_name;
         }
         return "Bairro não encontrado";
     }
-    var campo = document.getElementById("bairro_id");
-    console.log(campo);
-    campo.innerText(obterLocalizacao());
 
 </script>
 </html>
