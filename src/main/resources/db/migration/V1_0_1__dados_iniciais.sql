@@ -52,6 +52,8 @@ INSERT INTO VACINA (NOME, DOENCAS_EVITADAS) VALUES ('HPV Papilomavírus humano 6
 
 
 INSERT INTO USUARIO (LOGIN, SENHA, CARGO)
-VALUES ('a', 'a', 'admin');
+VALUES ('aplicador', '1', 'Aplicador');
 INSERT INTO USUARIO (LOGIN, SENHA, CARGO)
-VALUES ('b', 'b', null);
+VALUES ('leonardo', '1', 'Aplicador');
+INSERT INTO USUARIO (LOGIN, SENHA, CARGO)
+VALUES ('kaua', '1', 'Gestor');
