@@ -58,12 +58,4 @@ public class RelatorioRepository {
             conexao.desconectar(conn);
         return vacinas;
     }
-
-    public int countAllRows(final ResultSet resultSet) throws SQLException {
-        int count = 0;
-        while (resultSet.next()) {
-            count += 1;
-        }
-        return count+1;
-    }
 }
