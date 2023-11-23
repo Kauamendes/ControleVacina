@@ -14,5 +14,5 @@ public class VacinaBairroDto {
     private Long id;
     private String bairro;
     private String vacina;
-    private Date   dataAplicacao;
+    private Date dataAplicacao;
 }
