@@ -12,50 +12,67 @@ import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class RelatorioRepository {
 
     public List<VacinaBairroDto> buscar(RelatorioDto relatorioDto) throws SQLException {
-        List<VacinaBairroDto> vacinas = new ArrayList<>();
-
-        if (relatorioDto.getBairro() != null) {
-            relatorioDto.setBairro(null);
-        }
-
-        String query = " SELECT a.id as id_vacina, a.nome as nome_vacina, " +
-                    " c.nome as bairro_nome, b.data_aplicacao " +
-                    " FROM vacina a " +
-                    " INNER JOIN vacina_bairro b ON b.vacina_id = a.id " +
-                    " INNER JOIN bairro c ON c.id = b.bairro_id " +
-                    " WHERE ("+ relatorioDto.getBairro() +" IS NULL OR "+ relatorioDto.getBairro() +" = c.nome)";
-
-        if (relatorioDto.getDataInicio() != null) {
-            query += "AND '" + relatorioDto.getDataInicio() + "' > b.data_aplicacao";
-        }
-        if (relatorioDto.getDataFim() != null) {
-            query += "AND '" + relatorioDto.getDataFim() + "' > b.data_aplicacao";
-        }
-
         Conexao conexao = new Conexao();
         Connection conn = conexao.conectar();
+        List<VacinaBairroDto> vacinas = new ArrayList<>();
+        List<Object> params = new ArrayList<>();
 
-        PreparedStatement stmt = null;
-        stmt = conn.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-        ResultSet resultSet = stmt.executeQuery();
-            if (resultSet.wasNull()) {
-                return new ArrayList<>();
+        StringBuilder query = new StringBuilder("SELECT vb.ID, vb.DATA_APLICACAO, b.NOME AS bairro_nome, v.NOME AS vacina_nome FROM VACINA_BAIRRO");
+        query.append(" INNER JOIN BAIRRO b ON b.id = vb.BAIRRO_ID");
+        query.append(" INNER JOIN VACINA v ON v.id = vb.VACINA_ID");
+
+        StringBuilder whereClause = new StringBuilder();
+
+        if (relatorioDto.getBairro() != null) {
+            whereClause.append(" WHERE b.id = ?");
+            params.add(Long.parseLong(relatorioDto.getBairro()));
+        }
+
+        if (relatorioDto.getDataInicio() != null) {
+            if (whereClause.length() == 0) {
+                whereClause.append(" WHERE vb.DATA_APLICACAO >= ?");
+            } else {
+                whereClause.append(" AND vb.DATA_APLICACAO >= ?");
             }
+            params.add(Date.valueOf(relatorioDto.getDataInicio()));
+        }
+
+        if (relatorioDto.getDataFim() != null) {
+            if (whereClause.length() == 0) {
+                whereClause.append(" WHERE vb.DATA_APLICACAO <= ?");
+            } else {
+                whereClause.append(" AND vb.DATA_APLICACAO <= ?");
+            }
+            params.add(Date.valueOf(relatorioDto.getDataFim()));
+        }
+
+        String finalQuery = query.toString() + whereClause.toString();
+
+        try (PreparedStatement stmt = conn.prepareStatement(finalQuery)) {
+            for (int i = 0; i < params.size(); i++) {
+                stmt.setObject(i + 1, params.get(i));
+            }
+
+            ResultSet resultSet = stmt.executeQuery();
+
             while (resultSet.next()) {
-                    vacinas.add(
-                            VacinaBairroDto.builder()
-                                    .id(resultSet.getLong("id_vacina"))
-                                    .bairro(resultSet.getString("bairro_nome"))
-                                    .vacina(resultSet.getString("nome_vacina"))
-                                    .build());
+                vacinas.add(VacinaBairroDto.builder()
+                        .id(resultSet.getLong("id"))
+                        .bairro(resultSet.getString("bairro_nome"))
+                        .vacina(resultSet.getString("vacina_nome"))
+                        .dataAplicacao(resultSet.getDate("dataAplicacao"))
+                        .build());
             }
-
+        } finally {
             conexao.desconectar(conn);
+        }
+
         return vacinas;
     }
 }
