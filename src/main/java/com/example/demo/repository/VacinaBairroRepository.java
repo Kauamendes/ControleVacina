@@ -1,9 +1,11 @@
 package com.example.demo.repository;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.example.demo.domain.Bairro;
+import com.example.demo.domain.Vacina;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.config.Conexao;
@@ -30,5 +32,51 @@ public class VacinaBairroRepository {
         } finally {
             conexao.desconectar(conn);
         }
+    }
+
+    public List<Bairro> listarBairros() throws SQLException {
+        Conexao conexao = new Conexao();
+        Connection conn = conexao.conectar();
+        List<Bairro> bairros = new ArrayList<>();
+        String sql = "SELECT * FROM BAIRRO";
+        try {
+            Statement stm = conn.createStatement();
+            ResultSet resultado = stm.executeQuery(sql);
+
+            while (resultado.next()) {
+                Bairro bairro = Bairro.builder().build();
+                bairro.setId(resultado.getLong("id"));
+                bairro.setNome(resultado.getString("nome"));
+                bairros.add(bairro);
+            }
+        } catch (Exception e) {
+            System.out.println("Erro ao listar bairros: "+e.getMessage());
+        } finally {
+            conexao.desconectar(conn);
+        }
+        return bairros;
+    }
+
+    public List<Vacina> listarVacinas() throws SQLException {
+        Conexao conexao = new Conexao();
+        Connection conn = conexao.conectar();
+        List<Vacina> vacinas = new ArrayList<>();
+        String sql = "SELECT * FROM VACINA";
+        try {
+            Statement stm = conn.createStatement();
+            ResultSet resultado = stm.executeQuery(sql);
+
+            while (resultado.next()) {
+                Vacina vacina = Vacina.builder().build();
+                vacina.setId(resultado.getLong("id"));
+                vacina.setNome(resultado.getString("nome"));
+                vacinas.add(vacina);
+            }
+        } catch (Exception e) {
+            System.out.println("Erro ao listar vacinas: "+e.getMessage());
+        } finally {
+            conexao.desconectar(conn);
+        }
+        return vacinas;
     }
 }
