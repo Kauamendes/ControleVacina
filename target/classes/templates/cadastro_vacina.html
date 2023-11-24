@@ -1,64 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Cadastro de Vacina</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>Cadastro de Vacinas</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-    <h1>Cadastro de Vacina</h1>
-    <form action="/vacinas" method="post">
-        <div>
-            <label for="bairro_id">Bairro:</label>
-            <input id="bairro_id" name="bairro_id" type="text">
+
+<div th:replace="fragmentos/fragmentos ::cabecalho"></div>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="display-4 text-center mt-5">Cadastro de Vacinas</h1>
+            <form action="/cadastro-vacinas" method="post" class="container mt-2">
+                <div class="row mb-3">
+                    <label for="bairro" class="col-sm-2 col-form-label">Bairro</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" id="bairro" name="bairro" required>
+                            <option value="">Selecione o bairro</option>
+                            <th:block th:each="bairro : ${bairros}">
+                                <option th:value="${bairro.id}">{{ bairro.nome }}</option>
+                            </th:block>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label for="vacina" class="col-sm-2 col-form-label">Vacina</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" id="vacina" name="vacina" required>
+                            <option value="">Selecione a vacina</option>
+                            <th:block th:each="vacina : ${vacinas}">
+                                <option th:value="${vacina.id}">{{ vacina.nome }}</option>
+                            </th:block>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Cadastrar</button>
+            </form>
         </div>
-        <div>
-            <label for="vacina_id">Vacina:</label>
-            <input id="vacina_id" name="vacina_id" type="text">
-        </div>
-        <button type="submit">Cadastrar</button>
-    </form>
+    </div>
+</div>
 </body>
-<script>
-    obterLocalizacao()
-    function obterLocalizacao() {
-        if (navigator.geolocation) {// && navigator.userAgent === 'Android' || navigator.userAgent === 'Iphone') {
-            navigator.geolocation.getCurrentPosition(
-                function (position) {
-                    let latitude = position.coords.latitude;
-                    let longitude = position.coords.longitude;
-
-                    // Use a API de Geocodificação do Google Maps para obter o bairro
-                    let geocodingApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyATbuo_zzaHENrFJKKMLzwP6Hu_nzaFUqc`;
-
-                    fetch(geocodingApiUrl)
-                        .then(response => response.json())
-                        .then(data => {
-                            let bairro = extrairBairro(data);
-                            console.log("Bairro: " + bairro);
-                            return bairro;
-                        })
-                        .catch(error => {
-                            console.error("Erro ao obter informações de geocodificação: " + error);
-                        });
-                },
-                function (error) {
-                    console.error("Erro ao obter a localização: " + error.message);
-                }
-            );
-        } else {
-            console.error("Geolocalização não suportada pelo navegador.");
-        }
-    }
-
-    function extrairBairro(geocodingData) {
-        if (geocodingData.results.length > 0) {
-            console.log(geocodingData.results);
-            return geocodingData.results[0].address_components[0].long_name;
-        }
-        return "Bairro não encontrado";
-    }
-
-</script>
 </html>

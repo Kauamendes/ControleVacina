@@ -49,9 +49,3 @@ INSERT INTO VACINA (NOME, DOENCAS_EVITADAS) VALUES ('(DTP)/Hepatite B (V3P)', 'P
 INSERT INTO VACINA (NOME, DOENCAS_EVITADAS) VALUES ('Influenza', 'Proteção contra infecções pelo vírus influenza');
 INSERT INTO VACINA (NOME, DOENCAS_EVITADAS) VALUES ('Pneumocócica 23-valente - (Pneumo 23)', 'Proteção contra infecções invasivas pelo pneumococo na população indígena');
 INSERT INTO VACINA (NOME, DOENCAS_EVITADAS) VALUES ('HPV Papilomavírus humano 6, 11, 16 e 18 (HPV4 - recombinante)', 'Proteção contra Papilomavírus Humano 6, 11, 16 e 18');
-
-
-INSERT INTO USUARIO (LOGIN, SENHA, CARGO)
-VALUES ('a', 'a', 'admin');
-INSERT INTO USUARIO (LOGIN, SENHA, CARGO)
-VALUES ('b', 'b', null);
