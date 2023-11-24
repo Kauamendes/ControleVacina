@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,6 +26,13 @@ public class LoginController {
 
     @GetMapping
     public String telaLogin() {
+        return "login";
+    }
+
+    @GetMapping("/sair")
+    public String sair(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        session.removeAttribute("usuarioLogado");
         return "login";
     }
 }

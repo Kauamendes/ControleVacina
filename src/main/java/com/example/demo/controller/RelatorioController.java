@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,21 +25,24 @@ public class RelatorioController {
     private RelatorioRepository relatorioRepository;
 
     @GetMapping("/")
-    public String relatorio() {
-        return "relatorio";
-    }
-
-    @PostMapping("/buscar")
-    public ModelAndView listar(RelatorioDto relatorioDto, HttpServletRequest request) throws SQLException {
-        ModelAndView mv = new ModelAndView("login");
+    public ModelAndView relatorio(HttpServletRequest request) {
+        ModelAndView mv = new ModelAndView();
         HttpSession session = request.getSession();
         Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
 
-        if (usuarioLogado.isAplicador()) {
+        if (usuarioLogado.isGestor()) {
             mv.setViewName("relatorio");
-            mv.addObject("vacinasBairros", relatorioRepository.buscar(relatorioDto));
             return mv;
         }
+        mv.setViewName("login");
+        mv.addObject("msgErro", "Usuário sem permissão para acessar a tela!");
+        return mv;
+    }
+
+    @PostMapping("/buscar")
+    public ModelAndView listar(RelatorioDto relatorioDto) {
+        ModelAndView mv = new ModelAndView("relatorio");
+        mv.addObject("vacinasBairros", relatorioRepository.buscar(relatorioDto));
         return mv;
     }
 
