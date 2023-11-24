@@ -30,8 +30,7 @@ public class LoginController {
     }
 
     @GetMapping("/sair")
-    public String sair(HttpServletRequest request) {
-        HttpSession session = request.getSession();
+    public String sair(HttpSession session) {
         session.removeAttribute("usuarioLogado");
         return "login";
     }

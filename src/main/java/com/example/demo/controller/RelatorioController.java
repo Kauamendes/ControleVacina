@@ -25,16 +25,13 @@ public class RelatorioController {
     private RelatorioRepository relatorioRepository;
 
     @GetMapping("/")
-    public ModelAndView relatorio(HttpServletRequest request) {
-        ModelAndView mv = new ModelAndView();
-        HttpSession session = request.getSession();
+    public ModelAndView relatorio(HttpSession session) {
         Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
-
         if (usuarioLogado.isGestor()) {
-            mv.setViewName("relatorio");
-            return mv;
+            return new ModelAndView("relatorio");
         }
-        mv.setViewName("login");
+
+        ModelAndView mv = new ModelAndView("login");
         mv.addObject("msgErro", "Usuário sem permissão para acessar a tela!");
         return mv;
     }

@@ -11,25 +11,18 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Service
 public class LoginService {
-
     @Autowired
     private UsuarioRepository usuarioRepository;
 
     public ModelAndView findByAccess(LoginDto login, HttpSession session) {
-        ModelAndView mv = new ModelAndView();
         Usuario usuarioLogado = usuarioRepository.findByAccess(login);
         if (usuarioLogado == null) {
+            ModelAndView mv = new ModelAndView("login");
             mv.addObject("msgErro", "Usuário não encontrado");
-            mv.setViewName("login");
             return mv;
         }
-        if (usuarioLogado.getCargo().equals(Usuario.TIP_CARGO_APLICADOR)) {
-            session.setAttribute("usuarioLogado", usuarioLogado);
-            mv.setViewName("cadastro_vacina");
-            return mv;
-        }
-        mv.setViewName("relatorio");
-        return mv;
+        session.setAttribute("usuarioLogado", usuarioLogado);
+        return usuarioLogado.isAplicador() ? new ModelAndView("cadastro_vacina") : new ModelAndView("relatorio");
     }
 
 }
