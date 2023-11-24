@@ -18,7 +18,7 @@ public class RelatorioController {
     @Autowired
     private RelatorioRepository relatorioRepository;
 
-    @GetMapping("/")
+    @GetMapping
     public String relatorio() {
         return "relatorio";
     }
