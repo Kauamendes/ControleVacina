@@ -3,16 +3,12 @@ package com.example.demo.repository;
 import com.example.demo.config.Conexao;
 import com.example.demo.dto.RelatorioDto;
 import com.example.demo.dto.VacinaBairroDto;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
+import com.example.demo.utils.DateUtils;
 import org.springframework.stereotype.Repository;
 
-import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public class RelatorioRepository {
@@ -66,7 +62,7 @@ public class RelatorioRepository {
                         .id(resultSet.getLong("id"))
                         .bairro(resultSet.getString("bairro_nome"))
                         .vacina(resultSet.getString("vacina_nome"))
-                        .dataAplicacao(resultSet.getDate("dataAplicacao"))
+                        .dataAplicacao(DateUtils.parseDateToString(resultSet.getDate("dataAplicacao")))
                         .build());
             }
         } finally {

@@ -1,16 +1,14 @@
 package com.example.demo.repository;
 
+import com.example.demo.config.Conexao;
+import com.example.demo.domain.Bairro;
+import com.example.demo.domain.VacinaBairro;
+import org.springframework.stereotype.Repository;
+
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.example.demo.domain.Bairro;
-import org.springframework.stereotype.Repository;
-
-import com.example.demo.config.Conexao;
-import com.example.demo.domain.VacinaBairro;
 
 @Repository
 public class VacinaBairroRepository {
@@ -26,7 +24,7 @@ public class VacinaBairroRepository {
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setLong(1, vacinaBairro.getVacinaId());
             ps.setLong(2, vacinaBairro.getBairroId());
-            ps.setDate(3, Date.valueOf(vacinaBairro.getDataAplicacao()));
+            ps.setDate(3, vacinaBairro.getDataAplicacao());
             ps.execute();
         } catch (Exception e) {
             System.out.println(e);
