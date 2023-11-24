@@ -23,18 +23,18 @@ public class RelatorioRepository {
         List<VacinaBairroDto> vacinas = new ArrayList<>();
         List<Object> params = new ArrayList<>();
 
-        StringBuilder query = new StringBuilder("SELECT vb.ID, vb.DATA_APLICACAO, b.NOME AS bairro_nome, v.NOME AS vacina_nome FROM VACINA_BAIRRO");
+        StringBuilder query = new StringBuilder("SELECT vb.ID, vb.DATA_APLICACAO as dataAplicacao, b.NOME AS bairro_nome, v.NOME AS vacina_nome FROM VACINA_BAIRRO vb");
         query.append(" INNER JOIN BAIRRO b ON b.id = vb.BAIRRO_ID");
         query.append(" INNER JOIN VACINA v ON v.id = vb.VACINA_ID");
 
         StringBuilder whereClause = new StringBuilder();
 
-        if (relatorioDto.getBairro() != null) {
+        if (relatorioDto.getBairro() != null && !relatorioDto.getBairro().equals("")) {
             whereClause.append(" WHERE b.id = ?");
             params.add(Long.parseLong(relatorioDto.getBairro()));
         }
 
-        if (relatorioDto.getDataInicio() != null) {
+        if (relatorioDto.getDataInicio() != null && !relatorioDto.getBairro().equals("")) {
             if (whereClause.length() == 0) {
                 whereClause.append(" WHERE vb.DATA_APLICACAO >= ?");
             } else {
@@ -43,7 +43,7 @@ public class RelatorioRepository {
             params.add(Date.valueOf(relatorioDto.getDataInicio()));
         }
 
-        if (relatorioDto.getDataFim() != null) {
+        if (relatorioDto.getDataFim() != null && !relatorioDto.getBairro().equals("")) {
             if (whereClause.length() == 0) {
                 whereClause.append(" WHERE vb.DATA_APLICACAO <= ?");
             } else {

@@ -3,7 +3,10 @@ package com.example.demo.repository;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.example.demo.domain.Bairro;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.config.Conexao;
@@ -30,5 +33,12 @@ public class VacinaBairroRepository {
         } finally {
             conexao.desconectar(conn);
         }
+    }
+
+    public List<Bairro> listarBairros() {
+        List<Bairro> bairros = new ArrayList<>();
+        bairros.add(Bairro.builder().id(1L).nome("Bom pastor").build());
+        bairros.add(Bairro.builder().id(2L).nome("humaitá de cima").build());
+        return bairros;
     }
 }

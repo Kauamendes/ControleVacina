@@ -22,12 +22,13 @@ public class VacinaBairroController {
     @GetMapping
     public ModelAndView telaCadastroVacina(HttpSession session) {
         Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
-        if (usuarioLogado.isAplicador()) {
+        if (usuarioLogado != null && usuarioLogado.isAplicador()) {
             return new ModelAndView("cadastro_vacina");
         }
 
         ModelAndView mv = new ModelAndView("login");
-        mv.addObject("msgErro", "Usuário sem permissão para acessar a tela!");
+        String msgErro = usuarioLogado == null ? "Sessão encerrada, por favor faça login novamente" : "Usuário sem acesso";
+        mv.addObject("msgErro", msgErro);
         return mv;
     }
 
