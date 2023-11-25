@@ -25,16 +25,8 @@ public class RelatorioController {
     private VacinaBairroRepository vacinaBairroRepository;
 
     @GetMapping
-    public ModelAndView relatorio(HttpSession session) {
-        Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
-        if (usuarioLogado != null && usuarioLogado.isGestor()) {
-            return new ModelAndView("relatorio", "bairros", vacinaBairroRepository.listarBairros());
-        }
-
-        ModelAndView mv = new ModelAndView("login");
-        String msgErro = usuarioLogado == null ? "Sessão encerrada, por favor faça login novamente" : "Usuário sem acesso";
-        mv.addObject("msgErro", msgErro);
-        return mv;
+    public String relatorio() {
+        return "relatorio";
     }
 
     @PostMapping("/buscar")

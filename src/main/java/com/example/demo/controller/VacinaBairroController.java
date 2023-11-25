@@ -19,17 +19,8 @@ public class VacinaBairroController {
     private VacinaBairroService service;
 
     @GetMapping
-    public ModelAndView telaCadastroVacina(HttpSession session) {
-        Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
-        if (usuarioLogado != null && usuarioLogado.isAplicador()) {
-            ModelAndView mv = new ModelAndView("cadastro_vacina");
-            mv.addObject(service.listarBairro());
-            return mv;
-        }
-
-        String msgErro = usuarioLogado == null ? "Sessão encerrada, por favor faça login novamente" : "Usuário sem acesso";
-        session.setAttribute("msgErro", msgErro);
-        return new ModelAndView("login");
+    public String telaCadastroVacina() {
+        return "cadastro_vacina";
     }
 
     @PostMapping
