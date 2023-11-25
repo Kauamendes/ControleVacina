@@ -1,45 +1,26 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Cadastro de Vacinas</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Cadastro de Vacina</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src='main.js'></script>
 </head>
 <body>
-
 <div th:replace="fragmentos/fragmentos ::cabecalho"></div>
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-md-12">
-            <h1 class="display-4 text-center mt-5">Cadastro de Vacinas</h1>
-            <form action="/cadastro-vacinas" method="post" class="container mt-2">
-                <div class="row mb-3">
-                    <label for="bairro" class="col-sm-2 col-form-label">Bairro</label>
-                    <div class="col-sm-10">
-                        <select class="form-control" id="bairro" name="bairro" required>
-                            <option value="">Selecione o bairro</option>
-                            <th:block th:each="bairro : ${bairros}">
-                                <option th:value="${bairro.id}">{{ bairro.nome }}</option>
-                            </th:block>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="row mb-3">
-                    <label for="vacina" class="col-sm-2 col-form-label">Vacina</label>
-                    <div class="col-sm-10">
-                        <select class="form-control" id="vacina" name="vacina" required>
-                            <option value="">Selecione a vacina</option>
-                            <th:block th:each="vacina : ${vacinas}">
-                                <option th:value="${vacina.id}">{{ vacina.nome }}</option>
-                            </th:block>
-                        </select>
-                    </div>
-                </div>
-
-                <button type="submit" class="btn btn-primary">Cadastrar</button>
-            </form>
-        </div>
+<h1>Cadastro de Vacina</h1>
+<form action="/vacinas" method="post">
+    <div>
+        <label for="bairro_id">Bairro:</label>
+        <input id="bairro_id" type="text" name="bairro_id">
     </div>
-</div>
+    <div>
+        <label for="vacina_id">Vacina:</label>
+        <input id="vacina_id" type="text" name="vacina_id">
+    </div>
+    <button type="submit">Cadastrar</button>
+</form>
 </body>
 </html>
