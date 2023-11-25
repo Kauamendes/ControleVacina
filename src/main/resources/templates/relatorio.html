@@ -6,6 +6,7 @@
 </head>
 <body>
 <div th:replace="fragmentos/fragmentos ::cabecalho"></div>
+<form action="/relatorios/buscar" method="post">
 <div class="container mt-3">
     <div class="row">
         <div class="col-md-12">
@@ -28,6 +29,8 @@
             </table>
         </div>
     </div>
+    <button type="submit">Buscar</button>
 </div>
+</form>
 </body>
 </html>
