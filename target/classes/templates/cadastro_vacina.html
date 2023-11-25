@@ -42,4 +42,76 @@
     </div>
 </div>
 </body>
+<script>
+    async function obterLocalizacao() {
+        const isMobile = true;
+        if (navigator.geolocation && isMobile) {
+            try {
+                const position = await navigator.geolocation.getCurrentPosition();
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
+
+                // Use a API de Geocodificação do Google Maps para obter o CEP
+                const geocodingApiUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyATbuo_zzaHENrFJKKMLzwP6Hu_nzaFUqc`;
+
+                const geocodingResponse = await fetch(geocodingApiUrl);
+                const geocodingData = await geocodingResponse.json();
+
+                const cep = extrairCep(geocodingData);
+                if (cep != null) {
+                    return consultarBairroPorCep(cep);
+                } else {
+                    console.error("CEP não encontrado");
+                }
+            } catch (error) {
+                console.error("Erro ao obter a localização: " + error.message);
+            }
+        } else {
+            console.error("Geolocalização não suportada");
+        }
+    }
+
+    function extrairCep(geocodingData) {
+        if (geocodingData.results.length > 0) {
+            for (let i = 0; i < geocodingData.results[0].address_components.length; i++) {
+                if (geocodingData.results[0].address_components[i].types[0] === "postal_code") {
+                    return geocodingData.results[0].address_components[i].long_name;
+                }
+            }
+        }
+        return null;
+    }
+
+    async function consultarBairroPorCep(cep) {
+        if (!cep) {
+            return;
+        }
+        const viacepUrl = "https://viacep.com.br/ws/:cep/json/";
+        try {
+            const response = await fetch(viacepUrl.replace(":cep", cep));
+            const data = await response.json();
+
+            if (data.bairro != null) {
+                return data.bairro;
+            } else {
+                return "Bairro não encontrado para o CEP " + cep;
+            }
+        } catch (error) {
+            console.error("Erro ao consultar o bairro: " + error);
+        }
+    }
+
+    (async () => {
+        const bairro = await obterLocalizacao();
+
+        // Update the form field with the obtained "bairro"
+        if (bairro) {
+            //document.getElementById("bairro").value = bairro;
+        } else {
+            console.error("Erro ao obter o bairro");
+        }
+    })();
+
+
+</script>
 </html>
