@@ -17,4 +17,12 @@ public class Usuario {
     private String login;
     private String senha;
     private String cargo;
+
+    public boolean isAplicador() {
+        return cargo.equals(TIP_CARGO_APLICADOR);
+    }
+
+    public boolean isGestor() {
+        return cargo.equals(TIP_CARGO_GESTOR);
+    }
 }

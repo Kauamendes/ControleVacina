@@ -2,6 +2,8 @@ package com.example.demo.domain;
 
 import lombok.*;
 
+import java.sql.Date;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -12,5 +14,5 @@ public class VacinaBairro {
     private Long id;
     private Long vacinaId;
     private Long bairroId;
-    private String dataAplicacao;
+    private Date dataAplicacao;
 }
