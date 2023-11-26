@@ -16,9 +16,9 @@
                     <label for="bairro" class="col-sm-2 col-form-label">Bairro</label>
                     <div class="col-sm-10">
                         <select class="form-control" id="bairro" name="bairro" required>
-                            <option value="">Selecione o bairro</option>
+                            <option value="0"> Pegar bairro pela localização atual</option>
                             <th:block th:each="bairro : ${bairros}">
-                                <option th:value="${bairro.id}">{{ bairro.nome }}</option>
+                                <option th:value="${bairro.id}" th:text="${bairro.nome}"></option>
                             </th:block>
                         </select>
                     </div>
@@ -30,7 +30,7 @@
                         <select class="form-control" id="vacina" name="vacina" required>
                             <option value="">Selecione a vacina</option>
                             <th:block th:each="vacina : ${vacinas}">
-                                <option th:value="${vacina.id}">{{ vacina.nome }}</option>
+                                <option th:value="${vacina.id}" th:text="${vacina.nome}"></option>
                             </th:block>
                         </select>
                     </div>
@@ -45,6 +45,7 @@
 <script>
     const apiKey = "AIzaSyATbuo_zzaHENrFJKKMLzwP6Hu_nzaFUqc";
     const isMobile = true;
+    const isBairroNaSessao = true;
     const TEMPO_MAXIMO_VERIFICAR_GEOLOCALIZACAO_DE_NOVO = 3000000;
     let cep;
     let bairro;
@@ -99,7 +100,17 @@
 
     obterBairroAtual();
     setTimeout(async function () {
-        await fetch(`/geolocalizacao/${bairro}`);
+        bairro = await fetch(`/geolocalizacao/${bairro}`);
+        atualizarSelectBairro(bairro);
     }, 5000);
+
+    function atualizarSelectBairro(bairro) {
+        const bairroSelectElement = document.getElementById('bairro');
+        const selectedOptionElement = bairroSelectElement.querySelector(`option[value="${bairro.id}"]`);
+        selectedOptionElement.textContent = bairro.nome;
+        bairroSelectElement.dispatchEvent(new Event('change'));
+    }
+
+
 </script>
 </html>

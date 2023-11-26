@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.domain.Bairro;
 import com.example.demo.domain.Usuario;
 import com.example.demo.dto.VacinaBairroDto;
 import com.example.demo.services.VacinaBairroService;
@@ -23,7 +24,8 @@ public class VacinaBairroController {
         Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
         if (usuarioLogado != null && usuarioLogado.isAplicador()) {
             ModelAndView mv = new ModelAndView("cadastro_vacina");
-            mv.addObject(service.listarBairro());
+            mv.addObject("bairros", service.listarBairro());
+            mv.addObject("vacinas", service.listarVacinas());
             return mv;
         }
 
@@ -33,7 +35,11 @@ public class VacinaBairroController {
     }
 
     @PostMapping
-    public String insert(VacinaBairroDto vacinaBairroDto) {
+    public String insert(VacinaBairroDto vacinaBairroDto, HttpSession session) {
+        if (vacinaBairroDto.getBairro().equals("0")) {
+            String bairroId = (String) session.getAttribute("bairro");
+            vacinaBairroDto.setBairro(bairroId);
+        }
         service.insert(vacinaBairroDto);
         return "redirect:/vacinas";
     }
