@@ -28,4 +28,8 @@ public class VacinaBairroService {
     public List<Bairro> listarBairro() {
         return repository.listarBairros();
     }
+
+    public Bairro buscarBairroPorNome(String nomeBairro) {
+        return repository.buscarBairroPorNome(nomeBairro);
+    }
 }
