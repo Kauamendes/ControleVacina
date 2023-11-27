@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset='utf-8'>
@@ -23,4 +23,129 @@
     <button type="submit">Cadastrar</button>
 </form>
 </body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <style>
+        body {}
+
+
+        .orange-button {
+            width: 150px;
+            border: 2px solid #F08A01;
+            background-color: white;
+            color: black;
+            padding: 10px;
+            border-radius: 5px;
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+        }
+
+        .orange-button:hover {
+            background-color: #F08A01;
+            color: white;
+            transform: translateY(2px);
+        }
+
+        .container-box {
+            width: 100%;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+        }
+
+        .container-box select {
+            width: 400px;
+            height: 45px;
+            border: 2px solid #aaaaaa;
+            ;
+        }
+
+        .container-bar {
+            display: flex;
+            gap: 20px;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .container-select {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .container-all-components {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 200px;
+        }
+
+        button {
+            margin-left: 25px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container-text" style="display: flex; justify-content: center; margin-top: 30px;">
+        <h1>Cadastro de Vacinas</h1>
+    </div>
+    <div class="container-box" style="display: flex; flex-direction: column; gap: 20px;">
+        <div class="container-all-components">
+            <div class="container-select">
+                <div class="container-bar">
+                    <label>Bairro</label>
+                    <select class="form-select form-select-sm" aria-label=".form-select-sm example">
+                        <option selected>Open this select menu</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                </div>
+
+                <div class="container-bar">
+                    <label>Bairro</label>
+                    <select class="form-select form-select-sm" aria-label=".form-select-sm example">
+                        <option selected>Open this select menu</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="button-container">
+                <button class="orange-button">Clique aqui</button>
+            </div>
+        </div>
+
+        
+
+
+    </div>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
+
 </html>
