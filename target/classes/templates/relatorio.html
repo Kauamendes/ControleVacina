@@ -3,40 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
 <body>
 <div th:replace="fragmentos/fragmentos ::cabecalho"></div>
-
-<div class="container mt-5">
-    <h2>Buscar por data e bairro</h2>
-
-    <form action="/relatorios/buscar" method="post">
-        <div class="form-group">
-            <label for="dataInicio">Data Início:</label>
-            <input type="date" class="form-control" id="dataInicio" name="dataInicio">
-        </div>
-
-        <div class="form-group">
-            <label for="dataFim">Data Fim:</label>
-            <input type="date" class="form-control" id="dataFim" name="dataFim">
-        </div>
-
-        <div class="form-group">
-            <label for="bairro">Bairro:</label>
-            <select class="form-control" id="bairro" name="bairro">
-                <option value="">Selecione um bairro</option>
-                <th:block th:each="bairro : ${bairros}">
-                    <option th:value="${bairro.id}">{{ bairro.nome }}</option>
-                </th:block>
-            </select>
-        </div>
-
-        <button type="submit" class="btn btn-primary">Buscar</button>
-    </form>
-
-    <hr>
-
+<form action="/relatorios/buscar" method="post">
+<div class="container mt-3">
     <div class="row">
         <div class="col-md-12">
             <h1>Resultados</h1>
@@ -58,6 +30,8 @@
             </table>
         </div>
     </div>
+    <button type="submit">Buscar</button>
 </div>
+</form>
 </body>
 </html>
