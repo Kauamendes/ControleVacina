@@ -18,14 +18,13 @@ public class VacinaBairroRepository {
         Connection conn = conexao.conectar();
 
         try {
-            String query = "INSERT INTO VACINA_BAIRRO (VACINA_ID, BAIRRO_ID, DATA_APLICACAO)" +
-                    " VALUES(?,?,?)";
+            String query = "INSERT INTO VACINA_BAIRRO (VACINA_ID, BAIRRO_ID) VALUES(?, ?)";
 
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setLong(1, vacinaBairro.getVacinaId());
             ps.setLong(2, vacinaBairro.getBairroId());
-            ps.setDate(3, vacinaBairro.getDataAplicacao());
             ps.execute();
+            ps.close();
         } catch (Exception e) {
             System.out.println(e);
         } finally {
@@ -33,83 +32,83 @@ public class VacinaBairroRepository {
         }
     }
 
-    public Bairro buscarBairroPorNome(String nomeBairro) throws SQLException {
-        Conexao conexao = new Conexao();
-        Connection conn = conexao.conectar();
-        Bairro bairro = new Bairro();
-        String sql = "SELECT * FROM BAIRRO WHERE NOME LIKE ?";
-        PreparedStatement ps = null;
-        try {
-            ps = conn.prepareStatement(sql);
-            ps.setString(1, nomeBairro);
-            ResultSet resultado = ps.executeQuery();
-
-            while (resultado.next()) {
-                bairro.setId(resultado.getLong("id"));
-                bairro.setNome(resultado.getString("nome"));
-            }
-        } catch (Exception e) {
-            System.out.println("Erro ao buscar bairro por nome: "+e.getMessage());
-        } finally {
-            conexao.desconectar(conn);
-            if (ps != null) {
-                ps.close();
-            }
-        }
-        return bairro;
-    }
-
-    public List<Vacina> listarVacinas() {
-        Conexao conexao = new Conexao();
-        Connection conn = conexao.conectar();
-
-        List<Vacina> vacinas = new ArrayList<>();
-
-        try {
-            String sql = "SELECT * FROM VACINA";
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ResultSet resultado = ps.executeQuery();
-
-            while (resultado.next()) {
-                vacinas.add(Vacina.builder()
-                        .id(resultado.getLong("id"))
-                        .nome(resultado.getString("nome"))
-                        .build());
-            }
-        } catch (Exception e) {
-            System.out.println("Erro ao listar vacinas: " + e.getMessage());
-        } finally {
-            conexao.desconectar(conn);
-        }
-
-        return vacinas;
-    }
-
-
     public List<Bairro> listarBairros() {
         Conexao conexao = new Conexao();
         Connection conn = conexao.conectar();
-
         List<Bairro> bairros = new ArrayList<>();
-
+        String sql = "SELECT * FROM BAIRRO ORDER BY NOME";
         try {
-            String sql = "SELECT * FROM BAIRRO";
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ResultSet resultado = ps.executeQuery();
+            Statement stm = conn.createStatement();
+            ResultSet resultado = stm.executeQuery(sql);
 
             while (resultado.next()) {
-                bairros.add(Bairro.builder()
-                        .id(resultado.getLong("id"))
-                        .nome(resultado.getString("nome"))
-                        .build());
+                Bairro bairro = Bairro.builder().build();
+                bairro.setId(resultado.getLong("id"));
+                bairro.setNome(resultado.getString("nome"));
+                bairros.add(bairro);
             }
         } catch (Exception e) {
             System.out.println("Erro ao listar bairros: " + e.getMessage());
         } finally {
             conexao.desconectar(conn);
         }
-
         return bairros;
     }
 
+    public List<Vacina> listarVacinas() {
+        Conexao conexao = new Conexao();
+        Connection conn = conexao.conectar();
+        List<Vacina> vacinas = new ArrayList<>();
+        String sql = "SELECT * FROM VACINA ORDER BY NOME";
+        try {
+            Statement stm = conn.createStatement();
+            ResultSet resultado = stm.executeQuery(sql);
+
+            while (resultado.next()) {
+                Vacina vacina = Vacina.builder().build();
+                vacina.setId(resultado.getLong("id"));
+                vacina.setNome(resultado.getString("nome"));
+                vacinas.add(vacina);
+            }
+        } catch (Exception e) {
+            System.out.println("Erro ao listar vacinas: " + e.getMessage());
+        } finally {
+            conexao.desconectar(conn);
+        }
+        return vacinas;
+    }
+
+    public Bairro buscarBairroPorId(Long id) throws SQLException {
+        Conexao conexao = new Conexao();
+        Connection conn = conexao.conectar();
+
+        PreparedStatement preparedStatement = conn.prepareStatement("SELECT id, nome FROM BAIRRO WHERE id = ?");
+        preparedStatement.setLong(1, id);
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+        if (resultSet.next()) {
+            Bairro bairro = new Bairro();
+            bairro.setId(resultSet.getLong("id"));
+            bairro.setNome(resultSet.getString("nome"));
+            return bairro;
+        }
+        return null;
+    }
+
+    public Bairro buscarBairroPorNome(String nomeBairro) throws SQLException {
+        Conexao conexao = new Conexao();
+        Connection conn = conexao.conectar();
+
+        PreparedStatement preparedStatement = conn.prepareStatement("SELECT id, nome FROM BAIRRO WHERE NOME LIKE ? ");
+        preparedStatement.setString(1, nomeBairro);
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+        if (resultSet.next()) {
+            Bairro bairro = new Bairro();
+            bairro.setId(resultSet.getLong("id"));
+            bairro.setNome(resultSet.getString("nome"));
+            return bairro;
+        }
+        return null;
+    }
 }

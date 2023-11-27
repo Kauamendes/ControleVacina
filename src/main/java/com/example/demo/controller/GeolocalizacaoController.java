@@ -17,12 +17,12 @@ public class GeolocalizacaoController {
     private VacinaBairroService vacinaBairroService;
 
     @GetMapping("/geolocalizacao/{nomeBairro}")
-    public Bairro obterBairro(@PathVariable String nomeBairro, HttpSession session) throws Exception {
+    public String obterBairro(@PathVariable String nomeBairro, HttpSession session) throws Exception {
         Bairro bairroNoBanco = vacinaBairroService.buscarBairroPorNome(nomeBairro);
-        if (bairroNoBanco.getId() == null) {
+        if (bairroNoBanco != null && bairroNoBanco.getId() == null) {
             throw new Exception("Bairro não encontrado");
         }
-        session.setAttribute("bairroId", bairroNoBanco.getId().toString());
-        return bairroNoBanco;
+        session.setAttribute("bairroNaSessao", bairroNoBanco);
+        return "redirect:/vacinas";
     }
 }
