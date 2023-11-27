@@ -90,13 +90,11 @@
         }
     }
 
-    if (isMobile && !isBairroNaSessao) {
-        const obterBairroAtual = async () => {
+    const obterBairroAtual = async () => {
             await obterCepPorGeoLocalizacao();
             setTimeout(async function () {
                 await consultarBairroPorCep(88704225);
             }, 2000);
-        }
     }
 
     obterBairroAtual();
