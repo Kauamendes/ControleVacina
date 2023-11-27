@@ -1,43 +1,116 @@
 <!DOCTYPE html>
-<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Cadastro de Vacinas</title>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Cadastro de Vacina</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
+
 <div th:replace="fragmentos/fragmentos ::cabecalho"></div>
-<div class="container">
-<h1 class="display-4 mt-5">Cadastro de Vacinas</h1>
-<form action="/vacinas" method="post" class="container">
-    <div class="row mb-3">
-        <label for="bairro" class="col-sm-2 col-form-label">Bairro</label>
-        <div class="col-sm-10">
-            <select class="form-control" id="bairro" name="bairro">
-                <option th:if="${ultimoBairroSalvo == null}" value="">Selecione a vacina</option>
-                <option th:if="${ultimoBairroSalvo != null}" th:value="${ultimoBairroSalvo.id}" th:text="${ultimoBairroSalvo.nome}"></option>
-                <th:block th:each="bairro : ${bairros}">
-                    <option th:value="${bairro.id}" th:text="${bairro.nome}"></option>
-                </th:block>
-            </select>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="display-4 text-center mt-5">Cadastro de Vacinas</h1>
+            <form action="/cadastro-vacinas" method="post" class="container mt-2">
+                <div class="row mb-3">
+                    <label for="bairro" class="col-sm-2 col-form-label">Bairro</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" id="bairro" name="bairro" required>
+                            <option value="0"> Pegar bairro pela localização atual</option>
+                            <th:block th:each="bairro : ${bairros}">
+                                <option th:value="${bairro.id}" th:text="${bairro.nome}"></option>
+                            </th:block>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label for="vacina" class="col-sm-2 col-form-label">Vacina</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" id="vacina" name="vacina" required>
+                            <option value="">Selecione a vacina</option>
+                            <th:block th:each="vacina : ${vacinas}">
+                                <option th:value="${vacina.id}" th:text="${vacina.nome}"></option>
+                            </th:block>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Cadastrar</button>
+            </form>
         </div>
     </div>
-    <div class="row mb-3">
-        <label for="vacina" class="col-sm-2 col-form-label">Vacina</label>
-        <div class="col-sm-10">
-            <select class="form-control" id="vacina" name="vacina">
-                <option value="">Selecione a vacina</option>
-                <th:block th:each="vacina : ${vacinas}">
-                    <option th:value="${vacina.id}" th:text="${vacina.nome}"></option>
-                </th:block>
-            </select>
-        </div>
-    </div>
-    <button type="submit" class="btn btn-primary">Cadastrar</button>
-</form>
 </div>
 </body>
+<script>
+    const apiKey = "AIzaSyATbuo_zzaHENrFJKKMLzwP6Hu_nzaFUqc";
+    const isMobile = true;
+    const isBairroNaSessao = true;
+    const TEMPO_MAXIMO_VERIFICAR_GEOLOCALIZACAO_DE_NOVO = 3000000;
+    let cep;
+    let bairro;
+
+    async function obterCepPorGeoLocalizacao() {
+        if ('geolocation' in navigator) {
+            const watcher = navigator.geolocation.watchPosition(async function (position) {
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
+                const geocodingResponse = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`);
+                if (geocodingResponse.ok) {
+                    const geocodingData = await geocodingResponse.json();
+                    cep = extrairCep(geocodingData);
+                } else {
+                    throw new Error("Erro ao obter o CEP da geolocalização");
+                }
+            });
+        } else {
+            console.error("Geolocalização não suportada pelo navegador");
+        }
+    }
+
+    function extrairCep(geocodingData) {
+        if (geocodingData.results.length > 0) {
+            for (let i = 0; i < geocodingData.results[0].address_components.length; i++) {
+                if (geocodingData.results[0].address_components[i].types[0] === "postal_code") {
+                    return geocodingData.results[0].address_components[i].long_name;
+                }
+            }
+        }
+        return null;
+    }
+
+    async function consultarBairroPorCep(cep) {
+        cep.toString().replace("-", "");
+        const response = await fetch(`https://viacep.com.br/ws/${cep}/json`);
+        if (response.ok) {
+            let json = await response.json();
+            bairro = json.bairro
+        } else {
+            console.error("Bairro não encontrado por cep: "+cep);
+            return null;
+        }
+    }
+
+     const obterBairroAtual = async () => {
+       await obterCepPorGeoLocalizacao();
+       setTimeout(async function () {
+           await consultarBairroPorCep(cep);
+       }, 3000);
+     }
+
+    obterBairroAtual();
+    setTimeout(async function () {
+        bairro = await fetch(`/geolocalizacao/${bairro}`);
+        atualizarSelectBairro(bairro);
+    }, 5000);
+
+    function atualizarSelectBairro(bairro) {
+        const bairroSelectElement = document.getElementById('bairro');
+        const selectedOptionElement = bairroSelectElement.querySelector(`option[value="${bairro.id}"]`);
+        selectedOptionElement.textContent = bairro.nome;
+        bairroSelectElement.dispatchEvent(new Event('change'));
+    }
+
+
+</script>
 </html>
