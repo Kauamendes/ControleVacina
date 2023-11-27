@@ -23,7 +23,6 @@ public class VacinaBairroService {
         VacinaBairro vacinaBairro = VacinaBairro.builder()
                 .bairroId(Long.valueOf(vacinaBairroDto.getBairro()))
                 .vacinaId(Long.valueOf(vacinaBairroDto.getVacina()))
-                .dataAplicacao(DateUtils.getStringDataHoraAtual())
                 .build();
         repository.insert(vacinaBairro);
     }
@@ -33,5 +32,9 @@ public class VacinaBairroService {
 
     public List<Vacina> listarVacinas() throws SQLException {
         return repository.listarVacinas();
+    }
+
+    public Bairro buscarBairroPorId(String id) throws SQLException {
+        return repository.buscarBairroPorId(Long.parseLong(id));
     }
 }
