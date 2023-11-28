@@ -25,4 +25,9 @@ public class LoginController {
     public String telaLogin() {
         return "login";
     }
+
+    @GetMapping("new_senha")
+    public String redirectAlteracaoSenha() {
+        return "";
+    }
 }
