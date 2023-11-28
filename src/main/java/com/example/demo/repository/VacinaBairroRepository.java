@@ -19,14 +19,13 @@ public class VacinaBairroRepository {
         Connection conn = conexao.conectar();
 
         try {
-            String query = "INSERT INTO VACINA_BAIRRO (VACINA_ID, BAIRRO_ID, DATA_APLICACAO)" +
-                    " VALUES(?,?,?)";
+            String query = "INSERT INTO VACINA_BAIRRO (VACINA_ID, BAIRRO_ID) VALUES(?, ?)";
 
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setLong(1, vacinaBairro.getVacinaId());
             ps.setLong(2, vacinaBairro.getBairroId());
-            ps.setDate(3, Date.valueOf(vacinaBairro.getDataAplicacao()));
             ps.execute();
+            ps.close();
         } catch (Exception e) {
             System.out.println(e);
         } finally {
@@ -34,11 +33,11 @@ public class VacinaBairroRepository {
         }
     }
 
-    public List<Bairro> listarBairros() throws SQLException {
+    public List<Bairro> listarBairros() {
         Conexao conexao = new Conexao();
         Connection conn = conexao.conectar();
         List<Bairro> bairros = new ArrayList<>();
-        String sql = "SELECT * FROM BAIRRO";
+        String sql = "SELECT * FROM BAIRRO ORDER BY NOME";
         try {
             Statement stm = conn.createStatement();
             ResultSet resultado = stm.executeQuery(sql);
@@ -57,11 +56,11 @@ public class VacinaBairroRepository {
         return bairros;
     }
 
-    public List<Vacina> listarVacinas() throws SQLException {
+    public List<Vacina> listarVacinas() {
         Conexao conexao = new Conexao();
         Connection conn = conexao.conectar();
         List<Vacina> vacinas = new ArrayList<>();
-        String sql = "SELECT * FROM VACINA";
+        String sql = "SELECT * FROM VACINA ORDER BY NOME";
         try {
             Statement stm = conn.createStatement();
             ResultSet resultado = stm.executeQuery(sql);
@@ -78,5 +77,22 @@ public class VacinaBairroRepository {
             conexao.desconectar(conn);
         }
         return vacinas;
+    }
+
+    public Bairro buscarBairroPorId(Long id) throws SQLException {
+        Conexao conexao = new Conexao();
+        Connection conn = conexao.conectar();
+
+        PreparedStatement preparedStatement = conn.prepareStatement("SELECT id, nome FROM BAIRRO WHERE id = ?");
+        preparedStatement.setLong(1, id);
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+        if (resultSet.next()) {
+            Bairro bairro = new Bairro();
+            bairro.setId(resultSet.getLong("id"));
+            bairro.setNome(resultSet.getString("nome"));
+            return bairro;
+        }
+        return null;
     }
 }
