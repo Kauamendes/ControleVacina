@@ -10,8 +10,7 @@ public class Conexao {
         Connection conn = null;
         try {
             Class.forName("org.postgresql.Driver");
-            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/cadvacinas", "postgres", "Btwimgood");
-            System.out.println("Conectou no banco de dados.");
+            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/cadvacinas", "postgres", "123");
         } catch (SQLException ex) {
             System.out.println("Erro: Não conseguiu conectar no BD.");
         } catch (ClassNotFoundException ex) {
@@ -24,7 +23,6 @@ public class Conexao {
         try {
             if (conn != null && !conn.isClosed()) {
                 conn.close();
-                System.out.println("Desconectou do banco de dados.");
             }
         } catch (SQLException ex) {
             System.out.println("Não conseguiu desconectar do BD.");
