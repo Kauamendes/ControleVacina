@@ -30,4 +30,9 @@ public class LoginController {
     public String redirectAlteracaoSenha() {
         return "";
     }
+
+    @GetMapping("/sair")
+    public String sair() {
+        return "login";
+    }
 }

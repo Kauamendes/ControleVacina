@@ -1,15 +1,14 @@
 package com.example.demo.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.example.demo.domain.Usuario;
 import com.example.demo.dto.LoginDto;
 import com.example.demo.repository.UsuarioRepository;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class LoginService {
-
     @Autowired
     private UsuarioRepository usuarioRepository;
 
@@ -23,5 +22,4 @@ public class LoginService {
         }
         return "redirect:/relatorios";
     }
-
 }
