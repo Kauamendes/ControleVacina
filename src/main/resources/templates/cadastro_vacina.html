@@ -6,8 +6,7 @@
     <meta content='IE=edge' http-equiv='X-UA-Compatible'>
     <title>Cadastro de Vacina</title>
     <meta content='width=device-width, initial-scale=1' name='viewport'>
-    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" rel="stylesheet">
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" rel="stylesheet">
 </head>
 <body>
 <div th:replace="fragmentos/fragmentos ::cabecalho"></div>
@@ -42,66 +41,5 @@
     </form>
 </div>
 </body>
-<script>
-    const apiKey = "AIzaSyATbuo_zzaHENrFJKKMLzwP6Hu_nzaFUqc";
-    const isMobile = navigator.userAgent === 'Iphone' || navigator.userAgent === 'Android';
-    const isBairroNaSessao = false;
-    let cep;
-    let bairro;
-
-    async function obterCepPorGeoLocalizacao() {
-        if ('geolocation' in navigator) {
-            const watcher = navigator.geolocation.watchPosition(async function (position) {
-                const latitude = position.coords.latitude;
-                const longitude = position.coords.longitude;
-                const geocodingResponse = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`);
-                if (geocodingResponse.ok) {
-                    const geocodingData = await geocodingResponse.json();
-                    cep = extrairCep(geocodingData);
-                } else {
-                    throw new Error("Erro ao obter o CEP da geolocalização");
-                }
-            });
-        } else {
-            console.error("Geolocalização não suportada pelo navegador");
-        }
-    }
-
-    function extrairCep(geocodingData) {
-        if (geocodingData.results.length > 0) {
-            for (let i = 0; i < geocodingData.results[0].address_components.length; i++) {
-                if (geocodingData.results[0].address_components[i].types[0] === "postal_code") {
-                    return geocodingData.results[0].address_components[i].long_name;
-                }
-            }
-        }
-        return null;
-    }
-
-    async function consultarBairroPorCep(cep) {
-        cep.toString().replace("-", "");
-        const response = await fetch(`https://viacep.com.br/ws/${cep}/json`);
-        if (response.ok) {
-            let json = await response.json();
-            bairro = json.bairro
-        } else {
-            console.error("Bairro não encontrado por cep: "+cep);
-            return null;
-        }
-    }
-
-    const obterBairroAtual = async () => {
-            await obterCepPorGeoLocalizacao();
-            setTimeout(async function () {
-                await consultarBairroPorCep(88704225);
-            }, 2000);
-    }
-
-    obterBairroAtual();
-    setTimeout(async function () {
-        bairro = await fetch(`/geolocalizacao/${bairro}`);
-        location.reload()
-    }, 2000);
-
-</script>
+<script src="/geolocalizacao.js"></script>
 </html>
