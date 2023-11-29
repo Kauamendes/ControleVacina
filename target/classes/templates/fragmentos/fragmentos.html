@@ -16,33 +16,20 @@
 <header class="navbar" th:fragment="cabecalho">
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
         <div class="container-fluid">
+            <a class="navbar-brand" href="#">Cabeçalho Padrão</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                </ul>
                 <ul class="navbar-nav ml-auto">
-                    <div th:if="${usuarioLogado.isAdmin()}">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/cadastro-vacinas">Cadastro de vacinas</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/relatorios">Relatórios</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/cadastro-usuarios">Cadastro de usuários</a>
-                        </li>
-                        <li class="nav-item">
+                    <li class="nav-item text-right">
                         <a class="nav-link" href="/sair">Sair</a>
                     </li>
-                    </div>
                 </ul>
             </div>
         </div>
     </nav>
-
 </header>
 
 </body>
