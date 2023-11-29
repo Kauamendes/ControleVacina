@@ -1,6 +1,12 @@
 package com.example.demo.domain;
 
-import lombok.*;
+import java.sql.Timestamp;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -12,5 +18,5 @@ public class VacinaBairro {
     private Long id;
     private Long vacinaId;
     private Long bairroId;
-    private String dataAplicacao;
+    private Timestamp dataAplicacao;
 }
