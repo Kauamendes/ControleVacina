@@ -1,17 +1,16 @@
 package com.example.demo.services;
 
-import com.example.demo.domain.Bairro;
-import com.example.demo.domain.Vacina;
-import com.example.demo.dto.VacinaBairroDto;
+import java.sql.SQLException;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.domain.Bairro;
+import com.example.demo.domain.Vacina;
 import com.example.demo.domain.VacinaBairro;
+import com.example.demo.dto.VacinaBairroDto;
 import com.example.demo.repository.VacinaBairroRepository;
-import com.example.demo.utils.DateUtils;
-
-import java.sql.SQLException;
-import java.util.List;
 
 @Service
 public class VacinaBairroService {
@@ -26,6 +25,7 @@ public class VacinaBairroService {
                 .build();
         repository.insert(vacinaBairro);
     }
+
     public List<Bairro> listarBairros() throws SQLException {
         return repository.listarBairros();
     }
