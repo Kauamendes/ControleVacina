@@ -28,8 +28,9 @@
         <label for="bairro" class="col-sm-2 col-form-label">Bairro</label>
         <div class="col-sm-10">
             <select class="form-control" id="bairro" name="bairro" required="true">
-                <option th:if="${ultimoBairroSalvo == null}" value="">Selecione a vacina</option>
-                <option th:if="${ultimoBairroSalvo != null}" th:value="${ultimoBairroSalvo.id}" th:text="${ultimoBairroSalvo.nome}"></option>
+                <option th:if="${bairroNaSessao == null}" value="">Selecione o bairro</option>
+                <option th:if="${bairroNaSessao != null}" th:text="${bairroNaSessao.nome}"
+                        th:value="${bairroNaSessao.id}"></option>
                 <th:block th:each="bairro : ${bairros}">
                     <option th:value="${bairro.id}" th:text="${bairro.nome}"></option>
                 </th:block>
