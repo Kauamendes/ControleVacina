@@ -7,31 +7,31 @@
 </head>
 <body>
 <div th:replace="fragmentos/fragmentos ::cabecalho"></div>
-<form action="/relatorios/buscar" method="post">
-<div class="container mt-3">
+<div class="container mt-5">
+    <form action="/relatorios/buscar" method="post">
     <div class="row">
         <div class="col-md-12">
             <h1>Resultados</h1>
             <table class="table">
                 <thead>
                 <tr>
-                    <th scope="col">Id</th>
-                    <th scope="col">Bairro</th>
                     <th scope="col">Vacina</th>
+                    <th scope="col">Bairro</th>
+                    <th scope="col">Quantidade</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr data-th-each="vacina: ${vacinasBairros}">
-                    <td data-th-text="${vacina.id}"></td>
-                    <td data-th-text="${vacina.bairro}"></td>
-                    <td data-th-text="${vacina.vacina}"></td>
+                <tr th:each="vacina: ${vacinasBairros}">
+                    <td th:text="${vacina.vacina}"></td>
+                    <td th:text="${vacina.bairro}"></td>
+                    <td th:text="${vacina.quantidade}"></td>
                 </tr>
                 </tbody>
             </table>
         </div>
     </div>
     <button type="submit">Buscar</button>
+    </form>
 </div>
-</form>
 </body>
 </html>

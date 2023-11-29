@@ -32,8 +32,8 @@ public class VacinaBairroController {
         ModelAndView mv = new ModelAndView("cadastro_vacina");
         mv.addObject("bairros", service.listarBairros());
         mv.addObject("vacinas", service.listarVacinas());
-        Bairro ultimoBairroSalvo = (Bairro) session.getAttribute("ultimoBairroSalvo");
-        mv.addObject("ultimoBairroSalvo", ultimoBairroSalvo);
+        String msgSalvar = (String) session.getAttribute("msgSalvar");
+        mv.addObject("msgSalvar", msgSalvar);
         return mv;
     }
 
@@ -44,6 +44,7 @@ public class VacinaBairroController {
             session.setAttribute("ultimoBairroSalvo", service.buscarBairroPorId(vacinaBairroDto.getBairro()));
         }
         service.insert(vacinaBairroDto);
+        session.setAttribute("msgSalvar", "Vacina salva com sucesso!");
         return "redirect:/vacinas";
     }
 }

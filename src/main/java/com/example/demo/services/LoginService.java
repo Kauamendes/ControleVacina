@@ -30,7 +30,7 @@ public class LoginService {
     }
 
     public String saveNewSenha(AlteracaoSenhaDto loginUpdateDto) {
-        if (verificaSeUsuarioAdminOk(loginUpdateDto)) {
+        if (verificaSeUsuarioAdmin(loginUpdateDto)) {
             if (!loginUpdateDto.getSenha_update().equals(loginUpdateDto.getConfirmacaoSenha_update())) {
                 System.out.println("senhas diferentes");
                 return "redirect:/new_senha";
@@ -49,7 +49,7 @@ public class LoginService {
         return "redirect:/new_senha";
     }
 
-    private boolean verificaSeUsuarioAdminOk(AlteracaoSenhaDto loginUpdateDto) {
+    private boolean verificaSeUsuarioAdmin(AlteracaoSenhaDto loginUpdateDto) {
         Usuario usuarioAdmin = usuarioRepository
                 .findByAccess(new LoginDto(loginUpdateDto.getLogin_admin(), loginUpdateDto.getSenha_admin()));
         if (usuarioAdmin == null) {

@@ -36,8 +36,6 @@ public class Usuario {
     }
 
     public static List<String> getAllCargos() {
-        List<String> cargos = new ArrayList<>();
-        cargos.addAll(Arrays.asList(TIP_CARGO_ADMIN, TIP_CARGO_APLICADOR, TIP_CARGO_GESTOR));
-        return cargos;
+        return Arrays.asList(TIP_CARGO_ADMIN, TIP_CARGO_APLICADOR, TIP_CARGO_GESTOR);
     }
 }
