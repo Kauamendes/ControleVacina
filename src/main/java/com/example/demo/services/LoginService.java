@@ -40,7 +40,6 @@ public class LoginService {
 
             usuario.setSenha(loginUpdateDto.getSenha_update());
             usuarioRepository.updateUsuario(usuario);
-            System.out.println("CHAMOU AQUI" + usuario.getLogin());
             return "redirect:/";
         }
         return "redirect:/new_senha";

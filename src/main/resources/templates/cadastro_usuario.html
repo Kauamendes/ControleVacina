@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Cadastro de Usuario</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src='main.js'></script>
+</head>
+<body>
+    <form action="/usuarios" method="post">
+        <label for="login">E-mail</label>
+        <input class="form-control" id="login" name="login" type="text">
+
+        <label for="senha">Senha</label>
+        <input class="form-control" id="senha" name="senha" type="password">
+
+        <label for="confirmacaoSenha">Confirmação de Senha</label>
+        <input class="form-control" id="confirmacaoSenha" name="confirmacaoSenha" type="password">
+
+        <label for="cargo">Cargo</label>
+        <select class="form-control" id="cargo" name="cargo">
+            <option value="">Selecione o cargo</option>
+            <th:block th:each="cargo : ${cargos}">
+                <option th:text="${cargo}"></option>
+            </th:block>
+        </select>
+
+        <br>
+        <button type="submit" class="btn btn-primary mt-2">Cadastrar</button>
+    </form>
+</body>
+</html>

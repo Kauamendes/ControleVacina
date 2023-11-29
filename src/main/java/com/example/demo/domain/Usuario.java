@@ -1,5 +1,9 @@
 package com.example.demo.domain;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import lombok.*;
 
 @Getter
@@ -29,5 +33,11 @@ public class Usuario {
 
     public boolean isAdmin() {
         return cargo.equals(TIP_CARGO_ADMIN);
+    }
+
+    public static List<String> getAllCargos() {
+        List<String> cargos = new ArrayList<>();
+        cargos.addAll(Arrays.asList(TIP_CARGO_ADMIN, TIP_CARGO_APLICADOR, TIP_CARGO_GESTOR));
+        return cargos;
     }
 }

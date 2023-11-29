@@ -86,4 +86,24 @@ public class UsuarioRepository {
             conexao.desconectar(conn);
         }
     }
+
+    public void insert(Usuario usuario) {
+        Conexao conexao = new Conexao();
+        Connection conn = conexao.conectar();
+
+        try {
+            String query = "INSERT INTO USUARIO (LOGIN, SENHA, CARGO) VALUES(?, ?, ?)";
+
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, usuario.getLogin());
+            ps.setString(2, usuario.getSenha());
+            ps.setString(3, usuario.getCargo());
+            ps.execute();
+            ps.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            conexao.desconectar(conn);
+        }
+    }
 }

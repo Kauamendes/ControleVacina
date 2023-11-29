@@ -13,6 +13,7 @@ public class AlteracaoSenhaDto {
 
     private String login_admin;
     private String senha_admin;
+
     private String login_update;
     private String senha_update;
     private String confirmacaoSenha_update;
