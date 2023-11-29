@@ -1,10 +1,8 @@
 package com.example.demo.controller;
 
-import com.example.demo.domain.Usuario;
 import com.example.demo.dto.RelatorioDto;
 import com.example.demo.repository.RelatorioRepository;
 import com.example.demo.repository.VacinaBairroRepository;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
