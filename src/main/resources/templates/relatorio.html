@@ -1,66 +1,17 @@
-<!-- <!DOCTYPE html>
-<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-</head>
-<body>
-<div th:replace="fragmentos/fragmentos ::cabecalho"></div>
-<div class="container mt-5">
-    <form action="/relatorios/buscar" method="post">
-    <div class="row">
-        <div class="col-md-12">
-            <h1>Resultados</h1>
-            <table class="table">
-                <thead>
-                <tr>
-                    <th scope="col">Vacina</th>
-                    <th scope="col">Bairro</th>
-                    <th scope="col">Quantidade</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="vacina: ${vacinasBairros}">
-                    <td th:text="${vacina.vacina}"></td>
-                    <td th:text="${vacina.bairro}"></td>
-                    <td th:text="${vacina.quantidade}"></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <button type="submit">Buscar</button>
-    </form>
-</div>
-</body>
-</html> -->
-
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-    <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
     <style>
-        .container-filter {
-            display: flex;
-            flex-direction: column;
-            height: 400px;
-        }
-
-        .container {}
 
         header {
             width: 100%;
@@ -161,35 +112,10 @@
 
     <div class="container-filter">
 
-        <!-- <div class="container-row">
-            <div class="filter-label">
-                <label>Label</label>
-                <select class="form-select" aria-label="Default select example">
-                    <option selected>Open this select menu</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </select>
-            </div>
-    
-            <div class="filter-label">
-                <select class="form-select" aria-label="Default select example">
-                    <option selected>Open this select menu</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </select>
-            </div>
-        </div> -->
+
         <div class="container-row">
             <div class="container-column">
                 <label for="">Data Início </label>
-                <!-- <select class="form-select" aria-label="Default select example">
-                    <option selected>Open this select menu</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </select> -->
                 <div class="form-group">
                     <div class="input-group" id="datetimepicker">
                         <input type="text" class="form-control">
@@ -203,17 +129,11 @@
             </div>
 
             <div class="container-column">
-                <label for="">Data Final</label>
-                <!-- <select class="form-select" aria-label="Default select example">
-                    <option selected>Open this select menu</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </select>  -->
+                <label>Data Final</label>
                 <div class="form-group">
                     <div class="input-group" id="datetimepicker1">
                         <input type="text" class="form-control">
-                        <span class="input-group-addon" id="span-container">
+                        <span class="input-group-addon" id="span">
                             <span class="glyphicon glyphicon-calendar">
 
                             </span>
@@ -223,7 +143,7 @@
 
             </div>
 
-
+        </div>
         </div>
 
         <div class="container-row" id="row-full">
@@ -243,34 +163,25 @@
 
 
         <hr id="line">
-
+        <form action="/relatorios/buscar" method="post" class="mb-3">
         <h1>Resultados</h1>
-    <table class="table table-mobile">
-        <thead>
+        <table class="table">
+            <thead>
             <tr>
-                <th>Id</th>
-                <th>Nome</th>
-                <th>Endereço</th>
+                <th scope="col">Vacina</th>
+                <th scope="col">Bairro</th>
+                <th scope="col">Quantidade</th>
             </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>1</td>
-                <td>João da Silva</td>
-                <td>Rua das Flores, 123</td>
+            </thead>
+            <tbody>
+            <tr th:each="vacina: ${vacinasBairros}">
+                <td th:text="${vacina.vacina}"></td>
+                <td th:text="${vacina.bairro}"></td>
+                <td th:text="${vacina.quantidade}"></td>
             </tr>
-            <tr>
-                <td>2</td>
-                <td>Maria do Carmo</td>
-                <td>Avenida Paulista, 1000</td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>José dos Santos</td>
-                <td>Rua do Comércio, 567</td>
-            </tr>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+</form>
 
 
 
@@ -289,5 +200,4 @@
 
 
 </body>
-
 </html>
