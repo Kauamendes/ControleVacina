@@ -12,6 +12,7 @@ public class Usuario {
 
     public static final String TIP_CARGO_APLICADOR = "Aplicador";
     public static final String TIP_CARGO_GESTOR = "Gestor";
+    public static final String TIP_CARGO_ADMIN = "Admin";
 
     private Long id;
     private String login;
@@ -24,5 +25,9 @@ public class Usuario {
 
     public boolean isGestor() {
         return cargo.equals(TIP_CARGO_GESTOR);
+    }
+
+    public boolean isAdmin() {
+        return cargo.equals(TIP_CARGO_ADMIN);
     }
 }
