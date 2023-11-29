@@ -11,12 +11,8 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var msgSalvarSucesso = document.getElementById('msgSalvarSucesso');
-
-            // Verifica se o elemento está presente
             if (msgSalvarSucesso) {
-                // Agende uma função para remover a mensagem após 2 segundos
                 setTimeout(function() {
-                    // Adiciona a classe 'auto-hide' para ocultar a mensagem
                     msgSalvarSucesso.remove();
                 }, 2000);
             }
