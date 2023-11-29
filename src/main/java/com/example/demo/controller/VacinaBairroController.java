@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
 import com.example.demo.domain.Bairro;
+
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +14,7 @@ import com.example.demo.dto.VacinaBairroDto;
 import com.example.demo.services.VacinaBairroService;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 @Controller
@@ -22,9 +25,12 @@ public class VacinaBairroController {
     private VacinaBairroService service;
 
     @GetMapping
-    public ModelAndView telaCadastroVacina(HttpSession session) throws SQLException {
+    public ModelAndView telaCadastroVacina(HttpSession session, HttpServletResponse response)
+            throws SQLException, IOException {
+        service.verificaCargoSessao(session, response);
+
         ModelAndView mv = new ModelAndView("cadastro_vacina");
-        mv.addObject("bairros", service.listarBairros ());
+        mv.addObject("bairros", service.listarBairros());
         mv.addObject("vacinas", service.listarVacinas());
         Bairro ultimoBairroSalvo = (Bairro) session.getAttribute("ultimoBairroSalvo");
         mv.addObject("ultimoBairroSalvo", ultimoBairroSalvo);
@@ -34,7 +40,7 @@ public class VacinaBairroController {
     @PostMapping
     public String insert(VacinaBairroDto vacinaBairroDto, HttpSession session) throws SQLException {
         Bairro ultimoBairroSalvo = (Bairro) session.getAttribute("ultimoBairroSalvo");
-        if (ultimoBairroSalvo == null || ultimoBairroSalvo.getId() !=  Long.parseLong(vacinaBairroDto.getBairro())) {
+        if (ultimoBairroSalvo == null || ultimoBairroSalvo.getId() != Long.parseLong(vacinaBairroDto.getBairro())) {
             session.setAttribute("ultimoBairroSalvo", service.buscarBairroPorId(vacinaBairroDto.getBairro()));
         }
         service.insert(vacinaBairroDto);

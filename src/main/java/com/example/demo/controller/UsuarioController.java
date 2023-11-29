@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,9 @@ import org.springframework.web.servlet.ModelAndView;
 import com.example.demo.domain.Usuario;
 import com.example.demo.dto.UsuarioDto;
 import com.example.demo.services.UsuarioService;
+
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/usuarios")
@@ -26,7 +30,9 @@ public class UsuarioController {
     }
 
     @GetMapping
-    public ModelAndView telaCadastroUsuario() throws SQLException {
+    public ModelAndView telaCadastroUsuario(HttpSession session, HttpServletResponse response)
+            throws SQLException, IOException {
+        service.verificaCargoSessao(session, response);
         ModelAndView mv = new ModelAndView("cadastro_usuario");
         mv.addObject("cargos", Usuario.getAllCargos());
         return mv;
