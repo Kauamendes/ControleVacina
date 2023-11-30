@@ -8,11 +8,11 @@
 <body>
 <div th:replace="fragmentos/fragmentos ::cabecalho"></div>
 <div class="container mt-5">
-    <form action="/relatorios/buscar" method="post">
+    <form action="/relatorios/buscar" method="post" class="container">
     <div class="row">
         <div class="col-md-12">
             <h1>Resultados</h1>
-            <table class="table">
+            <table class="table table-responsive">
                 <thead>
                 <tr>
                     <th scope="col">Vacina</th>
@@ -29,9 +29,8 @@
                 </tbody>
             </table>
         </div>
-    </div>
-    <button type="submit">Buscar</button>
     </form>
+    <button type="submit" class="btn btn-primary mt-3">Buscar</button>
 </div>
 </body>
 </html>
