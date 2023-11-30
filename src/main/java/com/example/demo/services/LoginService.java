@@ -26,6 +26,9 @@ public class LoginService {
         if (usuarioLogado.isAplicador()) {
             return "redirect:/vacinas";
         }
+        if (usuarioLogado.isAdmin()) {
+            return "redirect:/usuarios";
+        }
         return "redirect:/relatorios";
     }
 
