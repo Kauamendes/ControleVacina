@@ -6,127 +6,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
-<style>
-    body {
-        background: rgb(255, 255, 255);
-        background: linear-gradient(90deg, rgba(255, 255, 255, 1) 1%, rgba(191, 240, 251, 1) 16%, rgba(5, 99, 128, 1) 100%);
-        width: 100%;
-        height: 100%;
-        margin: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    #alert-fail {
-        display: none;
-    }
-
-    .logo-senac img {
-        width: 250px;
-    }
-
-    .card {
-        width: 450px;
-        margin-top: 50px;
-        border: 3px solid #d9d9d9;
-    }
-
-    .form-control {
-        width: 100%;
-        margin-bottom: 15px;
-        transition: border 0.3s, box-shadow 0.3s;
-    }
-
-    .form-control:focus {
-        border-color: #F08A01;
-        box-shadow: 0 0 0 0.2rem rgba(240, 138, 1, 0.25);
-    }
-
-    #btn {
-        width: 100%;
-        border: 2px solid #F08A01;
-        background-color: white;
-        color: black;
-        transition: all 0.2s ease-in-out;
-    }
-
-    #btn:hover {
-        background-color: #F08A01;
-        color: white;
-        transform: translateY(2px);
-    }
-
-    .container {
-        margin-right: 420px;
-    }
-
-    .container img {
-        margin-left: 98px;
-        margin-top: 20px;
-    }
-
-    .alert {
-        background-color: #60A8FB;
-        margin: 10px;
-        color: white;
-    }
-
-    @media screen and (max-width: 510px) {
-        .container {
-            margin-left: 140px;
-        }
-    }
-
-    @media screen and (max-width: 1435px) {
-        .container {
-            margin-left: 100px;
-        }
-    }
-
-    @media screen and (max-width: 430px) {
-        .container {
-            margin-right: 150px;
-            margin: 150px;
-        }
-    }
-
-
-
-
-
-</style>
 <body>
-<<body>
 <div class="container mt-5">
-    <div class="blue-gradient color-block mb- mx-auto row justify-content-center">
+    <div class="row justify-content-center">
         <div class="col-md-6 col-sm-10">
-                    <div class="logo-senac">
-                        <img src="/logo.png" alt="">
-                    </div>
-
-                    <div class="card">
-                        <div th:if="${msgErro != null}" class="alert">
-                            <p th:text="${msgErro}"></p>
+            <div class="card mt-5">
+                <div class="card-body">
+                    <h5 class="card-title">Entrar</h5>
+                    <form action="/" method="post" class="mb-3">
+                        <div class="mb-3">
+                            <label for="login">Login</label>
+                            <input class="form-control" id="login" name="login" type="text" required>
                         </div>
-                        <div class="card-body">
-                            <form action="/" method="post" class="mb-3">
-                                <div class="form-group">
-                                    <label for="login">Login</label>
-                                    <input class="form-control" id="login" name="login" type="text">
-                                </div>
-                                <div class="form-group">
-                                    <label for="senha">Senha</label>
-                                    <input class="form-control" id="senha" name="senha" type="password">
-                                </div>
-                                <button onclick="mostrarModal()" type="submit" id="btn" class="btn btn-primary">Entrar</button>
-                                <input type="hidden" id="isAutenticado" th:value="${loginValido}" />
-                            </form>
-                            <a href="${'/new_senha'}" >Esqueceu a Senha</a>
+                        <div class="mb-3">
+                            <label for="senha">Senha</label>
+                            <input class="form-control" id="senha" name="senha" type="password" required>
                         </div>
-                    </div>
+                        <button type="submit" class="btn btn-primary">Entrar</button>
+                    </form>
+                    <a th:href="${'/new_senha'}">Esqueceu a Senha</a>
                 </div>
             </div>
+        </div>
     </div>
+</div>
 </body>
 </html>
