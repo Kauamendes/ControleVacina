@@ -1,14 +1,12 @@
 package com.example.demo.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.example.demo.domain.Usuario;
 import com.example.demo.dto.AlteracaoSenhaDto;
 import com.example.demo.dto.LoginDto;
 import com.example.demo.repository.UsuarioRepository;
-
 import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class LoginService {
@@ -58,7 +56,7 @@ public class LoginService {
         if (usuarioAdmin == null) {
             System.out.println("usuario admin inválido");
             return false;
-        } else if (usuarioAdmin != null && !usuarioAdmin.isAdmin()) {
+        } else if (!usuarioAdmin.isAdmin()) {
             System.out.println("usuario informado não é admin");
             return false;
         }
