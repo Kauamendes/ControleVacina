@@ -8,19 +8,26 @@ import com.example.demo.dto.AlteracaoSenhaDto;
 import com.example.demo.dto.LoginDto;
 import com.example.demo.repository.UsuarioRepository;
 
+import jakarta.servlet.http.HttpSession;
+
 @Service
 public class LoginService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public String findByAccess(LoginDto login) {
+    public String findByAccess(LoginDto login, HttpSession session) {
         Usuario usuarioLogado = usuarioRepository.findByAccess(login);
         if (usuarioLogado == null) {
             return "redirect:/";
         }
+
+        session.setAttribute("cargo", usuarioLogado.getCargo());
         if (usuarioLogado.isAplicador()) {
             return "redirect:/vacinas";
+        }
+        if (usuarioLogado.isAdmin()) {
+            return "redirect:/usuarios";
         }
         return "redirect:/relatorios";
     }

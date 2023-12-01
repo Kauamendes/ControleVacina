@@ -27,7 +27,6 @@ public class RelatorioRepository {
                 "SELECT v.NOME AS vacina, b.NOME AS bairro, count(*) as quantidade FROM VACINA_BAIRRO vb");
         query.append(" INNER JOIN BAIRRO b ON b.id = vb.BAIRRO_ID");
         query.append(" INNER JOIN VACINA v ON v.id = vb.VACINA_ID");
-        query.append(" GROUP BY v.NOME, b.NOME");
 
         StringBuilder whereClause = new StringBuilder();
 
@@ -36,8 +35,8 @@ public class RelatorioRepository {
             params.add(Long.parseLong(relatorioDto.getBairro()));
         }
 
-        if (relatorioDto.getDataInicio() != null && !relatorioDto.getBairro().equals("")) {
-            if (whereClause.length() == 0) {
+        if (relatorioDto.getDataInicio() != null && !relatorioDto.getDataInicio().equals("")) {
+            if (whereClause.isEmpty()) {
                 whereClause.append(" WHERE vb.DATA_APLICACAO >= ?");
             } else {
                 whereClause.append(" AND vb.DATA_APLICACAO >= ?");
@@ -45,8 +44,8 @@ public class RelatorioRepository {
             params.add(Date.valueOf(relatorioDto.getDataInicio()));
         }
 
-        if (relatorioDto.getDataFim() != null && !relatorioDto.getBairro().equals("")) {
-            if (whereClause.length() == 0) {
+        if (relatorioDto.getDataFim() != null && !relatorioDto.getDataFim().equals("")) {
+            if (whereClause.isEmpty()) {
                 whereClause.append(" WHERE vb.DATA_APLICACAO <= ?");
             } else {
                 whereClause.append(" AND vb.DATA_APLICACAO <= ?");
@@ -55,7 +54,7 @@ public class RelatorioRepository {
         }
 
         String finalQuery = query.toString() + whereClause.toString();
-        finalQuery += " ORDER BY v.NOME";
+        finalQuery += " GROUP BY v.NOME, b.NOME ORDER BY v.NOME";
 
         try (PreparedStatement stmt = conn.prepareStatement(finalQuery)) {
             for (int i = 0; i < params.size(); i++) {
