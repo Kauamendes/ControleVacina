@@ -1,15 +1,17 @@
 package com.example.demo.repository;
 
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-
+import com.example.demo.config.Conexao;
 import com.example.demo.domain.Bairro;
 import com.example.demo.domain.Vacina;
+import com.example.demo.domain.VacinaBairro;
 import org.springframework.stereotype.Repository;
 
-import com.example.demo.config.Conexao;
-import com.example.demo.domain.VacinaBairro;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public class VacinaBairroRepository {
@@ -77,22 +79,5 @@ public class VacinaBairroRepository {
             conexao.desconectar(conn);
         }
         return vacinas;
-    }
-
-    public Bairro buscarBairroPorId(Long id) throws SQLException {
-        Conexao conexao = new Conexao();
-        Connection conn = conexao.conectar();
-
-        PreparedStatement preparedStatement = conn.prepareStatement("SELECT id, nome FROM BAIRRO WHERE id = ?");
-        preparedStatement.setLong(1, id);
-
-        ResultSet resultSet = preparedStatement.executeQuery();
-        if (resultSet.next()) {
-            Bairro bairro = new Bairro();
-            bairro.setId(resultSet.getLong("id"));
-            bairro.setNome(resultSet.getString("nome"));
-            return bairro;
-        }
-        return null;
     }
 }

@@ -14,20 +14,20 @@
     <form action="/relatorios/buscar" method="post">
         <div class="form-group">
             <label for="dataInicio">Data Início:</label>
-            <input type="date" class="form-control" id="dataInicio" name="dataInicio">
+            <input type="date" class="form-control" id="dataInicio" name="dataInicio" th:value="${dataInicio}">
         </div>
 
         <div class="form-group">
             <label for="dataFim">Data Fim:</label>
-            <input type="date" class="form-control" id="dataFim" name="dataFim">
+            <input type="date" class="form-control" id="dataFim" name="dataFim" th:value="${dataFim}">
         </div>
 
         <div class="form-group">
             <label for="bairro">Bairro:</label>
             <select class="form-control" id="bairro" name="bairro">
-                <option value="">Selecione um bairro</option>
+                <option value="" >Selecione um bairro</option>
                 <th:block th:each="bairro : ${bairros}">
-                    <option th:value="${bairro.id}" th:text="${bairro.nome}"></option>
+                    <option th:value="${bairro.id}" th:text="${bairro.nome}" th:selected="${bairroSelecionadoId != null && bairroSelecionadoId == bairro.id}"></option>
                 </th:block>
             </select>
         </div>
@@ -36,7 +36,7 @@
     </form>
     <hr>
 
-    <form action="/relatorios/buscar" method="post" class="container">
+    <form class="container">
     <div class="row">
         <div class="col-md-12">
             <h1>Resultados</h1>
