@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.domain.Bairro;
 import com.example.demo.dto.VacinaBairroDto;
+import com.example.demo.enums.DosagemEnum;
 import com.example.demo.services.VacinaBairroService;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -32,6 +33,7 @@ public class VacinaBairroController {
         ModelAndView mv = new ModelAndView("cadastro_vacina");
         mv.addObject("bairros", service.listarBairros());
         mv.addObject("vacinas", service.listarVacinas());
+        mv.addObject("dosagens", DosagemEnum.getDoses());
         Bairro bairroNaSessao = (Bairro) session.getAttribute("bairroNaSessao");
         String msgSalvar = (String) session.getAttribute("msgSalvar");
         mv.addObject("msgSalvar", msgSalvar);

@@ -19,4 +19,5 @@ public class VacinaBairro {
     private Long vacinaId;
     private Long bairroId;
     private Timestamp dataAplicacao;
+    private String dose;
 }

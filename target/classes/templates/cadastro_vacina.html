@@ -8,6 +8,7 @@
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var msgSalvarSucesso = document.getElementById('msgSalvarSucesso');
@@ -16,6 +17,26 @@
                     msgSalvarSucesso.remove();
                 }, 2000);
             }
+
+            $('#vacina').change(function() {
+                var valorSelecionado = $(this).val();
+                var valoresSeparados = valorSelecionado.split(',');
+                var dosagemVacina = valoresSeparados[1];
+
+                if(dosagemVacina){
+                    document.getElementById('modalDosagem').style.display = 'block';
+                } else {
+                    document.getElementById('modalDosagem').style.display = 'none';
+                }
+                
+            });
+        });
+
+        $('#setDosagem').click(function() {
+            // Adicione aqui a lógica para processar a dosagem selecionada
+            var dosagemSelecionada = $('#dosagem').val();
+            console.log('Dosagem selecionada:', dosagemSelecionada);
+            document.getElementById('modalDosagem').style.display = 'none';
         });
     </script>
 </head>
@@ -43,12 +64,34 @@
             <select class="form-control" id="vacina" name="vacina" required="true">
                 <option value="">Selecione a vacina</option>
                 <th:block th:each="vacina : ${vacinas}">
-                    <option th:value="${vacina.id}" th:text="${vacina.nome}"></option>
+                    <option th:value="${vacina.id + ',' + vacina.dosagem}" th:text="${vacina.nome}"></option>
                 </th:block>
             </select>
         </div>
     </div>
     <button type="submit" class="btn btn-primary">Cadastrar</button>
+
+<section id="modalDosagem" style="display: none;">
+    <div class="modal-content" >
+        <div class="modal-header">
+            <h4 class="modal-title" id="modalLabel">Dosagem</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Fechar" id="closeModal"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">Informe a dosagem ou o reforço:
+            <select class="form-control" id="dosagem" name="dosagem" required="true">
+                <option value="">Selecione a dosagem</option>
+                <th:block th:each="dosagem : ${dosagens}">
+                    <option th:text="${dosagem}"></option>
+                </th:block>
+            </select>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="setDosagem">Ok</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+        </div>
+    </div>
+</section>
+
 <div class="mt-2" id="msgSalvarSucesso">
     <div th:if="${msgSalvar != null}" class="alert alert-success auto-hide" role="alert">
         <p th:text="${msgSalvar}"></p>

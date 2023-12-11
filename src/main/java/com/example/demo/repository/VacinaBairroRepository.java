@@ -49,7 +49,7 @@ public class VacinaBairroRepository {
                 bairros.add(bairro);
             }
         } catch (Exception e) {
-            System.out.println("Erro ao listar bairros: "+e.getMessage());
+            System.out.println("Erro ao listar bairros: " + e.getMessage());
         } finally {
             conexao.desconectar(conn);
         }
@@ -69,10 +69,11 @@ public class VacinaBairroRepository {
                 Vacina vacina = Vacina.builder().build();
                 vacina.setId(resultado.getLong("id"));
                 vacina.setNome(resultado.getString("nome"));
+                vacina.setDosagem(resultado.getBoolean("dosagem"));
                 vacinas.add(vacina);
             }
         } catch (Exception e) {
-            System.out.println("Erro ao listar vacinas: "+e.getMessage());
+            System.out.println("Erro ao listar vacinas: " + e.getMessage());
         } finally {
             conexao.desconectar(conn);
         }

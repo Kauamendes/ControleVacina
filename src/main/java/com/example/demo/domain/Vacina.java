@@ -10,8 +10,11 @@ import lombok.*;
 @EqualsAndHashCode(of = "id")
 public class Vacina {
 
-    public static final String POSSUI_DOSAGEM = "S";
-
     private Long id;
     private String nome;
+    private boolean dosagem;
+
+    public boolean HAS_DOSAGEM() {
+        return dosagem;
+    }
 }
