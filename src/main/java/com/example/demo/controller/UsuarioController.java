@@ -35,7 +35,9 @@ public class UsuarioController {
         ModelAndView mv = new ModelAndView("cadastro_usuario");
         mv.addObject("cargos", Usuario.getAllCargos());
         String msgSalva = (String) session.getAttribute("msgSalva");
+        String msgErro = (String) session.getAttribute("msgErro");
         if (msgSalva != null) mv.addObject("msgSalva", msgSalva);
+        if (msgErro != null) mv.addObject("msgErro", msgErro);
         return mv;
     }
 }

@@ -9,9 +9,11 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var msgSalvarSucesso = document.getElementById('msgSalvarSucesso');
-            if (msgSalvarSucesso) {
+            var msgErro = document.getElementById('msgErro');
+            if (msgSalvarSucesso || msgErro) {
                 setTimeout(function() {
                     msgSalvarSucesso.remove();
+                    msgErro.remove();
                 }, 2000);
             }
         });
@@ -40,6 +42,11 @@
         <div class="mt-2" id="msgSalvarSucesso">
             <div th:if="${mensagemSalva != null}" class="alert alert-success auto-hide" role="alert">
                 <p th:text="${mensagemSalva}"></p>
+            </div>
+        </div>
+        <div class="mt-2" id="msgErro">
+            <div th:if="${msgErro != null}" class="alert alert-danger auto-hide" role="alert">
+                <p th:text="${msgErro}"></p>
             </div>
         </div>
     </form>

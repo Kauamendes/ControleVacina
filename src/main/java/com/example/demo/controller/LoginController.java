@@ -27,8 +27,11 @@ public class LoginController {
     }
 
     @GetMapping
-    public String telaLogin() {
-        return "login";
+    public ModelAndView telaLogin(HttpSession session) {
+        ModelAndView mv = new ModelAndView("login");
+        String msgErro = (String) session.getAttribute("msgErro");
+        if (msgErro != null) mv.addObject("msgErro", msgErro);
+        return mv;
     }
 
     @GetMapping("/sair")

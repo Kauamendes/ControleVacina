@@ -14,13 +14,18 @@ public class LoginService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    private final String msgErro = "msgErro";
+
     public String findByAccess(LoginDto login, HttpSession session) {
         Usuario usuarioLogado = usuarioRepository.findByAccess(login);
         if (usuarioLogado == null) {
+            session.setAttribute(msgErro, "Usuário ou senha inválidos!");
             return "redirect:/";
         }
 
         session.setAttribute("cargo", usuarioLogado.getCargo());
+        session.removeAttribute(msgErro);
+        session.removeAttribute("msgSalva");
         if (usuarioLogado.isAplicador()) {
             return "redirect:/vacinas";
         }
@@ -33,13 +38,13 @@ public class LoginService {
     public String saveNewSenha(AlteracaoSenhaDto loginUpdateDto, HttpSession session) {
         if (verificaSeUsuarioAdmin(loginUpdateDto, session)) {
             if (!loginUpdateDto.getSenha_update().equals(loginUpdateDto.getConfirmacaoSenha_update())) {
-                session.setAttribute("msgErro", "senhas diferentes");
+                session.setAttribute(msgErro, "senhas diferentes");
                 return "redirect:/new_senha";
             }
 
             Usuario usuario = usuarioRepository.findByLogin(loginUpdateDto.getLogin_update());
             if (usuario == null) {
-                session.setAttribute("msgErro", "usuario não encontrado no banco");
+                session.setAttribute(msgErro, "usuario não encontrado!");
                 return "redirect:/new_senha";
             }
 
@@ -55,10 +60,10 @@ public class LoginService {
         Usuario usuarioAdmin = usuarioRepository
                 .findByAccess(new LoginDto(loginUpdateDto.getLogin_admin(), loginUpdateDto.getSenha_admin()));
         if (usuarioAdmin == null) {
-            session.setAttribute("msgErro", "usuario admin inválido");
+            session.setAttribute(msgErro, "usuario admin inválido!");
             return false;
         } else if (!usuarioAdmin.isAdmin()) {
-            session.setAttribute("msgErro", "usuario informado não é admin");
+            session.setAttribute(msgErro, "usuario informado não é admin!");
             return false;
         }
         return true;
