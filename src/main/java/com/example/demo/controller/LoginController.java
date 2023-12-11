@@ -40,16 +40,16 @@ public class LoginController {
     @GetMapping("/new_senha")
     public ModelAndView redirectAlteracaoSenha(HttpSession session) {
         ModelAndView mv = new ModelAndView("form_alteracao_senha");
-        String mensagem = (String) session.getAttribute("mensagemSalva");
+        String mensagem = (String) session.getAttribute("msgSalva");
         if (mensagem != null) {
-            mv.addObject("mensagemSalva", mensagem);
+            mv.addObject("msgSalva", mensagem);
         }
         return mv;
     }
 
     @PostMapping("/new_senha")
     public String saveNewSenha(AlteracaoSenhaDto loginUpdateDto, HttpSession session) {
-        session.setAttribute("mensagemSalva", "Alteração salva com sucesso");
+        service.saveNewSenha(loginUpdateDto, session);
         return "redirect:/new_senha";
     }
 }

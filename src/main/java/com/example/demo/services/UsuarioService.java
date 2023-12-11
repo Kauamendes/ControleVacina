@@ -18,9 +18,9 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository repository;
 
-    public String insert(UsuarioDto usuarioDto) {
+    public String insert(UsuarioDto usuarioDto, HttpSession session) {
         if (!usuarioDto.getSenha().equals(usuarioDto.getConfirmacaoSenha())) {
-            System.out.println("senhas diferentes");
+            session.setAttribute("msgErro", "senhas diferentes!");
             return "redirect:/usuarios";
         }
 
@@ -31,13 +31,15 @@ public class UsuarioService {
                 .build();
 
         repository.insert(usuario);
-        System.out.println("usuário cadastrado com sucesso!");
+        session.setAttribute("msgSalva", "usuário cadastrado com sucesso!");
         return "redirect:/usuarios";
     }
 
     public void verificaCargoSessao(HttpSession session, HttpServletResponse response) throws IOException {
         String cargo = (String) session.getAttribute("cargo");
-        if (cargo.equals(Usuario.TIP_CARGO_APLICADOR)) {
+        if (cargo == null) {
+            response.sendRedirect("/");
+        } else if (cargo.equals(Usuario.TIP_CARGO_APLICADOR)) {
             response.sendRedirect("/vacinas");
         } else if (cargo.equals(Usuario.TIP_CARGO_GESTOR)) {
             response.sendRedirect("/relatorios");

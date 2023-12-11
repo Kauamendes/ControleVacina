@@ -30,16 +30,16 @@ public class LoginService {
         return "redirect:/relatorios";
     }
 
-    public String saveNewSenha(AlteracaoSenhaDto loginUpdateDto) {
-        if (verificaSeUsuarioAdmin(loginUpdateDto)) {
+    public String saveNewSenha(AlteracaoSenhaDto loginUpdateDto, HttpSession session) {
+        if (verificaSeUsuarioAdmin(loginUpdateDto, session)) {
             if (!loginUpdateDto.getSenha_update().equals(loginUpdateDto.getConfirmacaoSenha_update())) {
-                System.out.println("senhas diferentes");
+                session.setAttribute("msgErro", "senhas diferentes");
                 return "redirect:/new_senha";
             }
 
             Usuario usuario = usuarioRepository.findByLogin(loginUpdateDto.getLogin_update());
             if (usuario == null) {
-                System.out.println("usuario não encontrado no banco");
+                session.setAttribute("msgErro", "usuario não encontrado no banco");
                 return "redirect:/new_senha";
             }
 
@@ -47,17 +47,18 @@ public class LoginService {
             usuarioRepository.updateUsuario(usuario);
             return "redirect:/";
         }
+        session.setAttribute("msgSalva", "Alteração salva com sucesso");
         return "redirect:/new_senha";
     }
 
-    private boolean verificaSeUsuarioAdmin(AlteracaoSenhaDto loginUpdateDto) {
+    private boolean verificaSeUsuarioAdmin(AlteracaoSenhaDto loginUpdateDto, HttpSession session) {
         Usuario usuarioAdmin = usuarioRepository
                 .findByAccess(new LoginDto(loginUpdateDto.getLogin_admin(), loginUpdateDto.getSenha_admin()));
         if (usuarioAdmin == null) {
-            System.out.println("usuario admin inválido");
+            session.setAttribute("msgErro", "usuario admin inválido");
             return false;
         } else if (!usuarioAdmin.isAdmin()) {
-            System.out.println("usuario informado não é admin");
+            session.setAttribute("msgErro", "usuario informado não é admin");
             return false;
         }
         return true;

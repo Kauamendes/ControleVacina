@@ -25,16 +25,17 @@ public class UsuarioController {
     private UsuarioService service;
 
     @PostMapping
-    public String insert(UsuarioDto usuarioDto) {
-        return service.insert(usuarioDto);
+    public String insert(UsuarioDto usuarioDto, HttpSession session) {
+        return service.insert(usuarioDto, session);
     }
 
     @GetMapping
-    public ModelAndView telaCadastroUsuario(HttpSession session, HttpServletResponse response)
-            throws SQLException, IOException {
+    public ModelAndView telaCadastroUsuario(HttpSession session, HttpServletResponse response) throws SQLException, IOException {
         service.verificaCargoSessao(session, response);
         ModelAndView mv = new ModelAndView("cadastro_usuario");
         mv.addObject("cargos", Usuario.getAllCargos());
+        String msgSalva = (String) session.getAttribute("msgSalva");
+        if (msgSalva != null) mv.addObject("msgSalva", msgSalva);
         return mv;
     }
 }
