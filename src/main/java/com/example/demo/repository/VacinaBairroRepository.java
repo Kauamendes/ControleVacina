@@ -1,8 +1,14 @@
 package com.example.demo.repository;
 
-import com.example.demo.config.Conexao;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.example.demo.domain.Bairro;
 import com.example.demo.domain.Vacina;
+import org.springframework.stereotype.Repository;
+
+import com.example.demo.config.Conexao;
 import com.example.demo.domain.VacinaBairro;
 import org.springframework.stereotype.Repository;
 
@@ -21,7 +27,8 @@ public class VacinaBairroRepository {
         Connection conn = conexao.conectar();
 
         try {
-            String query = "INSERT INTO VACINA_BAIRRO (VACINA_ID, BAIRRO_ID) VALUES(?, ?)";
+            String query = "INSERT INTO VACINA_BAIRRO (VACINA_ID, BAIRRO_ID, DATA_APLICACAO)" +
+                    " VALUES(?,?,?)";
 
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setLong(1, vacinaBairro.getVacinaId());
@@ -35,11 +42,11 @@ public class VacinaBairroRepository {
         }
     }
 
-    public List<Bairro> listarBairros() {
+    public List<Bairro> listarBairros() throws SQLException {
         Conexao conexao = new Conexao();
         Connection conn = conexao.conectar();
         List<Bairro> bairros = new ArrayList<>();
-        String sql = "SELECT * FROM BAIRRO ORDER BY NOME";
+        String sql = "SELECT * FROM BAIRRO";
         try {
             Statement stm = conn.createStatement();
             ResultSet resultado = stm.executeQuery(sql);
@@ -58,11 +65,11 @@ public class VacinaBairroRepository {
         return bairros;
     }
 
-    public List<Vacina> listarVacinas() {
+    public List<Vacina> listarVacinas() throws SQLException {
         Conexao conexao = new Conexao();
         Connection conn = conexao.conectar();
         List<Vacina> vacinas = new ArrayList<>();
-        String sql = "SELECT * FROM VACINA ORDER BY NOME";
+        String sql = "SELECT * FROM VACINA";
         try {
             Statement stm = conn.createStatement();
             ResultSet resultado = stm.executeQuery(sql);
