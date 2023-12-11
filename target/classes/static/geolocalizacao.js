@@ -4,7 +4,6 @@ let cep;
 let bairro;
 
 async function obterCepPorGeoLocalizacao() {
-    if ('geolocation' in navigator) {
         const watcher = navigator.geolocation.watchPosition(async function (position) {
             const latitude = position.coords.latitude;
             const longitude = position.coords.longitude;
@@ -16,9 +15,6 @@ async function obterCepPorGeoLocalizacao() {
                 throw new Error("Erro ao obter o CEP da geolocalização");
             }
         });
-    } else {
-        console.error("Geolocalização não suportada pelo navegador");
-    }
 }
 
 function extrairCep(geocodingData) {
@@ -52,7 +48,11 @@ const obterBairroAtual = async () => {
     }, 3000);
 }
 
-obterBairroAtual().then(setarBairro());
+if ('geolocation' in navigator && isMobile) {
+    obterBairroAtual().then(setarBairro());
+} else {
+    console.error("Geolocalização não suportado ou não é precisa no dispositivo usado!")
+}
 
 function setarBairro() {
     setTimeout(async function () {
