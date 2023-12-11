@@ -1,9 +1,7 @@
 const apiKey = "AIzaSyATbuo_zzaHENrFJKKMLzwP6Hu_nzaFUqc";
 const isMobile = navigator.userAgent === 'Iphone' || navigator.userAgent === 'Android';
 let cep;
-let ultimoCepBuscado;
 let bairro;
-let ultimoBairroBuscado;
 
 async function obterCepPorGeoLocalizacao() {
     if ('geolocation' in navigator) {
@@ -49,28 +47,21 @@ async function consultarBairroPorCep(cep) {
 const obterBairroAtual = async () => {
     await obterCepPorGeoLocalizacao();
     setTimeout(async function () {
-        console.log(cep + "  :  "+ultimoCepBuscado)
-        if (ultimoCepBuscado != null && ultimoCepBuscado === cep) {
-            return bairro;
-        }
         await consultarBairroPorCep(cep);
-    }, 2000);
+        console.log(bairro);
+    }, 3000);
 }
 
-obterBairroAtual();
+obterBairroAtual().then(setarBairro());
 
-setTimeout(async function () {
-    console.log(bairro + "  :  "+ultimoBairroBuscado)
-    if (ultimoBairroBuscado != null && ultimoBairroBuscado === bairro) {
-        return;
-    }
-    await fetch(`/geolocalizacao/${bairro}`).then(recarregarTela => {
-        if (recarregarTela) {
-            // A tela deve ser recarregada
-            console.log(recarregarTela);
-            //location.reload();
-        } else {
-            // A tela não deve ser recarregada
+function setarBairro() {
+    setTimeout(async function () {
+        console.log(bairro);
+        let response = await fetch(`/geolocalizacao/${bairro}`)
+        let recarregarTela = await response.json();
+        console.log(recarregarTela);
+        if (recarregarTela === true) {
+            location.reload();
         }
-    });
-}, 3000);
+    }, 5000);
+}

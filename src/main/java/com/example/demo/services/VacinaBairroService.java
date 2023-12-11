@@ -39,9 +39,15 @@ public class VacinaBairroService {
 
     public void verificaCargoSessao(HttpSession session, HttpServletResponse response) throws IOException {
         String cargo = (String) session.getAttribute("cargo");
-        if (cargo.equals(Usuario.TIP_CARGO_GESTOR)) {
+        if (cargo == null) {
+            response.sendRedirect("/");
+        }
+        else if (cargo.equals(Usuario.TIP_CARGO_GESTOR)) {
             response.sendRedirect("/relatorios");
         }
     }
 
+    public Bairro buscarBairroPorNome(String nomeBairro) throws SQLException {
+        return repository.buscarBairroPorNome(nomeBairro);
+    }
 }

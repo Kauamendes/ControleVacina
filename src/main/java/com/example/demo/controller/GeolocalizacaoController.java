@@ -9,8 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 @RequestMapping
 public class GeolocalizacaoController {
 
@@ -19,13 +20,15 @@ public class GeolocalizacaoController {
 
     @GetMapping("/geolocalizacao/{nomeBairro}")
     public boolean obterBairro(@PathVariable String nomeBairro, HttpSession session) throws Exception {
+        if (nomeBairro.equalsIgnoreCase("undefined")) return false;
         Bairro bairroNaSessao = (Bairro) session.getAttribute("bairroNaSessao");
         if (bairroNaSessao == null || !bairroNaSessao.getNome().equalsIgnoreCase(nomeBairro)) {
-            Bairro bairroNoBanco = vacinaBairroService.buscarBairroPorNome(nomeBairro);
-            if (bairroNoBanco != null && bairroNoBanco.getId() == null) {
+            Bairro bairro = vacinaBairroService.buscarBairroPorNome(nomeBairro);
+            if (bairro == null || bairro.getId() == null) {
                 throw new Exception("Bairro não encontrado");
             }
-            session.setAttribute("bairroNaSessao", bairroNoBanco);
+            session.setAttribute("bairroNaSessao", bairro);
+            session.setAttribute("bairroSelecionadoId", bairro.getId());
             return true;
         }
         return false;

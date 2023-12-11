@@ -6,10 +6,7 @@ import com.example.demo.domain.Vacina;
 import com.example.demo.domain.VacinaBairro;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,5 +76,22 @@ public class VacinaBairroRepository {
             conexao.desconectar(conn);
         }
         return vacinas;
+    }
+
+    public Bairro buscarBairroPorNome(String nomeBairro) throws SQLException {
+        Conexao conexao = new Conexao();
+        Connection conn = conexao.conectar();
+
+        PreparedStatement preparedStatement = conn.prepareStatement("SELECT id, nome FROM BAIRRO WHERE NOME LIKE ? ");
+        preparedStatement.setString(1, nomeBairro);
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+        if (resultSet.next()) {
+            Bairro bairro = new Bairro();
+            bairro.setId(resultSet.getLong("id"));
+            bairro.setNome(resultSet.getString("nome"));
+            return bairro;
+        }
+        return null;
     }
 }
