@@ -1,14 +1,12 @@
 package com.example.demo.repository;
 
-import com.example.demo.config.Conexao;
-import com.example.demo.domain.Vacina;
-import com.example.demo.domain.VacinaBairro;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+
 import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import com.example.demo.config.Conexao;
+import com.example.demo.domain.Vacina;
 
 @Repository
 public class VacinaRepository {

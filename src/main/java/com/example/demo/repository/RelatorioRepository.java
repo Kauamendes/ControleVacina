@@ -19,7 +19,7 @@ public class RelatorioRepository {
         List<VacinaBairroDto> vacinas = new ArrayList<>();
         List<Object> params = new ArrayList<>();
 
-        StringBuilder query = new StringBuilder("SELECT vb.ID, vb.DATA_APLICACAO as dataAplicacao, b.NOME AS bairro_nome, v.NOME AS vacina_nome FROM VACINA_BAIRRO vb");
+        StringBuilder query = new StringBuilder("SELECT v.NOME AS vacina, b.NOME AS bairro, count(*) as quantidade FROM VACINA_BAIRRO vb");
         query.append(" INNER JOIN BAIRRO b ON b.id = vb.BAIRRO_ID");
         query.append(" INNER JOIN VACINA v ON v.id = vb.VACINA_ID");
 
@@ -30,8 +30,8 @@ public class RelatorioRepository {
             params.add(Long.parseLong(relatorioDto.getBairro()));
         }
 
-        if (relatorioDto.getDataInicio() != null && !relatorioDto.getBairro().equals("")) {
-            if (whereClause.length() == 0) {
+        if (relatorioDto.getDataInicio() != null && !relatorioDto.getDataInicio().equals("")) {
+            if (whereClause.isEmpty()) {
                 whereClause.append(" WHERE vb.DATA_APLICACAO >= ?");
             } else {
                 whereClause.append(" AND vb.DATA_APLICACAO >= ?");
@@ -39,8 +39,8 @@ public class RelatorioRepository {
             params.add(Date.valueOf(relatorioDto.getDataInicio()));
         }
 
-        if (relatorioDto.getDataFim() != null && !relatorioDto.getBairro().equals("")) {
-            if (whereClause.length() == 0) {
+        if (relatorioDto.getDataFim() != null && !relatorioDto.getDataFim().equals("")) {
+            if (whereClause.isEmpty()) {
                 whereClause.append(" WHERE vb.DATA_APLICACAO <= ?");
             } else {
                 whereClause.append(" AND vb.DATA_APLICACAO <= ?");
@@ -49,6 +49,7 @@ public class RelatorioRepository {
         }
 
         String finalQuery = query.toString() + whereClause.toString();
+        finalQuery += " GROUP BY v.NOME, b.NOME ORDER BY v.NOME";
 
         try (PreparedStatement stmt = conn.prepareStatement(finalQuery)) {
             for (int i = 0; i < params.size(); i++) {
@@ -59,10 +60,9 @@ public class RelatorioRepository {
 
             while (resultSet.next()) {
                 vacinas.add(VacinaBairroDto.builder()
-                        .id(resultSet.getLong("id"))
-                        .bairro(resultSet.getString("bairro_nome"))
-                        .vacina(resultSet.getString("vacina_nome"))
-                        .dataAplicacao(DateUtils.parseDateToString(resultSet.getDate("dataAplicacao")))
+                        .vacina(resultSet.getString("vacina"))
+                        .bairro(resultSet.getString("bairro"))
+                        .quantidade(resultSet.getInt("quantidade"))
                         .build());
             }
         } finally {
