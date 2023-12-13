@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import com.example.demo.domain.Bairro;
 import com.example.demo.dto.VacinaBairroDto;
 import com.example.demo.enums.DosagemEnum;
 import com.example.demo.services.VacinaBairroService;
@@ -32,7 +31,6 @@ public class VacinaBairroController {
         mv.addObject("bairros", service.listarBairros());
         mv.addObject("vacinas", service.listarVacinas());
         mv.addObject("dosagens", DosagemEnum.getDoses());
-        Bairro bairroNaSessao = (Bairro) session.getAttribute("bairroNaSessao");
 
         String msgSalvar = (String) session.getAttribute("msgSalvar");
         Long bairroSelecionadoId = (Long) session.getAttribute("bairroSelecionadoId");
