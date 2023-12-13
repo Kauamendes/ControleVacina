@@ -3,11 +3,9 @@ package com.example.demo.controller;
 import com.example.demo.domain.Usuario;
 import com.example.demo.dto.RelatorioDto;
 import com.example.demo.repository.RelatorioRepository;
+import com.example.demo.repository.VacinaBairroRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.io.IOException;
-import java.sql.SQLException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.IOException;
 import java.sql.Date;
+import java.sql.SQLException;
 
 @Controller
 @RequestMapping("/relatorios")
@@ -28,7 +28,7 @@ public class RelatorioController {
     private VacinaBairroRepository vacinaBairroRepository;
 
     @GetMapping
-    public ModelAndView relatorio(HttpSession session, HttpServletResponse response) throws IOException {
+    public ModelAndView relatorio(HttpSession session, HttpServletResponse response) throws IOException, SQLException {
         ModelAndView mv = new ModelAndView("relatorio");
         String cargo = (String) session.getAttribute("cargo");
         if (cargo.equals(Usuario.TIP_CARGO_APLICADOR)) {

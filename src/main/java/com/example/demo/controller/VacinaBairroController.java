@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
+import com.example.demo.domain.Bairro;
 import com.example.demo.dto.VacinaBairroDto;
+import com.example.demo.enums.DosagemEnum;
 import com.example.demo.services.VacinaBairroService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -11,13 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.example.demo.domain.Bairro;
-import com.example.demo.dto.VacinaBairroDto;
-import com.example.demo.enums.DosagemEnum;
-import com.example.demo.services.VacinaBairroService;
-
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import java.io.IOException;
+import java.sql.SQLException;
 
 
 @Controller
