@@ -1,8 +1,9 @@
 package com.example.demo.controller;
 
-import java.io.IOException;
-import java.sql.SQLException;
-
+import com.example.demo.dto.VacinaBairroDto;
+import com.example.demo.services.VacinaBairroService;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,16 +19,19 @@ import com.example.demo.services.VacinaBairroService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+
 @Controller
 @RequestMapping("/vacinas")
 public class VacinaBairroController {
+
+    private String bairroSelecionadoId;
+    private String vacinaSelecionadaId;
 
     @Autowired
     private VacinaBairroService service;
 
     @GetMapping
-    public ModelAndView telaCadastroVacina(HttpSession session, HttpServletResponse response)
-            throws SQLException, IOException {
+    public ModelAndView telaCadastroVacina(HttpSession session, HttpServletResponse response) throws SQLException, IOException {
         service.verificaCargoSessao(session, response);
 
         ModelAndView mv = new ModelAndView("cadastro_vacina");
@@ -35,17 +39,22 @@ public class VacinaBairroController {
         mv.addObject("vacinas", service.listarVacinas());
         mv.addObject("dosagens", DosagemEnum.getDoses());
         Bairro bairroNaSessao = (Bairro) session.getAttribute("bairroNaSessao");
+
         String msgSalvar = (String) session.getAttribute("msgSalvar");
         mv.addObject("msgSalvar", msgSalvar);
-        mv.addObject("bairroNaSessao", bairroNaSessao);
+
+        if (bairroSelecionadoId != null) mv.addObject("bairroSelecionadoId", Long.parseLong(bairroSelecionadoId));
+        if (vacinaSelecionadaId != null) mv.addObject("vacinaSelecionadoId", Long.parseLong(vacinaSelecionadaId));
         return mv;
     }
 
     @PostMapping
     public String insert(VacinaBairroDto vacinaBairroDto, HttpSession session) throws SQLException {
-        Bairro ultimoBairroSalvo = (Bairro) session.getAttribute("bairroNaSessao");
-        if (ultimoBairroSalvo == null || ultimoBairroSalvo.getId() != Long.parseLong(vacinaBairroDto.getBairro())) {
-            session.setAttribute("bairroNaSessao", service.buscarBairroPorId(vacinaBairroDto.getBairro()));
+        if (bairroSelecionadoId == null || Long.parseLong(bairroSelecionadoId) != Long.parseLong(vacinaBairroDto.getBairro())) {
+            bairroSelecionadoId = vacinaBairroDto.getBairro();
+        }
+        if (vacinaSelecionadaId == null || Long.parseLong(vacinaSelecionadaId) != Long.parseLong(vacinaBairroDto.getVacina())) {
+            vacinaSelecionadaId = vacinaBairroDto.getVacina();
         }
         service.insert(vacinaBairroDto);
         session.setAttribute("msgSalvar", "Vacina salva com sucesso!");
