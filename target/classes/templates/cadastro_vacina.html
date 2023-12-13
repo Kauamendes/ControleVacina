@@ -22,13 +22,18 @@
                 var valorSelecionado = $(this).val();
                 var valoresSeparados = valorSelecionado.split(',');
                 var dosagemVacina = valoresSeparados[1];
+                console.log(dosagemVacina);
 
-                if(dosagemVacina){
+                if(dosagemVacina == 'true'){
                     document.getElementById('modalDosagem').style.display = 'block';
                 } else {
                     document.getElementById('modalDosagem').style.display = 'none';
                 }
                 
+            });
+
+            $('#closeModal').click(function() {
+                document.getElementById('modalDosagem').style.display = 'none';
             });
         });
 
