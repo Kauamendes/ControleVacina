@@ -27,6 +27,7 @@ public class VacinaBairroService {
         VacinaBairro vacinaBairro = VacinaBairro.builder()
                 .bairroId(Long.valueOf(vacinaBairroDto.getBairro()))
                 .vacinaId(Long.valueOf(vacinaBairroDto.getVacina()))
+                .dose(vacinaBairroDto.getDose())
                 .build();
         repository.insert(vacinaBairro);
     }
