@@ -12,7 +12,7 @@ public class VacinaBairroDto {
     private Long id;
     private String bairro;
     private String vacina;
-    private String dose;
     private String dataAplicacao;
     private Integer quantidade;
+    private String dose;
 }

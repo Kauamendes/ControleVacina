@@ -28,7 +28,7 @@
                 } else {
                     fechaModalDosagem();
                 }
-            });
+            }); 
         });
 
         function fechaModalDosagem() {
@@ -59,11 +59,12 @@
     <div class="row mb-3">
         <label for="bairro" class="col-sm-2 col-form-label">Bairro</label>
         <div class="col-sm-10">
-            <select class="form-control" id="bairro" name="bairro" required>
-                <option value="">Selecione o bairro</option>
+            <select class="form-control" id="bairro" name="bairro" required="true">
+                <option th:if="${bairroNaSessao == null}" value="">Selecione o bairro</option>
+                <option th:if="${bairroNaSessao != null}" th:text="${bairroNaSessao.nome}"
+                        th:value="${bairroNaSessao.id}"></option>
                 <th:block th:each="bairro : ${bairros}">
-                    <option th:selected="${bairroSelecionadoId != null && bairroSelecionadoId == bairro.id}" th:text="${bairro.nome}"
-                            th:value="${bairro.id}"></option>
+                    <option th:value="${bairro.id}" th:text="${bairro.nome}"></option>
                 </th:block>
             </select>
         </div>
@@ -71,10 +72,10 @@
     <div class="row mb-3">
         <label for="vacina" class="col-sm-2 col-form-label">Vacina</label>
         <div class="col-sm-10">
-            <select class="form-control" id="vacina" name="vacina" required>
+            <select class="form-control" id="vacina" name="vacina" required="true">
                 <option value="">Selecione a vacina</option>
                 <th:block th:each="vacina : ${vacinas}">
-                    <option th:selected="${vacinaSelecionadoId != null && vacinaSelecionadoId == vacina.id}" th:value="${vacina.id + ',' + vacina.dosagem}" th:text="${vacina.nome}"></option>
+                    <option th:value="${vacina.id + ',' + vacina.dosagem}" th:text="${vacina.nome}"></option>
                 </th:block>
             </select>
         </div>
@@ -112,5 +113,4 @@
 </form>
 </div>
 </body>
-<script src="/geolocalizacao.js"></script>
 </html>
