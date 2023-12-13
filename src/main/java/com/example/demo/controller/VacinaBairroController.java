@@ -21,9 +21,6 @@ import java.sql.SQLException;
 @RequestMapping("/vacinas")
 public class VacinaBairroController {
 
-    private String bairroSelecionadoId;
-    private String vacinaSelecionadaId;
-
     @Autowired
     private VacinaBairroService service;
 
@@ -38,20 +35,25 @@ public class VacinaBairroController {
         Bairro bairroNaSessao = (Bairro) session.getAttribute("bairroNaSessao");
 
         String msgSalvar = (String) session.getAttribute("msgSalvar");
-        mv.addObject("msgSalvar", msgSalvar);
+        Long bairroSelecionadoId = (Long) session.getAttribute("bairroSelecionadoId");
+        Long vacinaSelecionadaId = (Long) session.getAttribute("vacinaSelecionadaId");
 
-        if (bairroSelecionadoId != null) mv.addObject("bairroSelecionadoId", Long.parseLong(bairroSelecionadoId));
-        if (vacinaSelecionadaId != null) mv.addObject("vacinaSelecionadoId", Long.parseLong(vacinaSelecionadaId));
+        if (msgSalvar != null) mv.addObject("msgSalvar", msgSalvar);
+        if (bairroSelecionadoId != null) mv.addObject("bairroSelecionadoId", bairroSelecionadoId);
+        if (vacinaSelecionadaId != null) mv.addObject("vacinaSelecionadoId", vacinaSelecionadaId);
         return mv;
     }
 
     @PostMapping
     public String insert(VacinaBairroDto vacinaBairroDto, HttpSession session) throws SQLException {
-        if (bairroSelecionadoId == null || Long.parseLong(bairroSelecionadoId) != Long.parseLong(vacinaBairroDto.getBairro())) {
-            bairroSelecionadoId = vacinaBairroDto.getBairro();
+        Long bairroSelecionadoId = (Long) session.getAttribute("bairroSelecionadoId");
+        Long vacinaSelecionadaId = (Long) session.getAttribute("vacinaSelecionadaId");
+
+        if (bairroSelecionadoId == null || bairroSelecionadoId != Long.parseLong(vacinaBairroDto.getBairro())) {
+            session.setAttribute("bairroSelecionadoId", vacinaBairroDto.getBairro());
         }
-        if (vacinaSelecionadaId == null || Long.parseLong(vacinaSelecionadaId) != Long.parseLong(vacinaBairroDto.getVacina())) {
-            vacinaSelecionadaId = vacinaBairroDto.getVacina();
+        if (vacinaSelecionadaId == null || vacinaSelecionadaId != Long.parseLong(vacinaBairroDto.getVacina())) {
+            session.setAttribute("vacinaSelecionadoId", vacinaBairroDto.getVacina());
         }
         service.insert(vacinaBairroDto);
         session.setAttribute("msgSalvar", "Vacina salva com sucesso!");

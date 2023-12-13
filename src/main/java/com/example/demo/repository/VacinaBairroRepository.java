@@ -79,4 +79,21 @@ public class VacinaBairroRepository {
         }
         return vacinas;
     }
+
+    public Bairro buscarBairroPorNome(String nomeBairro) throws SQLException {
+        Conexao conexao = new Conexao();
+        Connection conn = conexao.conectar();
+
+        PreparedStatement preparedStatement = conn.prepareStatement("SELECT id, nome FROM BAIRRO WHERE NOME LIKE ? ");
+        preparedStatement.setString(1, nomeBairro);
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+        if (resultSet.next()) {
+            Bairro bairro = new Bairro();
+            bairro.setId(resultSet.getLong("id"));
+            bairro.setNome(resultSet.getString("nome"));
+            return bairro;
+        }
+        return null;
+    }
 }
