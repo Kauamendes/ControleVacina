@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.NomeVariaveisSessao;
 import com.example.demo.dto.VacinaBairroDto;
 import com.example.demo.services.VacinaBairroService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -29,29 +30,30 @@ public class VacinaBairroController {
         mv.addObject("bairros", service.listarBairros());
         mv.addObject("vacinas", service.listarVacinas());
 
-        String msgSalvar = (String) session.getAttribute("msgSalvar");
-        Long bairroSelecionadoId = (Long) session.getAttribute("bairroSelecionadoId");
-        Long vacinaSelecionadaId = (Long) session.getAttribute("vacinaSelecionadaId");
+        String msgSalvar = (String) session.getAttribute(NomeVariaveisSessao.MSG_SALVO);
+        Long bairroSelecionadoId = (Long) session.getAttribute(NomeVariaveisSessao.BAIRRO);
+        Long vacinaSelecionadaId = (Long) session.getAttribute(NomeVariaveisSessao.VACINA);
 
-        if (msgSalvar != null) mv.addObject("msgSalvar", msgSalvar);
-        if (bairroSelecionadoId != null) mv.addObject("bairroSelecionadoId", bairroSelecionadoId);
-        if (vacinaSelecionadaId != null) mv.addObject("vacinaSelecionadoId", vacinaSelecionadaId);
+        if (msgSalvar != null) mv.addObject(NomeVariaveisSessao.MSG_SALVO, msgSalvar);
+        if (bairroSelecionadoId != null) mv.addObject(NomeVariaveisSessao.BAIRRO, bairroSelecionadoId);
+        if (vacinaSelecionadaId != null) mv.addObject(NomeVariaveisSessao.VACINA, vacinaSelecionadaId);
+        session.removeAttribute(NomeVariaveisSessao.MSG_SALVO);
         return mv;
     }
 
     @PostMapping
-    public String insert(VacinaBairroDto vacinaBairroDto, HttpSession session) throws SQLException {
-        Long bairroSelecionadoId = (Long) session.getAttribute("bairroSelecionadoId");
-        Long vacinaSelecionadaId = (Long) session.getAttribute("vacinaSelecionadaId");
+    public String insert(VacinaBairroDto vacinaBairroDto, HttpSession session) {
+        Long bairroSelecionadoId = (Long) session.getAttribute(NomeVariaveisSessao.BAIRRO);
+        Long vacinaSelecionadaId = (Long) session.getAttribute(NomeVariaveisSessao.VACINA);
 
         if (bairroSelecionadoId == null || bairroSelecionadoId != Long.parseLong(vacinaBairroDto.getBairro())) {
-            session.setAttribute("bairroSelecionadoId", vacinaBairroDto.getBairro());
+            session.setAttribute(NomeVariaveisSessao.BAIRRO, Long.parseLong(vacinaBairroDto.getBairro()));
         }
         if (vacinaSelecionadaId == null || vacinaSelecionadaId != Long.parseLong(vacinaBairroDto.getVacina())) {
-            session.setAttribute("vacinaSelecionadoId", vacinaBairroDto.getVacina());
+            session.setAttribute(NomeVariaveisSessao.VACINA, Long.parseLong(vacinaBairroDto.getVacina()));
         }
         service.insert(vacinaBairroDto);
-        session.setAttribute("msgSalvar", "Vacina salva com sucesso!");
+        session.setAttribute(NomeVariaveisSessao.MSG_SALVO, "Vacina salva com sucesso!");
         return "redirect:/vacinas";
     }
 }

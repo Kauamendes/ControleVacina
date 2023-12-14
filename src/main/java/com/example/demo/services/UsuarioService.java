@@ -2,6 +2,7 @@ package com.example.demo.services;
 
 import java.io.IOException;
 
+import com.example.demo.NomeVariaveisSessao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ public class UsuarioService {
 
     public String insert(UsuarioDto usuarioDto, HttpSession session) {
         if (!usuarioDto.getSenha().equals(usuarioDto.getConfirmacaoSenha())) {
-            session.setAttribute("msgErro", "senhas diferentes!");
+            session.setAttribute(NomeVariaveisSessao.MSG_ERRO, "senhas diferentes!");
             return "redirect:/usuarios";
         }
 
@@ -31,7 +32,7 @@ public class UsuarioService {
                 .build();
 
         repository.insert(usuario);
-        session.setAttribute("msgSalva", "usuário cadastrado com sucesso!");
+        session.setAttribute(NomeVariaveisSessao.MSG_SALVO, "usuário cadastrado com sucesso!");
         return "redirect:/usuarios";
     }
 

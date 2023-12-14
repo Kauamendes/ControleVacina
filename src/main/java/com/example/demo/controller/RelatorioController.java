@@ -2,8 +2,10 @@ package com.example.demo.controller;
 
 import com.example.demo.domain.Usuario;
 import com.example.demo.dto.RelatorioDto;
+import com.example.demo.repository.BairroRepository;
 import com.example.demo.repository.RelatorioRepository;
 import com.example.demo.repository.VacinaBairroRepository;
+import com.example.demo.repository.VacinaRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,16 +27,16 @@ public class RelatorioController {
     private RelatorioRepository relatorioRepository;
 
     @Autowired
-    private VacinaBairroRepository vacinaBairroRepository;
+    private BairroRepository bairroRepository;
 
     @GetMapping
-    public ModelAndView relatorio(HttpSession session, HttpServletResponse response) throws IOException {
+    public ModelAndView relatorio(HttpSession session, HttpServletResponse response) throws IOException, SQLException {
         ModelAndView mv = new ModelAndView("relatorio");
         String cargo = (String) session.getAttribute("cargo");
         if (cargo.equals(Usuario.TIP_CARGO_APLICADOR)) {
             response.sendRedirect("/vacinas");
         }
-        mv.addObject("bairros", vacinaBairroRepository.listarBairros());
+        mv.addObject("bairros", bairroRepository.listarBairros());
         return mv;
     }
 
@@ -45,7 +47,7 @@ public class RelatorioController {
         String dataFim = relatorioDto.getDataFim();
 
         ModelAndView mv = new ModelAndView("relatorio");
-        mv.addObject("bairros", vacinaBairroRepository.listarBairros());
+        mv.addObject("bairros", bairroRepository.listarBairros());
         mv.addObject("vacinasBairros", relatorioRepository.buscar(relatorioDto));
 
         if (!bairro.equalsIgnoreCase("")) mv.addObject("bairroSelecionadoId", Long.parseLong(bairro));
