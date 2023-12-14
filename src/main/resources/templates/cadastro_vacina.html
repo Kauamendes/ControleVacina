@@ -22,6 +22,7 @@
                 var valorSelecionado = $(this).val();
                 var valoresSeparados = valorSelecionado.split(',');
                 var dosagemVacina = valoresSeparados[1];
+                console.log("mudou | " + dosagemVacina);
 
                 if(dosagemVacina == 'true'){
                     abreModalDosagem();
@@ -29,6 +30,10 @@
                     document.getElementById('dose').value = '';
                     fechaModalDosagem();
                 }
+            });
+
+            $('#dose').change(function () {
+                console.log($(this).val());
             });
         });
 

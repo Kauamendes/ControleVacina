@@ -22,6 +22,7 @@
                 var valorSelecionado = $(this).val();
                 var valoresSeparados = valorSelecionado.split(',');
                 var dosagemVacina = valoresSeparados[1];
+                console.log("mudou | "+dosagemVacina);
 
                 if(dosagemVacina == 'true'){
                     abreModalDosagem();
@@ -29,6 +30,10 @@
                     document.getElementById('dose').value = '';
                     fechaModalDosagem();
                 }
+            });
+
+            $('#dose').change(function() {
+               console.log($(this).val());
             });
         });
 
@@ -95,7 +100,7 @@
             <select class="form-control" id="dosagem" name="dosagem">
                 <option value="">Selecione a dosagem</option>
                 <th:block th:each="dosagem : ${dosagens}">
-                    <option th:value="${dosagem.valor}" th:text="${dosagem.nome}"></option>
+                    <option th:text="${dosagem.nome}" th:value="${dosagem.valor}"></option>
                 </th:block>
             </select>
         </div>
