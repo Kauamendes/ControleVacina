@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.NomeVariaveisSessao;
 import com.example.demo.dto.VacinaBairroDto;
+import com.example.demo.enums.DosagemEnum;
 import com.example.demo.services.VacinaBairroService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;

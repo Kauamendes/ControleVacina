@@ -4,8 +4,6 @@ import com.example.demo.domain.Usuario;
 import com.example.demo.dto.RelatorioDto;
 import com.example.demo.repository.BairroRepository;
 import com.example.demo.repository.RelatorioRepository;
-import com.example.demo.repository.VacinaBairroRepository;
-import com.example.demo.repository.VacinaRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +31,9 @@ public class RelatorioController {
     public ModelAndView relatorio(HttpSession session, HttpServletResponse response) throws IOException, SQLException {
         ModelAndView mv = new ModelAndView("relatorio");
         String cargo = (String) session.getAttribute("cargo");
-        if (cargo.equals(Usuario.TIP_CARGO_APLICADOR)) {
+        if (cargo == null) {
+            response.sendRedirect("/");
+        } else if (cargo.equals(Usuario.TIP_CARGO_APLICADOR)) {
             response.sendRedirect("/vacinas");
         }
         mv.addObject("bairros", bairroRepository.listarBairros());
