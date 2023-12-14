@@ -42,11 +42,12 @@
 
         function okModalDosagem(){
             var dosagemSelecionada = document.getElementById('dosagem').value;
+            console.log(dosagemSelecionada);
 
             if(dosagemSelecionada){
-                document.getElementById('dose').value = dosagemSelecionada;
+                var dose = document.getElementById('dose').value = dosagemSelecionada;
+                console.log(dose);
             }
-            console.log(dose);
             fechaModalDosagem();
         }
     </script>
