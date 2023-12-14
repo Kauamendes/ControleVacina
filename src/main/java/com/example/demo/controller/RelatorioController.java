@@ -1,11 +1,10 @@
 package com.example.demo.controller;
 
+import com.example.demo.NomeVariaveisSessao;
 import com.example.demo.domain.Usuario;
 import com.example.demo.dto.RelatorioDto;
 import com.example.demo.repository.BairroRepository;
 import com.example.demo.repository.RelatorioRepository;
-import com.example.demo.repository.VacinaBairroRepository;
-import com.example.demo.repository.VacinaRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +31,7 @@ public class RelatorioController {
     @GetMapping
     public ModelAndView relatorio(HttpSession session, HttpServletResponse response) throws IOException, SQLException {
         ModelAndView mv = new ModelAndView("relatorio");
-        String cargo = (String) session.getAttribute("cargo");
+        String cargo = (String) session.getAttribute(NomeVariaveisSessao.CARGO);
         if (cargo.equals(Usuario.TIP_CARGO_APLICADOR)) {
             response.sendRedirect("/vacinas");
         }
@@ -41,7 +40,7 @@ public class RelatorioController {
     }
 
     @PostMapping("/buscar")
-    public ModelAndView buscar(RelatorioDto relatorioDto, HttpSession session) throws SQLException {
+    public ModelAndView buscar(RelatorioDto relatorioDto) throws SQLException {
         String bairro = relatorioDto.getBairro();
         String dataInicio = relatorioDto.getDataInicio();
         String dataFim = relatorioDto.getDataFim();
