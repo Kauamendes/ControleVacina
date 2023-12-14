@@ -95,7 +95,7 @@
             <select class="form-control" id="dosagem" name="dosagem">
                 <option value="">Selecione a dosagem</option>
                 <th:block th:each="dosagem : ${dosagens}">
-                    <option th:text="${dosagem}"></option>
+                    <option th:value="${dosagem.valor}" th:text="${dosagem.nome}"></option>
                 </th:block>
             </select>
         </div>

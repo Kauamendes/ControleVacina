@@ -18,12 +18,13 @@ public class VacinaBairroRepository {
         Connection conn = conexao.conectar();
 
         try {
-            String query = "INSERT INTO VACINA_BAIRRO (VACINA_ID, BAIRRO_ID, DATA_APLICACAO)" +
+            String query = "INSERT INTO VACINA_BAIRRO (VACINA_ID, BAIRRO_ID, DOSE)" +
                     " VALUES(?,?,?)";
 
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setLong(1, vacinaBairro.getVacinaId());
             ps.setLong(2, vacinaBairro.getBairroId());
+            ps.setString(3, vacinaBairro.getDose());
             ps.execute();
             ps.close();
         } catch (Exception e) {

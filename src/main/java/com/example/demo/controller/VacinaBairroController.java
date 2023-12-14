@@ -30,7 +30,7 @@ public class VacinaBairroController {
         ModelAndView mv = new ModelAndView("cadastro_vacina");
         mv.addObject("bairros", service.listarBairros());
         mv.addObject("vacinas", service.listarVacinas());
-        mv.addObject("dosagens", DosagemEnum.getDoses());
+        mv.addObject("dosagens", DosagemEnum.values());
 
         String msgSalvar = (String) session.getAttribute("msgSalvar");
         Long vacinaSelecionadaId = (Long) session.getAttribute("vacinaSelecionadaId");
@@ -56,10 +56,10 @@ public class VacinaBairroController {
         System.out.println(vacina);
 
         if (bairroSelecionadoId == null || bairroSelecionadoId != Long.parseLong(vacinaBairroDto.getBairro())) {
-            session.setAttribute("bairroSelecionadoId", vacinaBairroDto.getBairro());
+            session.setAttribute("bairroSelecionadoId", Long.parseLong(vacinaBairroDto.getBairro()));
         }
         if (vacinaSelecionadaId == null || vacinaSelecionadaId != Long.parseLong(vacina)) {
-            session.setAttribute("vacinaSelecionadoId", vacina);
+            session.setAttribute("vacinaSelecionadaId", Long.parseLong(vacina));
         }
         service.insert(vacinaBairroDto);
         session.setAttribute("msgSalvar", "Vacina salva com sucesso!");
