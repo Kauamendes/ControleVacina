@@ -10,5 +10,6 @@ public class RelatorioDto {
     private String dataInicio;
     private String dataFim;
     private String bairro;
+    private String vacina;
 
 }

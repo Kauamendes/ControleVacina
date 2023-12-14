@@ -3,7 +3,6 @@ package com.example.demo.repository;
 import com.example.demo.config.Conexao;
 import com.example.demo.dto.RelatorioDto;
 import com.example.demo.dto.VacinaBairroDto;
-import com.example.demo.utils.DateUtils;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -30,6 +29,15 @@ public class RelatorioRepository {
             params.add(Long.parseLong(relatorioDto.getBairro()));
         }
 
+        if (relatorioDto.getVacina() != null && !relatorioDto.getVacina().equals("")) {
+            if (whereClause.isEmpty()) {
+                whereClause.append(" WHERE v.id = ?");
+            } else {
+                whereClause.append(" AND v.id = ?");
+            }
+            params.add(Long.parseLong(relatorioDto.getVacina()));
+        }
+
         if (relatorioDto.getDataInicio() != null && !relatorioDto.getDataInicio().equals("")) {
             if (whereClause.isEmpty()) {
                 whereClause.append(" WHERE vb.DATA_APLICACAO >= ?");
@@ -48,7 +56,7 @@ public class RelatorioRepository {
             params.add(Date.valueOf(relatorioDto.getDataFim()));
         }
 
-        String finalQuery = query.toString() + whereClause.toString();
+        String finalQuery = query + whereClause.toString();
         finalQuery += " GROUP BY v.NOME, b.NOME ORDER BY v.NOME";
 
         try (PreparedStatement stmt = conn.prepareStatement(finalQuery)) {
