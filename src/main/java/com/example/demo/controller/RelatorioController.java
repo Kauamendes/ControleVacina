@@ -4,20 +4,19 @@ import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 
+import com.example.demo.domain.Usuario;
+import com.example.demo.dto.RelatorioDto;
+import com.example.demo.repository.BairroRepository;
+import com.example.demo.repository.RelatorioRepository;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.example.demo.domain.Usuario;
-import com.example.demo.dto.RelatorioDto;
-import com.example.demo.repository.BairroRepository;
-import com.example.demo.repository.RelatorioRepository;
-
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/relatorios")
@@ -33,7 +32,9 @@ public class RelatorioController {
     public ModelAndView relatorio(HttpSession session, HttpServletResponse response) throws IOException, SQLException {
         ModelAndView mv = new ModelAndView("relatorio");
         String cargo = (String) session.getAttribute("cargo");
-        if (cargo.equals(Usuario.TIP_CARGO_APLICADOR)) {
+        if (cargo == null) {
+            response.sendRedirect("/");
+        } else if (cargo.equals(Usuario.TIP_CARGO_APLICADOR)) {
             response.sendRedirect("/vacinas");
         }
         mv.addObject("bairros", bairroRepository.listarBairros());
