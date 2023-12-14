@@ -41,15 +41,15 @@
             <select class="form-control" id="vacina" name="vacina" required>
                 <option value="">Selecione a vacina</option>
                 <th:block th:each="vacina : ${vacinas}">
-                    <option th:selected="${vacinaSelecionadoId != null && vacinaSelecionadoId == vacina.id}" th:value="${vacina.id}" th:text="${vacina.nome}"></option>
+                    <option th:selected="${vacinaSelecionadaId != null && vacinaSelecionadaId == vacina.id}" th:value="${vacina.id}" th:text="${vacina.nome}"></option>
                 </th:block>
             </select>
         </div>
     </div>
     <button type="submit" class="btn btn-primary">Cadastrar</button>
 <div class="mt-2" id="msgSalvarSucesso">
-    <div th:if="${msgSalvar != null}" class="alert alert-success auto-hide" role="alert">
-        <p th:text="${msgSalvar}"></p>
+    <div th:if="${msgSalvo != null}" class="alert alert-success auto-hide" role="alert">
+        <p th:text="${msgSalvo}"></p>
     </div>
 </div>
 </form>
