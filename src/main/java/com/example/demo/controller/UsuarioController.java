@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import com.example.demo.NomeVariaveisSessao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,14 +31,19 @@ public class UsuarioController {
     }
 
     @GetMapping
-    public ModelAndView telaCadastroUsuario(HttpSession session, HttpServletResponse response) throws SQLException, IOException {
+    public ModelAndView telaCadastroUsuario(HttpSession session, HttpServletResponse response) throws IOException {
         service.verificaCargoSessao(session, response);
         ModelAndView mv = new ModelAndView("cadastro_usuario");
+
+        String msgSalva = (String) session.getAttribute(NomeVariaveisSessao.MSG_SALVO);
+        String msgErro = (String) session.getAttribute(NomeVariaveisSessao.MSG_ERRO);
+
+        if (msgSalva != null) mv.addObject(NomeVariaveisSessao.MSG_SALVO, msgSalva);
+        if (msgErro != null) mv.addObject(NomeVariaveisSessao.MSG_ERRO, msgErro);
         mv.addObject("cargos", Usuario.getAllCargos());
-        String msgSalva = (String) session.getAttribute("msgSalva");
-        String msgErro = (String) session.getAttribute("msgErro");
-        if (msgSalva != null) mv.addObject("msgSalva", msgSalva);
-        if (msgErro != null) mv.addObject("msgErro", msgErro);
+
+        session.removeAttribute(NomeVariaveisSessao.MSG_SALVO);
+        session.removeAttribute(NomeVariaveisSessao.MSG_ERRO);
         return mv;
     }
 }
