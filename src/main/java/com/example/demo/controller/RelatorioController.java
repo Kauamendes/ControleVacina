@@ -28,7 +28,7 @@ public class RelatorioController {
     private VacinaBairroRepository vacinaBairroRepository;
 
     @GetMapping
-    public ModelAndView relatorio(HttpSession session, HttpServletResponse response) throws IOException {
+    public ModelAndView relatorio(HttpSession session, HttpServletResponse response) throws IOException, SQLException {
         ModelAndView mv = new ModelAndView("relatorio");
         String cargo = (String) session.getAttribute("cargo");
         if (cargo.equals(Usuario.TIP_CARGO_APLICADOR)) {

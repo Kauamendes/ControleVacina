@@ -6,6 +6,8 @@ import com.example.demo.dto.LoginDto;
 import com.example.demo.repository.UsuarioRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,12 +15,13 @@ public class LoginService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     private final String msgErro = "msgErro";
 
     public String findByAccess(LoginDto login, HttpSession session) {
         Usuario usuarioLogado = usuarioRepository.findByAccess(login);
-        if (usuarioLogado == null) {
+        if (usuarioLogado == null ||  !passwordEncoder.matches(login.getSenha(), usuarioLogado.getSenha())) {
             session.setAttribute(msgErro, "Usuário ou senha inválidos!");
             return "redirect:/";
         }

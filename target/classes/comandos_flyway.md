@@ -1,1 +1,0 @@
-Caso de erro de "Failed Migrations" Tem que deletar todas as tabelas do banco
