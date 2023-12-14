@@ -27,10 +27,11 @@ public class VacinaRepository {
                 Vacina vacina = Vacina.builder().build();
                 vacina.setId(resultado.getLong("id"));
                 vacina.setNome(resultado.getString("nome"));
+                vacina.setDosagem(resultado.getBoolean("dosagem"));
                 vacinas.add(vacina);
             }
         } catch (Exception e) {
-            System.out.println("Erro ao listar vacinas: "+e.getMessage());
+            System.out.println("Erro ao listar vacinas: " + e.getMessage());
         } finally {
             conexao.desconectar(conn);
         }

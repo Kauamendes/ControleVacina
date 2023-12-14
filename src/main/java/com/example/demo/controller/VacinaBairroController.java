@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.NomeVariaveisSessao;
 import com.example.demo.dto.VacinaBairroDto;
+import com.example.demo.enums.DosagemEnum;
 import com.example.demo.services.VacinaBairroService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -36,9 +37,12 @@ public class VacinaBairroController {
         Long bairroSelecionadoId = (Long) session.getAttribute(NomeVariaveisSessao.BAIRRO);
         Long vacinaSelecionadaId = (Long) session.getAttribute(NomeVariaveisSessao.VACINA);
 
-        if (msgSalvar != null) mv.addObject(NomeVariaveisSessao.MSG_SALVO, msgSalvar);
-        if (bairroSelecionadoId != null) mv.addObject(NomeVariaveisSessao.BAIRRO, bairroSelecionadoId);
-        if (vacinaSelecionadaId != null) mv.addObject(NomeVariaveisSessao.VACINA, vacinaSelecionadaId);
+        if (msgSalvar != null)
+            mv.addObject(NomeVariaveisSessao.MSG_SALVO, msgSalvar);
+        if (bairroSelecionadoId != null)
+            mv.addObject(NomeVariaveisSessao.BAIRRO, bairroSelecionadoId);
+        if (vacinaSelecionadaId != null)
+            mv.addObject(NomeVariaveisSessao.VACINA, vacinaSelecionadaId);
         session.removeAttribute(NomeVariaveisSessao.MSG_SALVO);
         return mv;
     }
@@ -54,8 +58,8 @@ public class VacinaBairroController {
         if (bairroSelecionadoId == null || bairroSelecionadoId != Long.parseLong(vacinaBairroDto.getBairro())) {
             session.setAttribute(NomeVariaveisSessao.BAIRRO, Long.parseLong(vacinaBairroDto.getBairro()));
         }
-        if (vacinaSelecionadaId == null || vacinaSelecionadaId != Long.parseLong(vacinaBairroDto.getVacina())) {
-            session.setAttribute(NomeVariaveisSessao.VACINA, Long.parseLong(vacinaBairroDto.getVacina()));
+        if (vacinaSelecionadaId == null || vacinaSelecionadaId != Long.parseLong(vacina)) {
+            session.setAttribute(NomeVariaveisSessao.VACINA, Long.parseLong(vacina));
         }
         service.insert(vacinaBairroDto);
         session.setAttribute(NomeVariaveisSessao.MSG_SALVO, "Vacina salva com sucesso!");
