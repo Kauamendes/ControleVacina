@@ -20,7 +20,8 @@ public class LoginService {
     private final String msgErro = "msgErro";
 
     public String findByAccess(LoginDto login, HttpSession session) {
-        Usuario usuarioLogado = usuarioRepository.findByAccess(login);
+        Usuario usuarioLogado = usuarioRepository.findByLogin(login.getLogin());
+
         if (usuarioLogado == null ||  !passwordEncoder.matches(login.getSenha(), usuarioLogado.getSenha())) {
             session.setAttribute(msgErro, "Usuário ou senha inválidos!");
             return "redirect:/";
@@ -60,9 +61,10 @@ public class LoginService {
     }
 
     private boolean verificaSeUsuarioAdmin(AlteracaoSenhaDto loginUpdateDto, HttpSession session) {
+
         Usuario usuarioAdmin = usuarioRepository
-                .findByAccess(new LoginDto(loginUpdateDto.getLogin_admin(), loginUpdateDto.getSenha_admin()));
-        if (usuarioAdmin == null) {
+                .findByLogin(loginUpdateDto.getLogin_admin());
+        if (usuarioAdmin == null || !passwordEncoder.matches(loginUpdateDto.getSenha_admin(), usuarioAdmin.getSenha()) ) {
             session.setAttribute(msgErro, "usuario admin inválido!");
             return false;
         } else if (!usuarioAdmin.isAdmin()) {
