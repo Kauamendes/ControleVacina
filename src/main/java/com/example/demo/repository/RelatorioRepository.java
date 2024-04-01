@@ -1,18 +1,13 @@
 package com.example.demo.repository;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.stereotype.Repository;
-
 import com.example.demo.config.Conexao;
 import com.example.demo.dto.RelatorioDto;
 import com.example.demo.dto.VacinaBairroDto;
+import org.springframework.stereotype.Repository;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public class RelatorioRepository {
@@ -23,8 +18,7 @@ public class RelatorioRepository {
         List<VacinaBairroDto> vacinas = new ArrayList<>();
         List<Object> params = new ArrayList<>();
 
-        StringBuilder query = new StringBuilder(
-                "SELECT v.NOME AS vacina, b.NOME AS bairro, count(*) as quantidade FROM VACINA_BAIRRO vb");
+        StringBuilder query = new StringBuilder("SELECT v.NOME AS vacina, b.NOME AS bairro, count(*) as quantidade FROM VACINA_BAIRRO vb");
         query.append(" INNER JOIN BAIRRO b ON b.id = vb.BAIRRO_ID");
         query.append(" INNER JOIN VACINA v ON v.id = vb.VACINA_ID");
 
@@ -33,6 +27,15 @@ public class RelatorioRepository {
         if (relatorioDto.getBairro() != null && !relatorioDto.getBairro().equals("")) {
             whereClause.append(" WHERE b.id = ?");
             params.add(Long.parseLong(relatorioDto.getBairro()));
+        }
+
+        if (relatorioDto.getVacina() != null && !relatorioDto.getVacina().equals("")) {
+            if (whereClause.isEmpty()) {
+                whereClause.append(" WHERE v.id = ?");
+            } else {
+                whereClause.append(" AND v.id = ?");
+            }
+            params.add(Long.parseLong(relatorioDto.getVacina()));
         }
 
         if (relatorioDto.getDataInicio() != null && !relatorioDto.getDataInicio().equals("")) {
@@ -53,7 +56,7 @@ public class RelatorioRepository {
             params.add(Date.valueOf(relatorioDto.getDataFim()));
         }
 
-        String finalQuery = query.toString() + whereClause.toString();
+        String finalQuery = query + whereClause.toString();
         finalQuery += " GROUP BY v.NOME, b.NOME ORDER BY v.NOME";
 
         try (PreparedStatement stmt = conn.prepareStatement(finalQuery)) {
