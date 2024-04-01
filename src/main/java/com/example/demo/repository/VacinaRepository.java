@@ -27,6 +27,7 @@ public class VacinaRepository {
                 Vacina vacina = Vacina.builder().build();
                 vacina.setId(resultado.getLong("id"));
                 vacina.setNome(resultado.getString("nome"));
+                vacina.setDosagem(resultado.getBoolean("dosagem"));
                 vacinas.add(vacina);
             }
         } catch (Exception e) {

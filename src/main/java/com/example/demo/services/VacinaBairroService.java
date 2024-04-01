@@ -30,9 +30,12 @@ public class VacinaBairroService {
     private BairroRepository bairroRepository;
 
     public void insert(VacinaBairroDto vacinaBairroDto) {
+        String vacina = vacinaBairroDto.getVacina().substring(0, vacinaBairroDto.getVacina().indexOf(","));
+
         VacinaBairro vacinaBairro = VacinaBairro.builder()
                 .bairroId(Long.valueOf(vacinaBairroDto.getBairro()))
-                .vacinaId(Long.valueOf(vacinaBairroDto.getVacina()))
+                .vacinaId(Long.valueOf(vacina))
+                .dose(vacinaBairroDto.getDose())
                 .build();
         vacinaBairroRepository.insert(vacinaBairro);
     }
@@ -49,8 +52,7 @@ public class VacinaBairroService {
         String cargo = (String) session.getAttribute("cargo");
         if (cargo == null) {
             response.sendRedirect("/");
-        }
-        else if (cargo.equals(Usuario.TIP_CARGO_GESTOR)) {
+        } else if (cargo.equals(Usuario.TIP_CARGO_GESTOR)) {
             response.sendRedirect("/relatorios");
         }
     }

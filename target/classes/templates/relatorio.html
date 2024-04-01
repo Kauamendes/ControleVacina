@@ -39,7 +39,8 @@
             <select class="form-control" id="vacina" name="vacina">
                 <option value="">Selecione uma vacina</option>
                 <th:block th:each="vacina : ${vacinas}">
-                    <option th:selected="${vacinaSelecionadaId != null && vacinaSelecionadaId == vacina.id}" th:value="${vacina.id}" th:text="${vacina.nome}"></option>
+                    <option th:selected="${vacinaSelecionadaId != null && vacinaSelecionadaId == vacina.id}"
+                            th:text="${vacina.nome}" th:value="${vacina.id}"></option>
                 </th:block>
             </select>
         </div>

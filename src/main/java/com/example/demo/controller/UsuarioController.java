@@ -38,8 +38,10 @@ public class UsuarioController {
         String msgSalva = (String) session.getAttribute(NomeVariaveisSessao.MSG_SALVO);
         String msgErro = (String) session.getAttribute(NomeVariaveisSessao.MSG_ERRO);
 
-        if (msgSalva != null) mv.addObject(NomeVariaveisSessao.MSG_SALVO, msgSalva);
-        if (msgErro != null) mv.addObject(NomeVariaveisSessao.MSG_ERRO, msgErro);
+        if (msgSalva != null)
+            mv.addObject(NomeVariaveisSessao.MSG_SALVO, msgSalva);
+        if (msgErro != null)
+            mv.addObject(NomeVariaveisSessao.MSG_ERRO, msgErro);
         mv.addObject("cargos", Usuario.getAllCargos());
 
         session.removeAttribute(NomeVariaveisSessao.MSG_SALVO);
