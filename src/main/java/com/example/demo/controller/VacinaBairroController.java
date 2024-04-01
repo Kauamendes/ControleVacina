@@ -53,7 +53,6 @@ public class VacinaBairroController {
         Long vacinaSelecionadaId = (Long) session.getAttribute(NomeVariaveisSessao.VACINA);
 
         String vacina = vacinaBairroDto.getVacina().substring(0, vacinaBairroDto.getVacina().indexOf(","));
-        System.out.println(vacina);
 
         if (bairroSelecionadoId == null || bairroSelecionadoId != Long.parseLong(vacinaBairroDto.getBairro())) {
             session.setAttribute(NomeVariaveisSessao.BAIRRO, Long.parseLong(vacinaBairroDto.getBairro()));
