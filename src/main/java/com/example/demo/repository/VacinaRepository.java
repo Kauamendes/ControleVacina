@@ -31,7 +31,7 @@ public class VacinaRepository {
                 vacinas.add(vacina);
             }
         } catch (Exception e) {
-            System.out.println("Erro ao listar vacinas: " + e.getMessage());
+            System.out.println("Erro ao listar vacinas: "+e.getMessage());
         } finally {
             conexao.desconectar(conn);
         }

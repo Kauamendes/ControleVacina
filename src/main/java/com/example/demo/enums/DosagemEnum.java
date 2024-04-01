@@ -12,7 +12,7 @@ public enum DosagemEnum {
     SEGUNDA_DOSE("Segunda Dose", 2),
     TERCEIRA_DOSE("Terceira Dose", 3),
     UNICA("Unica", 4),
-    REFORCO("Reforso", 5);
+    REFORCO("Reforço", 5);
 
     private final String nome;
     private final Integer valor;

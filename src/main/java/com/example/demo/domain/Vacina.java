@@ -14,7 +14,7 @@ public class Vacina {
     private String nome;
     private boolean dosagem;
 
-    public boolean HAS_DOSAGEM() {
+    public boolean hasDosagem() {
         return dosagem;
     }
 }

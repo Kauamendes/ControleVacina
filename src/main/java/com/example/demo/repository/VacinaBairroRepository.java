@@ -1,14 +1,15 @@
 package com.example.demo.repository;
 
-import com.example.demo.config.Conexao;
-import com.example.demo.domain.Bairro;
-import com.example.demo.domain.Vacina;
-import com.example.demo.domain.VacinaBairro;
-import org.springframework.stereotype.Repository;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.example.demo.domain.Bairro;
+import com.example.demo.domain.Vacina;
+import org.springframework.stereotype.Repository;
+
+import com.example.demo.config.Conexao;
+import com.example.demo.domain.VacinaBairro;
 
 @Repository
 public class VacinaBairroRepository {
@@ -18,7 +19,7 @@ public class VacinaBairroRepository {
         Connection conn = conexao.conectar();
 
         try {
-            String query = "INSERT INTO VACINA_BAIRRO (VACINA_ID, BAIRRO_ID, DOSE)" +
+            String query = "INSERT INTO VACINA_BAIRRO (VACINA_ID, BAIRRO_ID, DOSE, DATA_APLICACAO)" +
                     " VALUES(?,?,?)";
 
             PreparedStatement ps = conn.prepareStatement(query);
