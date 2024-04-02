@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 
 @Controller
 @RequestMapping("/relatorios")
@@ -53,14 +54,14 @@ public class RelatorioController {
         mv.addObject("vacinas", vacinaRepository.listarVacinas());
         mv.addObject("vacinasBairros", relatorioRepository.buscar(relatorioDto));
 
-        if (!relatorioDto.getBairro().equalsIgnoreCase(""))
+        if (!relatorioDto.getBairro().isBlank())
             mv.addObject(NomeVariaveisSessao.BAIRRO, Long.parseLong(relatorioDto.getBairro()));
-        if (!relatorioDto.getVacina().equalsIgnoreCase(""))
+        if (!relatorioDto.getVacina().isBlank())
             mv.addObject(NomeVariaveisSessao.VACINA, Long.parseLong(relatorioDto.getVacina()));
-        if (!relatorioDto.getDataInicio().equalsIgnoreCase(""))
-            mv.addObject("dataInicio", Date.valueOf(relatorioDto.getDataInicio()));
-        if (!relatorioDto.getDataFim().equalsIgnoreCase(""))
-            mv.addObject("dataFim", Date.valueOf(relatorioDto.getDataFim()));
+        if (!relatorioDto.getDataInicio().isBlank())
+            mv.addObject("dataInicio", LocalDateTime.parse(relatorioDto.getDataInicio()));
+        if (!relatorioDto.getDataFim().isBlank())
+            mv.addObject("dataFim", LocalDateTime.parse(relatorioDto.getDataFim()));
         return mv;
     }
 
@@ -70,11 +71,11 @@ public class RelatorioController {
         mv.addObject("bairros", bairroRepository.listarBairros());
         mv.addObject("vacinasBairros", relatorioRepository.buscar(relatorioDto));
 
-        if (!relatorioDto.getBairro().equalsIgnoreCase(""))
+        if (!relatorioDto.getBairro().isBlank())
             mv.addObject("bairroSelecionadoId", Long.parseLong(relatorioDto.getBairro()));
-        if (!relatorioDto.getDataInicio().equalsIgnoreCase(""))
+        if (!relatorioDto.getDataInicio().isBlank())
             mv.addObject("dataInicio", Date.valueOf(relatorioDto.getDataInicio()));
-        if (!relatorioDto.getDataFim().equalsIgnoreCase(""))
+        if (!relatorioDto.getDataFim().isBlank())
             mv.addObject("dataFim", Date.valueOf(relatorioDto.getDataFim()));
         return mv;
     }
