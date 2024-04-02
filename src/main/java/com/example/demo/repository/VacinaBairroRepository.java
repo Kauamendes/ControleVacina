@@ -19,7 +19,7 @@ public class VacinaBairroRepository {
         Connection conn = conexao.conectar();
 
         try {
-            String query = "INSERT INTO VACINA_BAIRRO (VACINA_ID, BAIRRO_ID, DOSE, DATA_APLICACAO)" +
+            String query = "INSERT INTO VACINA_BAIRRO (VACINA_ID, BAIRRO_ID, DOSE)" +
                     " VALUES(?,?,?)";
 
             PreparedStatement ps = conn.prepareStatement(query);
