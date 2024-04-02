@@ -3,6 +3,7 @@ package com.example.demo.repository;
 import com.example.demo.config.Conexao;
 import com.example.demo.dto.RelatorioDto;
 import com.example.demo.dto.VacinaBairroDto;
+import com.example.demo.utils.DateUtils;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -44,7 +45,7 @@ public class RelatorioRepository {
             } else {
                 whereClause.append(" AND vb.DATA_APLICACAO >= ?");
             }
-            params.add(Date.valueOf(relatorioDto.getDataInicio()));
+            params.add(DateUtils.parseStringToTimestamp(relatorioDto.getDataInicio()));
         }
 
         if (relatorioDto.getDataFim() != null && !relatorioDto.getDataFim().equals("")) {
@@ -53,7 +54,7 @@ public class RelatorioRepository {
             } else {
                 whereClause.append(" AND vb.DATA_APLICACAO <= ?");
             }
-            params.add(Date.valueOf(relatorioDto.getDataFim()));
+            params.add(DateUtils.parseStringToTimestamp(relatorioDto.getDataFim()));
         }
 
         String finalQuery = query + whereClause.toString();
