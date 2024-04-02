@@ -16,7 +16,7 @@ public class LoginService {
     private UsuarioRepository usuarioRepository;
 
     public String findByAccess(LoginDto login, HttpSession session) {
-        Usuario usuarioLogado = usuarioRepository.findByAccess(login);
+        Usuario usuarioLogado = usuarioRepository.findByLoginAndSenha(login.getLogin(), login.getSenha());
         if (usuarioLogado == null) {
             session.setAttribute(NomeVariaveisSessao.MSG_ERRO, "Usuário ou senha inválidos!");
             return "redirect:/";
@@ -54,7 +54,7 @@ public class LoginService {
             }
 
             usuario.setSenha(loginUpdateDto.getSenha_update());
-            usuarioRepository.updateUsuario(usuario);
+            usuarioRepository.save(usuario);
             return "redirect:/";
         }
         session.setAttribute(NomeVariaveisSessao.MSG_SALVO, "Alteração salva com sucesso");
@@ -62,8 +62,7 @@ public class LoginService {
     }
 
     private boolean verificaSeUsuarioAdmin(AlteracaoSenhaDto loginUpdateDto, HttpSession session) {
-        Usuario usuarioAdmin = usuarioRepository
-                .findByAccess(new LoginDto(loginUpdateDto.getLogin_admin(), loginUpdateDto.getSenha_admin()));
+        Usuario usuarioAdmin = usuarioRepository.findByLoginAndSenha(loginUpdateDto.getLogin_admin(), loginUpdateDto.getSenha_admin());
         if (usuarioAdmin == null) {
             session.setAttribute(NomeVariaveisSessao.MSG_ERRO, "usuario admin inválido!");
             return false;

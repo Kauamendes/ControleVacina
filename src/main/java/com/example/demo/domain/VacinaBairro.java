@@ -2,6 +2,7 @@ package com.example.demo.domain;
 
 import java.sql.Timestamp;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,11 +14,20 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
+@Entity
 public class VacinaBairro {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long vacinaId;
-    private Long bairroId;
+
+    @OneToMany
+    private Vacina vacina;
+
+    @OneToMany
+    private Bairro bairro;
+
     private Timestamp dataAplicacao;
+
     private String dose;
 }

@@ -1,101 +1,33 @@
 package com.example.demo.repository;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
-import com.example.demo.domain.Bairro;
-import com.example.demo.domain.Vacina;
+import com.example.demo.dto.VacinaBairroDto;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.example.demo.config.Conexao;
 import com.example.demo.domain.VacinaBairro;
 
 @Repository
-public class VacinaBairroRepository {
+public interface VacinaBairroRepository extends JpaRepository<VacinaBairro, Long>  {
 
-    public void insert(VacinaBairro vacinaBairro) {
-        Conexao conexao = new Conexao();
-        Connection conn = conexao.conectar();
+    @Query("SELECT NEW com.seupacote.dto.VacinaBairroDto(v.nome, b.nome, COUNT(vb)) " +
+            "FROM VacinaBairro vb " +
+            "JOIN vb.bairro b " +
+            "JOIN vb.vacina v " +
+            "WHERE (:bairroId IS NULL OR b.id = :bairroId) " +
+            "AND (:vacinaId IS NULL OR v.id = :vacinaId) " +
+            "AND (:dataInicio IS NULL OR vb.dataAplicacao >= :dataInicio) " +
+            "AND (:dataFim IS NULL OR vb.dataAplicacao <= :dataFim) " +
+            "GROUP BY v.nome, b.nome " +
+            "ORDER BY v.nome")
+    List<VacinaBairroDto> buscar(
+            @Param("bairroId") Long bairroId,
+            @Param("vacinaId") Long vacinaId,
+            @Param("dataInicio") Timestamp dataInicio,
+            @Param("dataFim") Timestamp dataFim);
 
-        try {
-            String query = "INSERT INTO VACINA_BAIRRO (VACINA_ID, BAIRRO_ID, DOSE)" +
-                    " VALUES(?,?,?)";
-
-            PreparedStatement ps = conn.prepareStatement(query);
-            ps.setLong(1, vacinaBairro.getVacinaId());
-            ps.setLong(2, vacinaBairro.getBairroId());
-            ps.setString(3, vacinaBairro.getDose());
-            ps.execute();
-            ps.close();
-        } catch (Exception e) {
-            System.out.println(e);
-        } finally {
-            conexao.desconectar(conn);
-        }
-    }
-
-    public List<Bairro> listarBairros() throws SQLException {
-        Conexao conexao = new Conexao();
-        Connection conn = conexao.conectar();
-        List<Bairro> bairros = new ArrayList<>();
-        String sql = "SELECT * FROM BAIRRO";
-        try {
-            Statement stm = conn.createStatement();
-            ResultSet resultado = stm.executeQuery(sql);
-
-            while (resultado.next()) {
-                Bairro bairro = Bairro.builder().build();
-                bairro.setId(resultado.getLong("id"));
-                bairro.setNome(resultado.getString("nome"));
-                bairros.add(bairro);
-            }
-        } catch (Exception e) {
-            System.out.println("Erro ao listar bairros: " + e.getMessage());
-        } finally {
-            conexao.desconectar(conn);
-        }
-        return bairros;
-    }
-
-    public List<Vacina> listarVacinas() throws SQLException {
-        Conexao conexao = new Conexao();
-        Connection conn = conexao.conectar();
-        List<Vacina> vacinas = new ArrayList<>();
-        String sql = "SELECT * FROM VACINA";
-        try {
-            Statement stm = conn.createStatement();
-            ResultSet resultado = stm.executeQuery(sql);
-
-            while (resultado.next()) {
-                Vacina vacina = Vacina.builder().build();
-                vacina.setId(resultado.getLong("id"));
-                vacina.setNome(resultado.getString("nome"));
-                vacina.setDosagem(resultado.getBoolean("dosagem"));
-                vacinas.add(vacina);
-            }
-        } catch (Exception e) {
-            System.out.println("Erro ao listar vacinas: " + e.getMessage());
-        } finally {
-            conexao.desconectar(conn);
-        }
-        return vacinas;
-    }
-
-    public Bairro buscarBairroPorNome(String nomeBairro) throws SQLException {
-        Conexao conexao = new Conexao();
-        Connection conn = conexao.conectar();
-
-        PreparedStatement preparedStatement = conn.prepareStatement("SELECT id, nome FROM BAIRRO WHERE NOME LIKE ? ");
-        preparedStatement.setString(1, nomeBairro);
-
-        ResultSet resultSet = preparedStatement.executeQuery();
-        if (resultSet.next()) {
-            Bairro bairro = new Bairro();
-            bairro.setId(resultSet.getLong("id"));
-            bairro.setNome(resultSet.getString("nome"));
-            return bairro;
-        }
-        return null;
-    }
 }

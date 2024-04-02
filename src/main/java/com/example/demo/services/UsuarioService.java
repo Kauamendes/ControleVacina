@@ -15,7 +15,7 @@ import java.io.IOException;
 public class UsuarioService {
 
     @Autowired
-    private UsuarioRepository repository;
+    private UsuarioRepository usuarioRepository;
 
     public String insert(UsuarioDto usuarioDto, HttpSession session) {
         if (!usuarioDto.getSenha().equals(usuarioDto.getConfirmacaoSenha())) {
@@ -29,7 +29,7 @@ public class UsuarioService {
                 .cargo(usuarioDto.getCargo())
                 .build();
 
-        repository.insert(usuario);
+        usuarioRepository.save(usuario);
         session.setAttribute(NomeVariaveisSessao.MSG_SALVO, "usuário cadastrado com sucesso!");
         return "redirect:/usuarios";
     }

@@ -2,7 +2,10 @@ package com.example.demo.domain;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
+import com.example.demo.enums.CargoEnum;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
@@ -13,28 +16,32 @@ import lombok.*;
 @EqualsAndHashCode(of = "id")
 public class Usuario {
 
-    public static final String TIP_CARGO_APLICADOR = "Aplicador";
-    public static final String TIP_CARGO_GESTOR = "Gestor";
-    public static final String TIP_CARGO_ADMIN = "Admin";
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String login;
+
     private String senha;
-    private String cargo;
+
+    @Enumerated(EnumType.STRING)
+    private CargoEnum cargo;
 
     public boolean isAplicador() {
-        return cargo.equals(TIP_CARGO_APLICADOR);
+        return Objects.equals(CargoEnum.APLICADOR, cargo);
     }
 
     public boolean isGestor() {
-        return cargo.equals(TIP_CARGO_GESTOR);
+        return Objects.equals(CargoEnum.GESTOR, cargo);
     }
 
     public boolean isAdmin() {
-        return cargo.equals(TIP_CARGO_ADMIN);
+        return Objects.equals(CargoEnum.ADMIN, cargo);
     }
 
     public static List<String> getAllCargos() {
-        return Arrays.asList(TIP_CARGO_ADMIN, TIP_CARGO_APLICADOR, TIP_CARGO_GESTOR);
+        return Arrays.stream(CargoEnum.values())
+                .map(CargoEnum::getNome)
+                .toList();
     }
 }
