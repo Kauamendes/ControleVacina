@@ -8,5 +8,7 @@ public class NomeVariaveisSessao {
     public static final String CARGO = "cargo";
     public static final String MSG_SALVO = "msgSalvo";
     public static final String MSG_ERRO = "msgErro";
+    public static final String DATA_INICIO = "dataInicio";
+    public static final String DATA_FIM = "dataFim";
 
 }

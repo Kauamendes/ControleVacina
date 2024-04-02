@@ -59,9 +59,9 @@ public class RelatorioController {
         if (!relatorioDto.getVacina().isBlank())
             mv.addObject(NomeVariaveisSessao.VACINA, Long.parseLong(relatorioDto.getVacina()));
         if (!relatorioDto.getDataInicio().isBlank())
-            mv.addObject("dataInicio", LocalDateTime.parse(relatorioDto.getDataInicio()));
+            mv.addObject(NomeVariaveisSessao.DATA_INICIO, LocalDateTime.parse(relatorioDto.getDataInicio()));
         if (!relatorioDto.getDataFim().isBlank())
-            mv.addObject("dataFim", LocalDateTime.parse(relatorioDto.getDataFim()));
+            mv.addObject(NomeVariaveisSessao.DATA_FIM, LocalDateTime.parse(relatorioDto.getDataFim()));
         return mv;
     }
 
@@ -72,11 +72,13 @@ public class RelatorioController {
         mv.addObject("vacinasBairros", relatorioRepository.buscar(relatorioDto));
 
         if (!relatorioDto.getBairro().isBlank())
-            mv.addObject("bairroSelecionadoId", Long.parseLong(relatorioDto.getBairro()));
+            mv.addObject(NomeVariaveisSessao.BAIRRO, Long.parseLong(relatorioDto.getBairro()));
+        if (!relatorioDto.getVacina().isBlank())
+            mv.addObject(NomeVariaveisSessao.VACINA, Long.parseLong(relatorioDto.getBairro()));
         if (!relatorioDto.getDataInicio().isBlank())
-            mv.addObject("dataInicio", Date.valueOf(relatorioDto.getDataInicio()));
+            mv.addObject(NomeVariaveisSessao.DATA_INICIO, Date.valueOf(relatorioDto.getDataInicio()));
         if (!relatorioDto.getDataFim().isBlank())
-            mv.addObject("dataFim", Date.valueOf(relatorioDto.getDataFim()));
+            mv.addObject(NomeVariaveisSessao.DATA_FIM, Date.valueOf(relatorioDto.getDataFim()));
         return mv;
     }
 
