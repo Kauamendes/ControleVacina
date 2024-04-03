@@ -21,10 +21,10 @@ public class VacinaBairro {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany
+    @ManyToOne
     private Vacina vacina;
 
-    @OneToMany
+    @ManyToOne
     private Bairro bairro;
 
     private Timestamp dataAplicacao;

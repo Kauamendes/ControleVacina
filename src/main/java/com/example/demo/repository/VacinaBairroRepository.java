@@ -14,7 +14,7 @@ import com.example.demo.domain.VacinaBairro;
 @Repository
 public interface VacinaBairroRepository extends JpaRepository<VacinaBairro, Long>  {
 
-    @Query("SELECT NEW com.seupacote.dto.VacinaBairroDto(v.nome, b.nome, COUNT(vb)) " +
+    @Query("SELECT NEW com.example.demo.dto.VacinaBairroDto(v.nome, b.nome, COUNT(vb)) " +
             "FROM VacinaBairro vb " +
             "JOIN vb.bairro b " +
             "JOIN vb.vacina v " +

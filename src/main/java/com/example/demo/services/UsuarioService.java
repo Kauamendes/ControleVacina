@@ -3,6 +3,7 @@ package com.example.demo.services;
 import com.example.demo.NomeVariaveisSessao;
 import com.example.demo.domain.Usuario;
 import com.example.demo.dto.UsuarioDto;
+import com.example.demo.enums.CargoEnum;
 import com.example.demo.repository.UsuarioRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Objects;
 
 @Service
 public class UsuarioService {
@@ -26,7 +28,7 @@ public class UsuarioService {
         Usuario usuario = Usuario.builder()
                 .login(usuarioDto.getLogin())
                 .senha(usuarioDto.getSenha())
-                .cargo(usuarioDto.getCargo())
+                .cargo(CargoEnum.valueOf(usuarioDto.getCargo()))
                 .build();
 
         usuarioRepository.save(usuario);
@@ -35,12 +37,12 @@ public class UsuarioService {
     }
 
     public void verificaCargoSessao(HttpSession session, HttpServletResponse response) throws IOException {
-        String cargo = (String) session.getAttribute(NomeVariaveisSessao.CARGO);
+        CargoEnum cargo = (CargoEnum) session.getAttribute(NomeVariaveisSessao.CARGO);
         if (cargo == null) {
             response.sendRedirect("/");
-        } else if (cargo.equals(Usuario.TIP_CARGO_APLICADOR)) {
+        } else if (cargo.equals(CargoEnum.APLICADOR)) {
             response.sendRedirect("/vacinas");
-        } else if (cargo.equals(Usuario.TIP_CARGO_GESTOR)) {
+        } else if (cargo.equals(CargoEnum.GESTOR)) {
             response.sendRedirect("/relatorios");
         }
     }

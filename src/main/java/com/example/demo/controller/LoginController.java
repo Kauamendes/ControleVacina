@@ -35,7 +35,7 @@ public class LoginController {
     @GetMapping("/sair")
     public String sair(HttpSession session) {
         session.removeAttribute(NomeVariaveisSessao.CARGO);
-        return "login";
+        return "redirect:/";
     }
 
     @GetMapping("/new_senha")

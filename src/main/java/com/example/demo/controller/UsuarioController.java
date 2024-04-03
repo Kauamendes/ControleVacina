@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import com.example.demo.NomeVariaveisSessao;
+import com.example.demo.enums.CargoEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,11 +38,15 @@ public class UsuarioController {
 
         String msgSalva = (String) session.getAttribute(NomeVariaveisSessao.MSG_SALVO);
         String msgErro = (String) session.getAttribute(NomeVariaveisSessao.MSG_ERRO);
+        CargoEnum cargo = (CargoEnum) session.getAttribute(NomeVariaveisSessao.CARGO);
 
         if (msgSalva != null)
             mv.addObject(NomeVariaveisSessao.MSG_SALVO, msgSalva);
         if (msgErro != null)
             mv.addObject(NomeVariaveisSessao.MSG_ERRO, msgErro);
+        if (cargo != null)
+            mv.addObject(NomeVariaveisSessao.CARGO, cargo);
+
         mv.addObject("cargos", Usuario.getAllCargos());
 
         session.removeAttribute(NomeVariaveisSessao.MSG_SALVO);

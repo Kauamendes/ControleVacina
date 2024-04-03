@@ -37,7 +37,7 @@
         <select class="form-control" id="cargo" name="cargo" required>
             <option value="">Selecione o cargo</option>
             <th:block th:each="cargo : ${cargos}">
-                <option th:text="${cargo}"></option>
+                <option th:value="${cargo}" th:text="${cargo.nome}"></option>
             </th:block>
         </select>
 

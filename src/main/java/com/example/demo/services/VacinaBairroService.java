@@ -53,10 +53,10 @@ public class VacinaBairroService {
     }
 
     public void verificaCargoSessao(HttpSession session, HttpServletResponse response) throws IOException {
-        String cargo = (String) session.getAttribute("cargo");
+        CargoEnum cargo = (CargoEnum) session.getAttribute("cargo");
         if (cargo == null) {
             response.sendRedirect("/");
-        } else if (cargo.equals(CargoEnum.APLICADOR.getNome())) {
+        } else if (cargo.equals(CargoEnum.APLICADOR)) {
             response.sendRedirect("/relatorios");
         }
     }

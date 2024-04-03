@@ -32,10 +32,10 @@ public class RelatorioController {
     @GetMapping
     public ModelAndView relatorio(HttpSession session, HttpServletResponse response) throws IOException {
         ModelAndView mv = new ModelAndView("relatorio");
-        String cargo = (String) session.getAttribute(NomeVariaveisSessao.CARGO);
+        CargoEnum cargo = (CargoEnum) session.getAttribute(NomeVariaveisSessao.CARGO);
         if (cargo == null) {
             response.sendRedirect("/");
-        } else if (cargo.equals(CargoEnum.APLICADOR.getNome())) {
+        } else if (cargo.equals(CargoEnum.APLICADOR)) {
             response.sendRedirect("/vacinas");
         }
         mv.addObject("bairros", vacinaBairroService.listarBairros());

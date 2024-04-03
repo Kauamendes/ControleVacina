@@ -14,6 +14,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @EqualsAndHashCode(of = "id")
+@Entity
 public class Usuario {
 
     @Id
@@ -39,9 +40,7 @@ public class Usuario {
         return Objects.equals(CargoEnum.ADMIN, cargo);
     }
 
-    public static List<String> getAllCargos() {
-        return Arrays.stream(CargoEnum.values())
-                .map(CargoEnum::getNome)
-                .toList();
+    public static List<CargoEnum> getAllCargos() {
+        return Arrays.stream(CargoEnum.values()).toList();
     }
 }
