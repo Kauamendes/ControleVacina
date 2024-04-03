@@ -11,17 +11,33 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            var msgSalvarSucesso = document.getElementById('msgSalvarSucesso');
-            if (msgSalvarSucesso) {
+            var divMensagemSalvo = document.getElementById('div-mensagem-salvo');
+            var divMensagemErro = document.getElementById('div-mensagem-erro');
+
+            var valoresSeparados = $('#vacina').val().split(',');
+            var dosagemVacina = valoresSeparados[1];
+
+            if (divMensagemSalvo) {
                 setTimeout(function() {
-                    msgSalvarSucesso.remove();
-                    abreModalAposCadastro();
+                    divMensagemSalvo.remove();
+                    if(dosagemVacina == 'true') {
+                        abreModalAposCadastro();
+                    }
+                }, 1500);
+            }
+
+            if (divMensagemErro) {
+                setTimeout(function() {
+                    divMensagemErro.remove();
+                    if(dosagemVacina == 'true'){
+                        abreModalDosagem()
+                    }
                 }, 1500);
             }
 
             $('#vacina').change(function() {
-                var valorSelecionado = $(this).val();
-                var valoresSeparados = valorSelecionado.split(',');
+                var valorVacina = $(this).val();
+                var valoresSeparados = valorVacina.split(',');
                 var dosagemVacina = valoresSeparados[1];
 
                 if(dosagemVacina == 'true'){
@@ -43,11 +59,9 @@
         function fechaModalDosagem() {
             const modalDosagem = new bootstrap.Modal(document.getElementById('modalDosagem'));
             modalDosagem.hide();
-            // document.getElementById('modalDosagem').style.display = 'none';
         }
 
         function abreModalDosagem(){
-            // document.getElementById('modalDosagem').style.display = 'block';
             const modalDosagem = new bootstrap.Modal(document.getElementById('modalDosagem'));
             modalDosagem.show();
         }
@@ -56,7 +70,7 @@
             var dosagemSelecionada = document.getElementById('dosagem').value;
 
             if(dosagemSelecionada){
-                var dose = document.getElementById('dose').value = dosagemSelecionada;
+                document.getElementById('dose').value = dosagemSelecionada;
             }
             fechaModalDosagem();
         }
@@ -85,7 +99,8 @@
             <select class="form-control" id="vacina" name="vacina" required>
                 <option value="">Selecione a vacina</option>
                 <th:block th:each="vacina : ${vacinas}">
-                    <option th:selected="${vacinaSelecionadaId != null && vacinaSelecionadaId == vacina.id}" th:value="${vacina.id + ',' + vacina.dosagem}" th:text="${vacina.nome}"></option>
+                    <option th:selected="${vacinaSelecionadaId != null && vacinaSelecionadaId == vacina.id}"
+                            th:value="${vacina.id + ',' + vacina.dosagem}" th:text="${vacina.nome}"></option>
                 </th:block>
             </select>
         </div>
@@ -117,11 +132,17 @@
     </div>
   </div>
 
-<div class="mt-2" id="msgSalvarSucesso">
-    <div th:if="${msgSalvo != null}" class="alert alert-success auto-hide" role="alert">
+<div class="mt-2">
+    <div th:if="${msgSalvo != null}" class="alert alert-success auto-hide" role="alert" id="div-mensagem-salvo">
         <p th:text="${msgSalvo}"></p>
     </div>
+    <div class="mt-2" id="msgErro">
+        <div th:if="${msgErro != null}" class="alert alert-danger auto-hide" role="alert" id="div-mensagem-erro">
+            <p th:text="${msgErro}"></p>
+        </div>
+    </div>
 </div>
+
 </form>
 </div>
 </body>
