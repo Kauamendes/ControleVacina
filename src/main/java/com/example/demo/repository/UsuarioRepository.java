@@ -3,6 +3,9 @@ package com.example.demo.repository;
 import com.example.demo.config.Conexao;
 import com.example.demo.domain.Usuario;
 import com.example.demo.dto.LoginDto;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
@@ -10,9 +13,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import static org.springframework.security.crypto.password.PasswordEncoder.*;
+
 @Repository
 public class UsuarioRepository {
 
+    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     public Usuario findByAccess(LoginDto login) {
         Conexao conexao = new Conexao();
         Connection conn = conexao.conectar();
@@ -73,10 +79,11 @@ public class UsuarioRepository {
         Connection conn = conexao.conectar();
 
         String query = "UPDATE USUARIO SET SENHA = ? WHERE ID = ?";
-
+        String senhaEncreptada = passwordEncoder.encode(usuario.getSenha());
+        System.out.println(senhaEncreptada);
         try {
             PreparedStatement ps = conn.prepareStatement(query);
-            ps.setString(1, usuario.getSenha());
+            ps.setString(1, senhaEncreptada);
             ps.setLong(2, usuario.getId());
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -91,12 +98,13 @@ public class UsuarioRepository {
         Conexao conexao = new Conexao();
         Connection conn = conexao.conectar();
 
+        String senhaEncreptada = passwordEncoder.encode(usuario.getSenha());
+
         try {
             String query = "INSERT INTO USUARIO (LOGIN, SENHA, CARGO) VALUES(?, ?, ?)";
-
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, usuario.getLogin());
-            ps.setString(2, usuario.getSenha());
+            ps.setString(2, senhaEncreptada);
             ps.setString(3, usuario.getCargo());
             ps.execute();
             ps.close();

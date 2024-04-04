@@ -7,6 +7,8 @@ import com.example.demo.dto.LoginDto;
 import com.example.demo.repository.UsuarioRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,11 +16,13 @@ public class LoginService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public String findByAccess(LoginDto login, HttpSession session) {
-        Usuario usuarioLogado = usuarioRepository.findByAccess(login);
-        if (usuarioLogado == null) {
-            session.setAttribute(NomeVariaveisSessao.MSG_ERRO, "Usuário ou senha inválidos!");
+        Usuario usuarioLogado = usuarioRepository.findByLogin(login.getLogin());
+  
+        if (usuarioLogado == null ||  !passwordEncoder.matches(login.getSenha(), usuarioLogado.getSenha())) {
+            session.setAttribute(msgErro, "Usuário ou senha inválidos!");
             return "redirect:/";
         }
 
@@ -62,10 +66,10 @@ public class LoginService {
     }
 
     private boolean verificaSeUsuarioAdmin(AlteracaoSenhaDto loginUpdateDto, HttpSession session) {
-        Usuario usuarioAdmin = usuarioRepository
-                .findByAccess(new LoginDto(loginUpdateDto.getLogin_admin(), loginUpdateDto.getSenha_admin()));
-        if (usuarioAdmin == null) {
-            session.setAttribute(NomeVariaveisSessao.MSG_ERRO, "usuario admin inválido!");
+
+        Usuario usuarioAdmin = usuarioRepository.findByLogin(loginUpdateDto.getLogin_admin());
+        if (usuarioAdmin == null || !passwordEncoder.matches(loginUpdateDto.getSenha_admin(), usuarioAdmin.getSenha()) ) {
+            session.setAttribute(msgErro, "usuario admin inválido!");
             return false;
         } else if (!usuarioAdmin.isAdmin()) {
             session.setAttribute(NomeVariaveisSessao.MSG_ERRO, "usuario informado não é admin!");
