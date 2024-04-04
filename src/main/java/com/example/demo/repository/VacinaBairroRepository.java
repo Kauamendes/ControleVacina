@@ -10,14 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import com.example.demo.config.Conexao;
 import com.example.demo.domain.VacinaBairro;
-import org.springframework.stereotype.Repository;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 
 @Repository
 public class VacinaBairroRepository {
@@ -27,12 +19,13 @@ public class VacinaBairroRepository {
         Connection conn = conexao.conectar();
 
         try {
-            String query = "INSERT INTO VACINA_BAIRRO (VACINA_ID, BAIRRO_ID, DATA_APLICACAO)" +
+            String query = "INSERT INTO VACINA_BAIRRO (VACINA_ID, BAIRRO_ID, DOSE)" +
                     " VALUES(?,?,?)";
 
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setLong(1, vacinaBairro.getVacinaId());
             ps.setLong(2, vacinaBairro.getBairroId());
+            ps.setString(3, vacinaBairro.getDose());
             ps.execute();
             ps.close();
         } catch (Exception e) {
@@ -58,7 +51,7 @@ public class VacinaBairroRepository {
                 bairros.add(bairro);
             }
         } catch (Exception e) {
-            System.out.println("Erro ao listar bairros: "+e.getMessage());
+            System.out.println("Erro ao listar bairros: " + e.getMessage());
         } finally {
             conexao.desconectar(conn);
         }
@@ -78,13 +71,31 @@ public class VacinaBairroRepository {
                 Vacina vacina = Vacina.builder().build();
                 vacina.setId(resultado.getLong("id"));
                 vacina.setNome(resultado.getString("nome"));
+                vacina.setDosagem(resultado.getBoolean("dosagem"));
                 vacinas.add(vacina);
             }
         } catch (Exception e) {
-            System.out.println("Erro ao listar vacinas: "+e.getMessage());
+            System.out.println("Erro ao listar vacinas: " + e.getMessage());
         } finally {
             conexao.desconectar(conn);
         }
         return vacinas;
+    }
+
+    public Bairro buscarBairroPorNome(String nomeBairro) throws SQLException {
+        Conexao conexao = new Conexao();
+        Connection conn = conexao.conectar();
+
+        PreparedStatement preparedStatement = conn.prepareStatement("SELECT id, nome FROM BAIRRO WHERE NOME LIKE ? ");
+        preparedStatement.setString(1, nomeBairro);
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+        if (resultSet.next()) {
+            Bairro bairro = new Bairro();
+            bairro.setId(resultSet.getLong("id"));
+            bairro.setNome(resultSet.getString("nome"));
+            return bairro;
+        }
+        return null;
     }
 }

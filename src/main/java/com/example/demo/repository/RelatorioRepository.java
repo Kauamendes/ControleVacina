@@ -30,13 +30,22 @@ public class RelatorioRepository {
             params.add(Long.parseLong(relatorioDto.getBairro()));
         }
 
+        if (relatorioDto.getVacina() != null && !relatorioDto.getVacina().equals("")) {
+            if (whereClause.isEmpty()) {
+                whereClause.append(" WHERE v.id = ?");
+            } else {
+                whereClause.append(" AND v.id = ?");
+            }
+            params.add(Long.parseLong(relatorioDto.getVacina()));
+        }
+
         if (relatorioDto.getDataInicio() != null && !relatorioDto.getDataInicio().equals("")) {
             if (whereClause.isEmpty()) {
                 whereClause.append(" WHERE vb.DATA_APLICACAO >= ?");
             } else {
                 whereClause.append(" AND vb.DATA_APLICACAO >= ?");
             }
-            params.add(Date.valueOf(relatorioDto.getDataInicio()));
+            params.add(DateUtils.parseStringToTimestamp(relatorioDto.getDataInicio()));
         }
 
         if (relatorioDto.getDataFim() != null && !relatorioDto.getDataFim().equals("")) {
@@ -45,10 +54,10 @@ public class RelatorioRepository {
             } else {
                 whereClause.append(" AND vb.DATA_APLICACAO <= ?");
             }
-            params.add(Date.valueOf(relatorioDto.getDataFim()));
+            params.add(DateUtils.parseStringToTimestamp(relatorioDto.getDataFim()));
         }
 
-        String finalQuery = query.toString() + whereClause.toString();
+        String finalQuery = query + whereClause.toString();
         finalQuery += " GROUP BY v.NOME, b.NOME ORDER BY v.NOME";
 
         try (PreparedStatement stmt = conn.prepareStatement(finalQuery)) {

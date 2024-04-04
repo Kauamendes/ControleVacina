@@ -5,7 +5,9 @@ import com.example.demo.domain.Usuario;
 import com.example.demo.domain.Vacina;
 import com.example.demo.domain.VacinaBairro;
 import com.example.demo.dto.VacinaBairroDto;
+import com.example.demo.repository.BairroRepository;
 import com.example.demo.repository.VacinaBairroRepository;
+import com.example.demo.repository.VacinaRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,29 +21,43 @@ import java.util.List;
 public class VacinaBairroService {
 
     @Autowired
-    private VacinaBairroRepository repository;
+    private VacinaBairroRepository vacinaBairroRepository;
+
+    @Autowired
+    private VacinaRepository vacinaRepository;
+
+    @Autowired
+    private BairroRepository bairroRepository;
 
     public void insert(VacinaBairroDto vacinaBairroDto) {
+        String vacina = vacinaBairroDto.getVacina().substring(0, vacinaBairroDto.getVacina().indexOf(","));
+
         VacinaBairro vacinaBairro = VacinaBairro.builder()
                 .bairroId(Long.valueOf(vacinaBairroDto.getBairro()))
-                .vacinaId(Long.valueOf(vacinaBairroDto.getVacina()))
+                .vacinaId(Long.valueOf(vacina))
+                .dose(vacinaBairroDto.getDose())
                 .build();
-        repository.insert(vacinaBairro);
+        vacinaBairroRepository.insert(vacinaBairro);
     }
 
     public List<Bairro> listarBairros() throws SQLException {
-        return repository.listarBairros();
+        return bairroRepository.listarBairros();
     }
 
     public List<Vacina> listarVacinas() throws SQLException {
-        return repository.listarVacinas();
+        return vacinaRepository.listarVacinas();
     }
 
     public void verificaCargoSessao(HttpSession session, HttpServletResponse response) throws IOException {
         String cargo = (String) session.getAttribute("cargo");
-        if (cargo.equals(Usuario.TIP_CARGO_GESTOR)) {
+        if (cargo == null) {
+            response.sendRedirect("/");
+        } else if (cargo.equals(Usuario.TIP_CARGO_GESTOR)) {
             response.sendRedirect("/relatorios");
         }
     }
 
+    public Bairro buscarBairroPorNome(String nomeBairro) throws SQLException {
+        return bairroRepository.buscarBairroPorNome(nomeBairro);
+    }
 }

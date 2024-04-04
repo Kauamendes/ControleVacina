@@ -14,4 +14,5 @@ public class VacinaBairroDto {
     private String vacina;
     private String dataAplicacao;
     private Integer quantidade;
+    private String dose;
 }
