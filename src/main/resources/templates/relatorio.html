@@ -10,8 +10,7 @@
 <div class="container mt-5">
 
     <h2>Buscar por data e bairro</h2>
-
-    <form action="/relatorios/buscar" method="post">
+    <form action="/relatorios/buscar" method="post" id="formularioRelatorioPorDataEBairro">
         <div class="row">
             <div class="form-group col-md-6">
                 <label for="dataInicio">Data Início:</label>
@@ -28,7 +27,8 @@
             <select class="form-control" id="bairro" name="bairro">
                 <option value="">Selecione um bairro</option>
                 <th:block th:each="bairro : ${bairros}">
-                    <option th:selected="${bairroSelecionadoId != null && bairroSelecionadoId == bairro.id}" th:text="${bairro.nome}"
+                    <option th:selected="${bairroSelecionadoId != null && bairroSelecionadoId == bairro.id}"
+                            th:text="${bairro.nome}"
                             th:value="${bairro.id}"></option>
                 </th:block>
             </select>
@@ -46,7 +46,15 @@
         </div>
 
         <button type="submit" class="btn btn-primary mt-3">Buscar</button>
+        <button type="button" class="btn btn-secondary mt-3" onclick="limparCampos()">Limpar Campos</button>
     </form>
+
+    <script>
+        function limparCampos() {
+           window.location.href = window.location.origin + "/relatorios";
+        }
+    </script>
+
     <hr>
 
     <form class="container">
