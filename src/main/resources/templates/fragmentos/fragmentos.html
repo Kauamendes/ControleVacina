@@ -1,16 +1,25 @@
+<!DOCTYPE html>
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Cabeçalho padrão</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        .nav-link:hover {
-            color: white;
-            background-color: #000;
+        /* Estilo para links na navbar */
+        .navbar-nav .nav-link {
+            color: #fff; /* Cor do texto dos links */
+            transition: color 0.3s; /* Efeito de transição suave */
         }
 
-        .nav-item.text-right {
-            margin-left: auto;
+        /* Estilo para hover nos links da navbar */
+        .navbar-nav .nav-link:hover {
+            color: #fff; /* Cor do texto ao passar o mouse */
+            background-color: #007bff; /* Cor de fundo ao passar o mouse */
+        }
+
+        /* Estilo para o último item da navbar */
+        .navbar-nav .nav-item:last-child {
+            margin-left: auto; /* Alinha o último item à direita */
         }
     </style>
 </head>
@@ -25,17 +34,20 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto">
-                    <li th:if="${cargo != null && cargo == 'Admin'}" class="nav-item">
-                            <a class="nav-link" href="/vacinas">Cadastro vacinas</a>
+                    <li th:if="${cargo != null && (cargo == 'Aplicador' || cargo == 'Admin')}" class="nav-item">
+                        <a class="nav-link" href="/vacinas">Cadastro de Vacinas</a>
                     </li>
                     <li th:if="${cargo != null && cargo == 'Admin'}" class="nav-item">
-                            <a class="nav-link" href="/usuarios">Cadastro usuários</a>
+                        <a class="nav-link" href="/usuarios">Cadastro de Usuários</a>
                     </li>
                     <li th:if="${cargo != null && cargo == 'Admin'}" class="nav-item">
-                            <a class="nav-link" href="/relatorios">Relatórios</a>
+                        <a class="nav-link" href="/usuarios/new_senha">Alteração de Usuários</a>
+                    </li>
+                    <li th:if="${cargo != null && (cargo =='Gestor' || cargo == 'Admin')}" class="nav-item">
+                        <a class="nav-link" href="/relatorios">Relatórios</a>
                     </li>
                     <li class="nav-item text-right">
-                        <a class="nav-link text-right" href="/sair">Sair</a>
+                        <a class="nav-link" href="/sair">Sair</a>
                     </li>
                 </ul>
             </div>

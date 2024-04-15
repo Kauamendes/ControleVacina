@@ -63,9 +63,11 @@ public class VacinaBairroService {
 
         Long bairroSessaoId = (Long) session.getAttribute(NomeVariaveisSessao.BAIRRO);
         Long vacinaSessaoId = (Long) session.getAttribute(NomeVariaveisSessao.VACINA);
+        String cargo = (String) session.getAttribute(NomeVariaveisSessao.CARGO);
 
         if (bairroSessaoId != null) mv.addObject(NomeVariaveisSessao.BAIRRO, bairroSessaoId);
         if (vacinaSessaoId != null) mv.addObject(NomeVariaveisSessao.VACINA, vacinaSessaoId);
+        if (cargo != null) mv.addObject(NomeVariaveisSessao.CARGO, cargo);
         return mv;
     }
 

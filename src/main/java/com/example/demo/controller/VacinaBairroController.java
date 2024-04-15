@@ -27,7 +27,7 @@ public class VacinaBairroController {
     @GetMapping
     public ModelAndView telaCadastroVacina(HttpSession session, HttpServletResponse response) throws SQLException, IOException {
         service.verificaCargoSessao(session, response);
-
+        
         ModelAndView mv = new ModelAndView("cadastro_vacina");
         mv.addObject("bairros", service.listarBairros());
         mv.addObject("vacinas", service.listarVacinas());

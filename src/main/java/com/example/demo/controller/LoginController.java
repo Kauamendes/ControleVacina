@@ -35,22 +35,7 @@ public class LoginController {
     @GetMapping("/sair")
     public String sair(HttpSession session) {
         session.removeAttribute(NomeVariaveisSessao.CARGO);
-        return "login";
-    }
-
-    @GetMapping("/new_senha")
-    public ModelAndView redirectAlteracaoSenha(HttpSession session) {
-        ModelAndView mv = new ModelAndView("form_alteracao_senha");
-        String mensagem = (String) session.getAttribute(NomeVariaveisSessao.MSG_SALVO);
-        if (mensagem != null) {
-            mv.addObject(NomeVariaveisSessao.MSG_SALVO, mensagem);
-        }
-        return mv;
-    }
-
-    @PostMapping("/new_senha")
-    public String saveNewSenha(AlteracaoSenhaDto loginUpdateDto, HttpSession session) {
-        service.saveNewSenha(loginUpdateDto, session);
-        return "redirect:/new_senha";
+        session.removeAttribute(NomeVariaveisSessao.USUARIO_LOGADO);
+        return "redirect:/";
     }
 }

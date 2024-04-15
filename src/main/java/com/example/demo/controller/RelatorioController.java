@@ -13,12 +13,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/relatorios")
@@ -42,14 +44,19 @@ public class RelatorioController {
         } else if (cargo.equals(Usuario.TIP_CARGO_APLICADOR)) {
             response.sendRedirect("/vacinas");
         }
+        mv.addObject(NomeVariaveisSessao.CARGO, cargo);
         mv.addObject("bairros", bairroRepository.listarBairros());
         mv.addObject("vacinas", vacinaRepository.listarVacinas());
         return mv;
     }
 
     @PostMapping("/buscar")
-    public ModelAndView buscar(RelatorioDto relatorioDto) throws SQLException {
+    public ModelAndView buscar(RelatorioDto relatorioDto, HttpSession session) throws SQLException {
         ModelAndView mv = new ModelAndView("relatorio");
+
+        String cargo = (String) session.getAttribute(NomeVariaveisSessao.CARGO);
+        if (Objects.nonNull(cargo)) mv.addObject(NomeVariaveisSessao.CARGO, cargo);
+
         mv.addObject("bairros", bairroRepository.listarBairros());
         mv.addObject("vacinas", vacinaRepository.listarVacinas());
         mv.addObject("vacinasBairros", relatorioRepository.buscar(relatorioDto));
