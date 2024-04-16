@@ -11,17 +11,33 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            var msgSalvarSucesso = document.getElementById('msgSalvarSucesso');
-            if (msgSalvarSucesso) {
+            var divMensagemSalvo = document.getElementById('div-mensagem-salvo');
+            var divMensagemErro = document.getElementById('div-mensagem-erro');
+
+            var valoresSeparados = $('#vacina').val().split(',');
+            var dosagemVacina = valoresSeparados[1];
+
+            if (divMensagemSalvo) {
                 setTimeout(function() {
-                    msgSalvarSucesso.remove();
-                    abreModalAposCadastro();
+                    divMensagemSalvo.remove();
+                    if(dosagemVacina == 'true') {
+                        abreModalAposCadastro();
+                    }
+                }, 1500);
+            }
+
+            if (divMensagemErro) {
+                setTimeout(function() {
+                    divMensagemErro.remove();
+                    if(dosagemVacina == 'true'){
+                        abreModalDosagem()
+                    }
                 }, 1500);
             }
 
             $('#vacina').change(function() {
-                var valorSelecionado = $(this).val();
-                var valoresSeparados = valorSelecionado.split(',');
+                var valorVacina = $(this).val();
+                var valoresSeparados = valorVacina.split(',');
                 var dosagemVacina = valoresSeparados[1];
 
                 if(dosagemVacina == 'true'){
@@ -43,11 +59,9 @@
         function fechaModalDosagem() {
             const modalDosagem = new bootstrap.Modal(document.getElementById('modalDosagem'));
             modalDosagem.hide();
-            // document.getElementById('modalDosagem').style.display = 'none';
         }
 
         function abreModalDosagem(){
-            // document.getElementById('modalDosagem').style.display = 'block';
             const modalDosagem = new bootstrap.Modal(document.getElementById('modalDosagem'));
             modalDosagem.show();
         }
@@ -56,7 +70,7 @@
             var dosagemSelecionada = document.getElementById('dosagem').value;
 
             if(dosagemSelecionada){
-                var dose = document.getElementById('dose').value = dosagemSelecionada;
+                document.getElementById('dose').value = dosagemSelecionada;
             }
             fechaModalDosagem();
         }
@@ -65,64 +79,70 @@
 <body>
 <div th:replace="fragmentos/fragmentos ::cabecalho"></div>
 <div class="container">
-<h1 class="display-4 mt-5">Cadastro de Vacinas</h1>
-<form action="/vacinas" method="post" class="container">
-    <div class="row mb-3">
-        <label for="bairro" class="col-sm-2 col-form-label">Bairro</label>
-        <div class="col-sm-10">
-            <select class="form-control" id="bairro" name="bairro" required>
-                <option value="">Selecione o bairro</option>
-                <th:block th:each="bairro : ${bairros}">
-                    <option th:selected="${bairroSelecionadoId != null && bairroSelecionadoId == bairro.id}" th:text="${bairro.nome}"
-                            th:value="${bairro.id}"></option>
-                </th:block>
-            </select>
-        </div>
-    </div>
-    <div class="row mb-3">
-        <label for="vacina" class="col-sm-2 col-form-label">Vacina</label>
-        <div class="col-sm-10">
-            <select class="form-control" id="vacina" name="vacina" required>
-                <option value="">Selecione a vacina</option>
-                <th:block th:each="vacina : ${vacinas}">
-                    <option th:selected="${vacinaSelecionadaId != null && vacinaSelecionadaId == vacina.id}" th:value="${vacina.id + ',' + vacina.dosagem}" th:text="${vacina.nome}"></option>
-                </th:block>
-            </select>
-        </div>
-    </div>
-    <div>
-        <input id="dose" name="dose" type="hidden">
-    </div>
-    <button type="submit" class="btn btn-primary" onclick="botaoCadastrarOnClick()">Cadastrar</button>
+    <h5 class="mt-5">Cadastro de vacinas</h5>
+    <form action="/vacinas" method="post">
 
-<div class="modal fade" id="modalDosagem" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="modalLabel">Dosagem</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">Informe a dosagem ou o reforço:
-            <select class="form-control" id="dosagem" name="dosagem">
-                <option value="">Selecione a dosagem</option>
-                <th:block th:each="dosagem : ${dosagens}">
-                    <option th:text="${dosagem.nome}" th:value="${dosagem.valor}"></option>
-                </th:block>
-            </select>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="okModalDosagem()">Ok</button>
-        </div>
-      </div>
-    </div>
-  </div>
+        <label for="bairro">Bairro</label>
+        <select class="form-select form-select-md mb-2" id="bairro" name="bairro" required>
+            <option value="">Selecione o bairro</option>
+            <th:block th:each="bairro : ${bairros}">
+                <option th:selected="${bairroSelecionadoId != null && bairroSelecionadoId == bairro.id}"
+                        th:text="${bairro.nome}"
+                        th:value="${bairro.id}"></option>
+            </th:block>
+        </select>
 
-<div class="mt-2" id="msgSalvarSucesso">
-    <div th:if="${msgSalvo != null}" class="alert alert-success auto-hide" role="alert">
-        <p th:text="${msgSalvo}"></p>
-    </div>
-</div>
-</form>
+        <label for="vacina">Vacina</label>
+        <select class="form-select form-select-md mb-2" id="vacina" name="vacina" required>
+            <option value="">Selecione a vacina</option>
+            <th:block th:each="vacina : ${vacinas}">
+                <option th:selected="${vacinaSelecionadaId != null && vacinaSelecionadaId == vacina.id}"
+                        th:value="${vacina.id + ',' + vacina.dosagem}" th:text="${vacina.nome}"></option>
+            </th:block>
+        </select>
+        <div>
+            <input id="dose" name="dose" type="hidden">
+        </div>
+        <button type="submit" class="btn btn-primary" onclick="botaoCadastrarOnClick()">Cadastrar</button>
+
+        <div class="modal fade" id="modalDosagem" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
+             tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="modalLabel">Dosagem</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">Informe a dosagem ou o reforço:
+                        <select class="form-control" id="dosagem" name="dosagem">
+                            <option value="">Selecione a dosagem</option>
+                            <th:block th:each="dosagem : ${dosagens}">
+                                <option th:text="${dosagem.nome}" th:value="${dosagem.valor}"></option>
+                            </th:block>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                                onclick="okModalDosagem()">Ok
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-2">
+            <div th:if="${msgSalvo != null}" class="alert alert-success auto-hide" role="alert" id="div-mensagem-salvo">
+                <p th:text="${msgSalvo}"></p>
+            </div>
+            <div class="mt-2" id="msgErro">
+                <div th:if="${msgErro != null}" class="alert alert-danger auto-hide" role="alert"
+                     id="div-mensagem-erro">
+                    <p th:text="${msgErro}"></p>
+                </div>
+            </div>
+        </div>
+
+    </form>
 </div>
 </body>
 <script src="/geolocalizacao.js"></script>

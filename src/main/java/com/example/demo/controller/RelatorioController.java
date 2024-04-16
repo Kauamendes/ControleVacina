@@ -15,12 +15,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/relatorios")
@@ -38,14 +40,25 @@ public class RelatorioController {
         } else if (cargo.equals(CargoEnum.APLICADOR)) {
             response.sendRedirect("/vacinas");
         }
+        mv.addObject(NomeVariaveisSessao.CARGO, cargo);
+        mv.addObject("bairros", bairroRepository.listarBairros());
+        mv.addObject("vacinas", vacinaRepository.listarVacinas());
         mv.addObject("bairros", vacinaBairroService.listarBairros());
         mv.addObject("vacinas", vacinaBairroService.listarVacinas());
         return mv;
     }
 
     @PostMapping("/buscar")
+    public ModelAndView buscar(RelatorioDto relatorioDto, HttpSession session) throws SQLException {
     public ModelAndView buscar(RelatorioDto relatorioDto) {
         ModelAndView mv = new ModelAndView("relatorio");
+
+        String cargo = (String) session.getAttribute(NomeVariaveisSessao.CARGO);
+        if (Objects.nonNull(cargo)) mv.addObject(NomeVariaveisSessao.CARGO, cargo);
+
+        mv.addObject("bairros", bairroRepository.listarBairros());
+        mv.addObject("vacinas", vacinaRepository.listarVacinas());
+        mv.addObject("vacinasBairros", relatorioRepository.buscar(relatorioDto));
         mv.addObject("bairros", vacinaBairroService.listarBairros());
         mv.addObject("vacinas", vacinaBairroService.listarVacinas());
         mv.addObject("vacinasBairros", vacinaBairroService.buscar(relatorioDto));
@@ -55,9 +68,9 @@ public class RelatorioController {
         if (!relatorioDto.getVacina().isBlank())
             mv.addObject(NomeVariaveisSessao.VACINA, Long.parseLong(relatorioDto.getVacina()));
         if (!relatorioDto.getDataInicio().isBlank())
-            mv.addObject("dataInicio", LocalDateTime.parse(relatorioDto.getDataInicio()));
+            mv.addObject(NomeVariaveisSessao.DATA_INICIO, LocalDateTime.parse(relatorioDto.getDataInicio()));
         if (!relatorioDto.getDataFim().isBlank())
-            mv.addObject("dataFim", LocalDateTime.parse(relatorioDto.getDataFim()));
+            mv.addObject(NomeVariaveisSessao.DATA_FIM, LocalDateTime.parse(relatorioDto.getDataFim()));
         return mv;
     }
 
@@ -75,11 +88,13 @@ public class RelatorioController {
         mv.addObject("vacinasBairros", vacinaBairroService.buscar(relatorioDto));
 
         if (!relatorioDto.getBairro().isBlank())
-            mv.addObject("bairroSelecionadoId", Long.parseLong(relatorioDto.getBairro()));
+            mv.addObject(NomeVariaveisSessao.BAIRRO, Long.parseLong(relatorioDto.getBairro()));
+        if (!relatorioDto.getVacina().isBlank())
+            mv.addObject(NomeVariaveisSessao.VACINA, Long.parseLong(relatorioDto.getBairro()));
         if (!relatorioDto.getDataInicio().isBlank())
-            mv.addObject("dataInicio", Date.valueOf(relatorioDto.getDataInicio()));
+            mv.addObject(NomeVariaveisSessao.DATA_INICIO, Date.valueOf(relatorioDto.getDataInicio()));
         if (!relatorioDto.getDataFim().isBlank())
-            mv.addObject("dataFim", Date.valueOf(relatorioDto.getDataFim()));
+            mv.addObject(NomeVariaveisSessao.DATA_FIM, Date.valueOf(relatorioDto.getDataFim()));
         return mv;
     }
 

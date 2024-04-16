@@ -2,6 +2,8 @@ package com.example.demo.services;
 
 import com.example.demo.NomeVariaveisSessao;
 import com.example.demo.domain.Usuario;
+import com.example.demo.dto.AlteracaoSenhaDto;
+import com.example.demo.dto.LoginDto;
 import com.example.demo.dto.UsuarioDto;
 import com.example.demo.enums.CargoEnum;
 import com.example.demo.repository.UsuarioRepository;
@@ -45,5 +47,39 @@ public class UsuarioService {
         } else if (cargo.equals(CargoEnum.GESTOR)) {
             response.sendRedirect("/relatorios");
         }
+    }
+
+    public String saveNewSenha(AlteracaoSenhaDto loginUpdateDto, HttpSession session) {
+        if (verificaSeUsuarioAdmin(loginUpdateDto, session)) {
+            if (!loginUpdateDto.getSenha_update().equals(loginUpdateDto.getConfirmacaoSenha_update())) {
+                session.setAttribute(NomeVariaveisSessao.MSG_ERRO, "senhas diferentes");
+                return "redirect:/usuarios/new_senha";
+            }
+
+            Usuario usuario = usuarioRepository.findByLogin(loginUpdateDto.getLogin_update());
+            if (usuario == null) {
+                session.setAttribute(NomeVariaveisSessao.MSG_ERRO, "usuario não encontrado!");
+                return "redirect:/usuarios/new_senha";
+            }
+
+            usuario.setSenha(loginUpdateDto.getSenha_update());
+            usuarioRepository.save(usuario);
+            return "redirect:/usuarios/new_senha";
+        }
+        session.setAttribute(NomeVariaveisSessao.MSG_SALVO, "Alteração salva com sucesso");
+        return "redirect:/usuarios/new_senha";
+    }
+
+    private boolean verificaSeUsuarioAdmin(AlteracaoSenhaDto loginUpdateDto, HttpSession session) {
+        String usuarioLogado = (String) session.getAttribute(NomeVariaveisSessao.USUARIO_LOGADO);
+        Usuario usuarioAdmin = usuarioRepository.findByLogin(usuarioLogado);
+        if (usuarioAdmin == null) {
+            session.setAttribute(NomeVariaveisSessao.MSG_ERRO, "Usuário admin inválido!");
+            return false;
+        } else if (!usuarioAdmin.isAdmin()) {
+            session.setAttribute(NomeVariaveisSessao.MSG_ERRO, "Usuário informado não é admin!");
+            return false;
+        }
+        return true;
     }
 }
