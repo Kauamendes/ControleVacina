@@ -1,0 +1,23 @@
+body {
+    background-color: RGB(245, 245, 245); /* Cor de Fundo Clara */
+}
+
+.btn-primary {
+    background-color: RGB(0, 102, 204); /* Azul Claro Forte */
+    border-color: RGB(0, 102, 204); /* Azul Claro Forte */
+}
+
+.btn-primary:hover {
+    background-color: RGB(0, 77, 153); /* Azul Claro (hover) */
+    border-color: RGB(0, 77, 153); /* Azul Claro (hover) */
+}
+
+.btn-success {
+    background-color: RGB(0, 153, 0); /* Verde */
+    border-color: RGB(0, 153, 0); /* Verde */
+}
+
+.btn-success:hover {
+    background-color: RGB(0, 128, 0); /* Verde (hover) */
+    border-color: RGB(0, 128, 0); /* Verde (hover) */
+}

@@ -2,6 +2,7 @@ package com.example.demo.repository;
 
 import com.example.demo.config.Conexao;
 import com.example.demo.domain.Usuario;
+import com.example.demo.dto.AlteracaoSenhaDto;
 import com.example.demo.dto.LoginDto;
 import org.springframework.stereotype.Repository;
 

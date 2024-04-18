@@ -15,6 +15,7 @@ public class DateUtils {
     }
 
     public static Timestamp parseStringToTimestamp(String dataInicio) {
+        if (dataInicio.isBlank()) return null;
         return Timestamp.valueOf(LocalDateTime.parse(dataInicio));
     }
 }
