@@ -62,6 +62,7 @@ public class UsuarioService {
 
             usuario.setSenha(loginUpdateDto.getSenha_update());
             usuarioRepository.updateUsuario(usuario);
+            session.setAttribute(NomeVariaveisSessao.MSG_SALVO, "Alteração salva com sucesso");
             return "redirect:/usuarios/new_senha";
         }
         session.setAttribute(NomeVariaveisSessao.MSG_SALVO, "Alteração salva com sucesso");
