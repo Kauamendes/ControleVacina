@@ -38,10 +38,9 @@ public class VacinaBairroController {
 
     @PostMapping
     public String insert(VacinaBairroDto vacinaBairroDto, HttpSession session) {
-        Long bairroSessaoId = (Long) session.getAttribute(NomeVariaveisSessao.BAIRRO);
         Long vacinaSessaoId = (Long) session.getAttribute(NomeVariaveisSessao.VACINA);
 
-        service.atualizarVacinaEBairroSessao(vacinaBairroDto, bairroSessaoId, vacinaSessaoId, session);
+        service.atualizarVacinaEBairroSessao(vacinaBairroDto, vacinaSessaoId, session);
 
         Mensagem mensagem = service.insert(vacinaBairroDto);
         session.setAttribute(mensagem.getNomeVariavelSessao(), mensagem.getMensagem());

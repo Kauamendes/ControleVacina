@@ -46,13 +46,9 @@ public class VacinaBairroService {
         return Mensagem.builder().mensagem("Vacina salva com sucesso!!").nomeVariavelSessao(NomeVariaveisSessao.MSG_SALVO).build();
     }
 
-    public void atualizarVacinaEBairroSessao(VacinaBairroDto vacinaBairroDto, Long bairroSessaoId, Long vacinaSessaoId, HttpSession session) {
+    public void atualizarVacinaEBairroSessao(VacinaBairroDto vacinaBairroDto, Long vacinaSessaoId, HttpSession session) {
         Long vacinaSelecionadaId = Long.parseLong(vacinaBairroDto.getVacina().substring(0, vacinaBairroDto.getVacina().indexOf(",")));
-        Long bairroSelecionadoId = Long.parseLong(vacinaBairroDto.getBairro());
 
-        if (bairroSessaoId == null || bairroSessaoId.compareTo(bairroSelecionadoId) < 0) {
-            session.setAttribute(NomeVariaveisSessao.BAIRRO, bairroSelecionadoId);
-        }
         if (vacinaSessaoId == null || vacinaSessaoId.compareTo(vacinaSelecionadaId) < 0) {
             session.setAttribute(NomeVariaveisSessao.VACINA, vacinaSelecionadaId);
         }
@@ -60,12 +56,9 @@ public class VacinaBairroService {
 
     public ModelAndView atualizarModelAndViewComVariaveisSessao(ModelAndView mv, HttpSession session) {
         atualizarMensagensModelAndViewComVariaveisSessao(mv, session);
-
-        Long bairroSessaoId = (Long) session.getAttribute(NomeVariaveisSessao.BAIRRO);
         Long vacinaSessaoId = (Long) session.getAttribute(NomeVariaveisSessao.VACINA);
         String cargo = (String) session.getAttribute(NomeVariaveisSessao.CARGO);
 
-        if (bairroSessaoId != null) mv.addObject(NomeVariaveisSessao.BAIRRO, bairroSessaoId);
         if (vacinaSessaoId != null) mv.addObject(NomeVariaveisSessao.VACINA, vacinaSessaoId);
         if (cargo != null) mv.addObject(NomeVariaveisSessao.CARGO, cargo);
         return mv;

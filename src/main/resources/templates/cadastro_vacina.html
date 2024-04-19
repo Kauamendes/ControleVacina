@@ -83,7 +83,16 @@
     <h5 class="mt-5">Cadastro de vacinas</h5>
     <form action="/vacinas" method="post">
 
-        <label for="bairro">Bairro</label>
+        <label for="vacina">Vacina</label>
+        <select class="form-select form-select-md mb-2" id="vacina" name="vacina" required>
+            <option value="">Selecione a vacina</option>
+            <th:block th:each="vacina : ${vacinas}">
+                <option th:selected="${vacinaSelecionadaId != null && vacinaSelecionadaId == vacina.id}"
+                        th:value="${vacina.id + ',' + vacina.dosagem}" th:text="${vacina.nome}"></option>
+            </th:block>
+        </select>
+
+        <label for="bairro">Bairro residência do paciente aplicado</label>
         <select class="form-select form-select-md mb-2" id="bairro" name="bairro" required>
             <option value="">Selecione o bairro</option>
             <th:block th:each="bairro : ${bairros}">
@@ -93,14 +102,6 @@
             </th:block>
         </select>
 
-        <label for="vacina">Vacina</label>
-        <select class="form-select form-select-md mb-2" id="vacina" name="vacina" required>
-            <option value="">Selecione a vacina</option>
-            <th:block th:each="vacina : ${vacinas}">
-                <option th:selected="${vacinaSelecionadaId != null && vacinaSelecionadaId == vacina.id}"
-                        th:value="${vacina.id + ',' + vacina.dosagem}" th:text="${vacina.nome}"></option>
-            </th:block>
-        </select>
         <div>
             <input id="dose" name="dose" type="hidden">
         </div>
