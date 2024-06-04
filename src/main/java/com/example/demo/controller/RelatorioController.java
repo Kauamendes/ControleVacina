@@ -40,25 +40,19 @@ public class RelatorioController {
         } else if (cargo.equals(CargoEnum.APLICADOR)) {
             response.sendRedirect("/vacinas");
         }
-        mv.addObject(NomeVariaveisSessao.CARGO, cargo);
-        mv.addObject("bairros", bairroRepository.listarBairros());
-        mv.addObject("vacinas", vacinaRepository.listarVacinas());
+        if (Objects.nonNull(cargo)) mv.addObject(NomeVariaveisSessao.CARGO, cargo.toString());
         mv.addObject("bairros", vacinaBairroService.listarBairros());
         mv.addObject("vacinas", vacinaBairroService.listarVacinas());
         return mv;
     }
 
     @PostMapping("/buscar")
-    public ModelAndView buscar(RelatorioDto relatorioDto, HttpSession session) throws SQLException {
-    public ModelAndView buscar(RelatorioDto relatorioDto) {
+    public ModelAndView buscar(RelatorioDto relatorioDto, HttpSession session) {
         ModelAndView mv = new ModelAndView("relatorio");
 
-        String cargo = (String) session.getAttribute(NomeVariaveisSessao.CARGO);
-        if (Objects.nonNull(cargo)) mv.addObject(NomeVariaveisSessao.CARGO, cargo);
+        CargoEnum cargo = (CargoEnum) session.getAttribute(NomeVariaveisSessao.CARGO);
+        if (Objects.nonNull(cargo)) mv.addObject(NomeVariaveisSessao.CARGO, cargo.toString());
 
-        mv.addObject("bairros", bairroRepository.listarBairros());
-        mv.addObject("vacinas", vacinaRepository.listarVacinas());
-        mv.addObject("vacinasBairros", relatorioRepository.buscar(relatorioDto));
         mv.addObject("bairros", vacinaBairroService.listarBairros());
         mv.addObject("vacinas", vacinaBairroService.listarVacinas());
         mv.addObject("vacinasBairros", vacinaBairroService.buscar(relatorioDto));

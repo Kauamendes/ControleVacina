@@ -1,11 +1,10 @@
 package com.example.demo.services;
 
-import com.example.demo.domain.Bairro;
-import com.example.demo.domain.Usuario;
-import com.example.demo.domain.Vacina;
-import com.example.demo.domain.VacinaBairro;
+import com.example.demo.NomeVariaveisSessao;
+import com.example.demo.domain.*;
 import com.example.demo.dto.RelatorioDto;
 import com.example.demo.dto.VacinaBairroDto;
+import com.example.demo.enums.CargoEnum;
 import com.example.demo.repository.BairroRepository;
 import com.example.demo.repository.VacinaBairroRepository;
 import com.example.demo.repository.VacinaRepository;
@@ -48,7 +47,7 @@ public class VacinaBairroService {
                 .build();
         vacinaBairroRepository.save(vacinaBairro);
 
-        vacinaBairroRepository.insert(vacinaBairro);
+        vacinaBairroRepository.save(vacinaBairro);
         return Mensagem.builder().mensagem("Vacina salva com sucesso!!").nomeVariavelSessao(NomeVariaveisSessao.MSG_SALVO).build();
     }
 
@@ -63,10 +62,10 @@ public class VacinaBairroService {
     public ModelAndView atualizarModelAndViewComVariaveisSessao(ModelAndView mv, HttpSession session) {
         atualizarMensagensModelAndViewComVariaveisSessao(mv, session);
         Long vacinaSessaoId = (Long) session.getAttribute(NomeVariaveisSessao.VACINA);
-        String cargo = (String) session.getAttribute(NomeVariaveisSessao.CARGO);
+        CargoEnum cargo = (CargoEnum) session.getAttribute(NomeVariaveisSessao.CARGO);
 
         if (vacinaSessaoId != null) mv.addObject(NomeVariaveisSessao.VACINA, vacinaSessaoId);
-        if (cargo != null) mv.addObject(NomeVariaveisSessao.CARGO, cargo);
+        if (cargo != null) mv.addObject(NomeVariaveisSessao.CARGO, cargo.toString());
         return mv;
     }
 
