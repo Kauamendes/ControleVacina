@@ -1,12 +1,12 @@
 package com.example.demo.dto;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class VacinaBairroDto {
 
     private Long id;
@@ -15,4 +15,10 @@ public class VacinaBairroDto {
     private String dataAplicacao;
     private Integer quantidade;
     private String dose;
+
+    public VacinaBairroDto(String bairro, String vacina, Integer quantidade) {
+        this.bairro = bairro;
+        this.vacina = vacina;
+        this.quantidade = quantidade;
+    }
 }

@@ -38,7 +38,7 @@ public class UsuarioController {
 
         String msgSalva = (String) session.getAttribute(NomeVariaveisSessao.MSG_SALVO);
         String msgErro = (String) session.getAttribute(NomeVariaveisSessao.MSG_ERRO);
-        String cargo = (String) session.getAttribute(NomeVariaveisSessao.CARGO);
+        String cargo = session.getAttribute(NomeVariaveisSessao.CARGO).toString();
 
         if (msgSalva != null) mv.addObject(NomeVariaveisSessao.MSG_SALVO, msgSalva);
         if (msgErro != null) mv.addObject(NomeVariaveisSessao.MSG_ERRO, msgErro);
@@ -57,7 +57,7 @@ public class UsuarioController {
 
         String msgSalva = (String) session.getAttribute(NomeVariaveisSessao.MSG_SALVO);
         String msgErro = (String) session.getAttribute(NomeVariaveisSessao.MSG_ERRO);
-        String cargo = (String) session.getAttribute(NomeVariaveisSessao.CARGO);
+        String cargo = session.getAttribute(NomeVariaveisSessao.CARGO).toString();
 
         if (msgSalva != null) mv.addObject(NomeVariaveisSessao.MSG_SALVO, msgSalva);
         if (msgErro != null) mv.addObject(NomeVariaveisSessao.MSG_ERRO, msgErro);
