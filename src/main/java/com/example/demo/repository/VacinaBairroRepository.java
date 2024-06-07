@@ -3,9 +3,13 @@ package com.example.demo.repository;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import com.example.demo.domain.Bairro;
 import com.example.demo.domain.Vacina;
+import com.example.demo.dto.VacinaBairroDto;
+import com.example.demo.enums.DosagemEnum;
+import com.example.demo.utils.DateUtils;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.config.Conexao;
@@ -19,13 +23,14 @@ public class VacinaBairroRepository {
         Connection conn = conexao.conectar();
 
         try {
-            String query = "INSERT INTO VACINA_BAIRRO (VACINA_ID, BAIRRO_ID, DOSE)" +
-                    " VALUES(?,?,?)";
+            String query = "INSERT INTO VACINA_BAIRRO (VACINA_ID, BAIRRO_ID, DOSE, APLICADOR)" +
+                    " VALUES(?,?,?,?)";
 
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setLong(1, vacinaBairro.getVacinaId());
             ps.setLong(2, vacinaBairro.getBairroId());
             ps.setString(3, vacinaBairro.getDose());
+            ps.setString(4, vacinaBairro.getAplicador());
             ps.execute();
             ps.close();
         } catch (Exception e) {
@@ -97,5 +102,43 @@ public class VacinaBairroRepository {
             return bairro;
         }
         return null;
+    }
+
+    public List<VacinaBairroDto> listarUltimoPorUsuario(String usuarioLogado) { Conexao conexao = new Conexao();
+        Connection conn = conexao.conectar();
+        List<VacinaBairroDto> vacinas = new ArrayList<>();
+        List<Object> params = new ArrayList<>();
+
+        StringBuilder query = new StringBuilder("SELECT vb.id as id, v.NOME AS vacina, b.NOME AS bairro, vb.aplicador as aplicador, vb.dose as dose, vb.data_aplicacao as data FROM VACINA_BAIRRO vb ");
+        query.append(" INNER JOIN BAIRRO b ON b.id = vb.BAIRRO_ID ");
+        query.append(" INNER JOIN VACINA v ON v.id = vb.VACINA_ID ");
+        query.append(" WHERE vb.aplicador=LOWER(?) ");
+        query.append(" ORDER BY vb.data_aplicacao DESC ");
+
+        try (PreparedStatement stmt = conn.prepareStatement(query.toString())) {
+            stmt.setObject(1, usuarioLogado);
+            ResultSet resultSet = stmt.executeQuery();
+
+            while (resultSet.next()) {
+                vacinas.add(VacinaBairroDto.builder()
+                        .id(resultSet.getLong("id"))
+                        .vacina(resultSet.getString("vacina"))
+                        .bairro(resultSet.getString("bairro"))
+                        .dose(getDose(resultSet.getString("dose")))
+                        .aplicador(resultSet.getString("aplicador"))
+                        .dataAplicacao(DateUtils.parseTimestampToString(resultSet.getTimestamp("data")))
+                        .build());
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            conexao.desconectar(conn);
+        }
+
+        return vacinas;
+    }
+
+    private String getDose(String dose) {
+        return Objects.nonNull(dose) && !dose.isEmpty() ? DosagemEnum.findByValor(Integer.parseInt(dose)) : "";
     }
 }

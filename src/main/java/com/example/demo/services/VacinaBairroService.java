@@ -40,31 +40,40 @@ public class VacinaBairroService {
                 .bairroId(Long.valueOf(vacinaBairroDto.getBairro()))
                 .vacinaId(Long.valueOf(vacina))
                 .dose(vacinaBairroDto.getDose())
+                .aplicador(vacinaBairroDto.getAplicador())
                 .build();
 
         vacinaBairroRepository.insert(vacinaBairro);
         return Mensagem.builder().mensagem("Vacina salva com sucesso!!").nomeVariavelSessao(NomeVariaveisSessao.MSG_SALVO).build();
     }
 
-    public void atualizarVacinaEBairroSessao(VacinaBairroDto vacinaBairroDto, Long vacinaSessaoId, HttpSession session) {
+    public void atualizarVacinaEBairroSessao(VacinaBairroDto vacinaBairroDto, Long vacinaSessaoId, Long bairroSessaoId, HttpSession session) {
         Long vacinaSelecionadaId = Long.parseLong(vacinaBairroDto.getVacina().substring(0, vacinaBairroDto.getVacina().indexOf(",")));
+        Long bairroSelecionadoId = Long.parseLong(vacinaBairroDto.getBairro());
 
         if (vacinaSessaoId == null || vacinaSessaoId.compareTo(vacinaSelecionadaId) < 0) {
             session.setAttribute(NomeVariaveisSessao.VACINA, vacinaSelecionadaId);
+        }
+
+        if (bairroSessaoId == null || bairroSessaoId.compareTo(bairroSelecionadoId) < 0) {
+            session.setAttribute(NomeVariaveisSessao.BAIRRO, bairroSelecionadoId);
         }
     }
 
     public ModelAndView atualizarModelAndViewComVariaveisSessao(ModelAndView mv, HttpSession session) {
         atualizarMensagensModelAndViewComVariaveisSessao(mv, session);
-        Long vacinaSessaoId = (Long) session.getAttribute(NomeVariaveisSessao.VACINA);
-        String cargo = (String) session.getAttribute(NomeVariaveisSessao.CARGO);
-
-        if (vacinaSessaoId != null) mv.addObject(NomeVariaveisSessao.VACINA, vacinaSessaoId);
-        if (cargo != null) mv.addObject(NomeVariaveisSessao.CARGO, cargo);
         return mv;
     }
 
     private void atualizarMensagensModelAndViewComVariaveisSessao(ModelAndView mv, HttpSession session) {
+        Long vacinaSessaoId = (Long) session.getAttribute(NomeVariaveisSessao.VACINA);
+        Long bairroSessaoId = (Long) session.getAttribute(NomeVariaveisSessao.BAIRRO);
+        String cargo = (String) session.getAttribute(NomeVariaveisSessao.CARGO);
+
+        if (vacinaSessaoId != null) mv.addObject(NomeVariaveisSessao.VACINA, vacinaSessaoId);
+        if (bairroSessaoId != null) mv.addObject(NomeVariaveisSessao.BAIRRO, bairroSessaoId);
+        if (cargo != null) mv.addObject(NomeVariaveisSessao.CARGO, cargo);
+
         String msgSalvar = (String) session.getAttribute(NomeVariaveisSessao.MSG_SALVO);
         String msgErro = (String) session.getAttribute(NomeVariaveisSessao.MSG_ERRO);
 
@@ -94,5 +103,9 @@ public class VacinaBairroService {
 
     public Bairro buscarBairroPorNome(String nomeBairro) throws SQLException {
         return bairroRepository.buscarBairroPorNome(nomeBairro);
+    }
+
+    public List<VacinaBairroDto> listarUltimoCadastradosPorUsuario(String usuarioLogado) {
+        return vacinaBairroRepository.listarUltimoPorUsuario(usuarioLogado);
     }
 }

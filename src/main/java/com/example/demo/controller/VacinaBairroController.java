@@ -2,8 +2,10 @@ package com.example.demo.controller;
 
 import com.example.demo.NomeVariaveisSessao;
 import com.example.demo.domain.Mensagem;
+import com.example.demo.dto.RelatorioDto;
 import com.example.demo.dto.VacinaBairroDto;
 import com.example.demo.enums.DosagemEnum;
+import com.example.demo.repository.RelatorioRepository;
 import com.example.demo.services.VacinaBairroService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -24,14 +26,19 @@ public class VacinaBairroController {
     @Autowired
     private VacinaBairroService service;
 
+    @Autowired
+    private RelatorioRepository relatorioRepository;
+
     @GetMapping
     public ModelAndView telaCadastroVacina(HttpSession session, HttpServletResponse response) throws SQLException, IOException {
         service.verificaCargoSessao(session, response);
+        String usuarioLogado = (String) session.getAttribute(NomeVariaveisSessao.USUARIO_LOGADO);
         
         ModelAndView mv = new ModelAndView("cadastro_vacina");
         mv.addObject("bairros", service.listarBairros());
         mv.addObject("vacinas", service.listarVacinas());
         mv.addObject("dosagens", DosagemEnum.values());
+        mv.addObject("vacinasBairro", service.listarUltimoCadastradosPorUsuario(usuarioLogado));
 
         return service.atualizarModelAndViewComVariaveisSessao(mv, session);
     }
@@ -39,8 +46,13 @@ public class VacinaBairroController {
     @PostMapping
     public String insert(VacinaBairroDto vacinaBairroDto, HttpSession session) {
         Long vacinaSessaoId = (Long) session.getAttribute(NomeVariaveisSessao.VACINA);
+        Long bairroSessaoId = (Long) session.getAttribute(NomeVariaveisSessao.BAIRRO);
+        String usuarioLogado = (String) session.getAttribute(NomeVariaveisSessao.USUARIO_LOGADO);
 
-        service.atualizarVacinaEBairroSessao(vacinaBairroDto, vacinaSessaoId, session);
+        service.atualizarVacinaEBairroSessao(vacinaBairroDto, vacinaSessaoId, bairroSessaoId, session);
+
+        if (vacinaBairroDto.getDose().isBlank()) vacinaBairroDto.setDose(DosagemEnum.UNICA.getValor().toString());
+        vacinaBairroDto.setAplicador(usuarioLogado);
 
         Mensagem mensagem = service.insert(vacinaBairroDto);
         session.setAttribute(mensagem.getNomeVariavelSessao(), mensagem.getMensagem());

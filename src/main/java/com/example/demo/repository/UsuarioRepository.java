@@ -19,7 +19,7 @@ public class UsuarioRepository {
         Connection conn = conexao.conectar();
         Usuario usuario = null;
 
-        String query = "SELECT * FROM USUARIO WHERE LOGIN = ? AND SENHA = ?";
+        String query = "SELECT * FROM USUARIO WHERE LOWER(LOGIN) = LOWER(?) AND SENHA = ?";
         try {
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, login.getLogin());
@@ -47,7 +47,7 @@ public class UsuarioRepository {
         Connection conn = conexao.conectar();
         Usuario usuario = null;
 
-        String query = "SELECT * FROM USUARIO WHERE LOGIN = ?";
+        String query = "SELECT * FROM USUARIO WHERE LOWER(LOGIN) = LOWER(?)";
         try {
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, login);

@@ -47,7 +47,10 @@
                         <a class="nav-link" href="/usuarios/new_senha">Alteração de Usuários</a>
                     </li>
                     <li th:if="${cargo != null && (cargo =='Gestor' || cargo == 'Admin')}" class="nav-item">
-                        <a class="nav-link" href="/relatorios">Relatórios</a>
+                        <a class="nav-link" href="/relatorios">Relatório quantitativo</a>
+                    </li>
+                    <li th:if="${cargo != null && (cargo =='Gestor' || cargo == 'Admin')}" class="nav-item">
+                        <a class="nav-link" href="/relatorios/listar">Listar ultimas vacinas</a>
                     </li>
                     <li class="nav-item text-right">
                         <a class="nav-link" href="/sair">Sair</a>

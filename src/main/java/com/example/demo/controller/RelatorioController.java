@@ -72,11 +72,30 @@ public class RelatorioController {
         return mv;
     }
 
-    @PostMapping("/listar")
-    public ModelAndView listar(RelatorioDto relatorioDto) throws SQLException {
-        ModelAndView mv = new ModelAndView("relatorio");
+    @GetMapping("/listar")
+    public ModelAndView listar(HttpSession session, HttpServletResponse response) throws IOException, SQLException {
+        ModelAndView mv = new ModelAndView("listagemVacina");
+        String cargo = (String) session.getAttribute(NomeVariaveisSessao.CARGO);
+        if (cargo == null) {
+            response.sendRedirect("/");
+        } else if (cargo.equals(Usuario.TIP_CARGO_APLICADOR)) {
+            response.sendRedirect("/vacinas");
+        }
+        mv.addObject(NomeVariaveisSessao.CARGO, cargo);
         mv.addObject("bairros", bairroRepository.listarBairros());
-        mv.addObject("vacinasBairros", relatorioRepository.buscar(relatorioDto));
+        mv.addObject("vacinas", vacinaRepository.listarVacinas());
+        return mv;
+    }
+
+    @PostMapping("/listar")
+    public ModelAndView listar(RelatorioDto relatorioDto, HttpSession session) throws SQLException {
+        ModelAndView mv = new ModelAndView("listagemVacina");
+        mv.addObject("bairros", bairroRepository.listarBairros());
+        mv.addObject("vacinas", vacinaRepository.listarVacinas());
+        mv.addObject("vacinasBairros", relatorioRepository.listar(relatorioDto));
+
+        String cargo = (String) session.getAttribute(NomeVariaveisSessao.CARGO);
+        if (Objects.nonNull(cargo)) mv.addObject(NomeVariaveisSessao.CARGO, cargo);
 
         if (!relatorioDto.getBairro().isBlank())
             mv.addObject(NomeVariaveisSessao.BAIRRO, Long.parseLong(relatorioDto.getBairro()));
