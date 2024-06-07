@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="../static/css/global.css" rel="stylesheet">
+</head>
+<body>
+<div th:replace="fragmentos/fragmentos ::cabecalho"></div>
+<div class="container">
+    <h5 class="mt-5 mb-2">Listar por bairro, vacina e data</h5>
+    <form action="/relatorios/listar" method="post" id="formularioRelatorioPorDataEBairro">
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label for="dataInicio">Data Início:</label>
+                <input class="form-control" id="dataInicio" name="dataInicio" th:value="${dataInicio}" type="datetime-local">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="dataFim">Data Fim:</label>
+                <input class="form-control" id="dataFim" name="dataFim" th:value="${dataFim}" type="datetime-local">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="bairro">Bairro:</label>
+            <select class="form-control" id="bairro" name="bairro">
+                <option value="">Selecione um bairro</option>
+                <th:block th:each="bairro : ${bairros}">
+                    <option th:selected="${bairroSelecionadoId != null && bairroSelecionadoId == bairro.id}"
+                            th:text="${bairro.nome}"
+                            th:value="${bairro.id}"></option>
+                </th:block>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="vacina">Vacinas:</label>
+            <select class="form-control" id="vacina" name="vacina">
+                <option value="">Selecione uma vacina</option>
+                <th:block th:each="vacina : ${vacinas}">
+                    <option th:selected="${vacinaSelecionadaId != null && vacinaSelecionadaId == vacina.id}"
+                            th:text="${vacina.nome}" th:value="${vacina.id}"></option>
+                </th:block>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3">Listar</button>
+        <button type="button" class="btn btn-secondary mt-3" onclick="limparCampos()">Limpar Campos</button>
+    </form>
+
+    <script>
+        function limparCampos() {
+           window.location.href = window.location.origin + "/relatorios";
+        }
+    </script>
+
+    <hr>
+
+    <form class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Resultados</h1>
+            <table class="table table-responsive">
+                <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Vacina</th>
+                    <th scope="col">Bairro</th>
+                    <th scope="col">Dose</th>
+                    <th scope="col">Aplicador</th>
+                    <th scope="col">Data</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="vacina: ${vacinasBairros}">
+                    <td th:text="${vacina.id}"></td>
+                    <td th:text="${vacina.vacina}"></td>
+                    <td th:text="${vacina.bairro}"></td>
+                    <td th:text="${vacina.dose}"></td>
+                    <td th:text="${vacina.aplicador}"></td>
+                    <td th:text="${vacina.dataAplicacao}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </form>
+</div>
+</body>
+</html>
