@@ -2,12 +2,18 @@ package com.example.demo.controller;
 
 import com.example.demo.NomeVariaveisSessao;
 import com.example.demo.domain.Usuario;
+import com.example.demo.domain.VacinaBairro;
 import com.example.demo.dto.RelatorioDto;
+import com.example.demo.dto.VacinaBairroDto;
 import com.example.demo.repository.BairroRepository;
 import com.example.demo.repository.RelatorioRepository;
 import com.example.demo.repository.VacinaRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +27,8 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Objects;
 
 @Controller
@@ -102,7 +110,7 @@ public class RelatorioController {
         if (!relatorioDto.getBairro().isBlank())
             mv.addObject(NomeVariaveisSessao.BAIRRO, Long.parseLong(relatorioDto.getBairro()));
         if (!relatorioDto.getVacina().isBlank())
-            mv.addObject(NomeVariaveisSessao.VACINA, Long.parseLong(relatorioDto.getBairro()));
+            mv.addObject(NomeVariaveisSessao.VACINA, Long.parseLong(relatorioDto.getVacina()));
         if (!relatorioDto.getDataInicio().isBlank())
             mv.addObject(NomeVariaveisSessao.DATA_INICIO, LocalDateTime.parse(relatorioDto.getDataInicio()));
         if (!relatorioDto.getDataFim().isBlank())
@@ -110,4 +118,63 @@ public class RelatorioController {
         return mv;
     }
 
+    @PostMapping("/exportar/quantitativo")
+    public void exportarDadosQuantitativo(HttpServletResponse response, RelatorioDto dto) throws IOException, SQLException {
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setHeader("Content-Disposition", "attachment; filename=relatorio.xlsx");
+
+
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Relatório de Vacinas");
+
+        Row headerRow = sheet.createRow(0);
+        headerRow.createCell(0).setCellValue("Bairro");
+        headerRow.createCell(1).setCellValue("Vacina");
+        headerRow.createCell(2).setCellValue("Quantidade");
+
+        List<VacinaBairroDto> relatorios = relatorioRepository.buscar(dto);
+
+        int rowIdx = 1;
+        for (VacinaBairroDto relatorio : relatorios) {
+            Row row = sheet.createRow(rowIdx++);
+            row.createCell(0).setCellValue(relatorio.getBairro());
+            row.createCell(1).setCellValue(relatorio.getVacina());
+            row.createCell(2).setCellValue(relatorio.getQuantidade());
+        }
+
+        workbook.write(response.getOutputStream());
+        workbook.close();
+    }
+
+    @PostMapping("/exportar/descritivo")
+    public void exportarDadosDescritivo(HttpServletResponse response, RelatorioDto dto) throws IOException, SQLException {
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setHeader("Content-Disposition", "attachment; filename=relatorio.xlsx");
+
+
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Relatório de Vacinas");
+
+        Row headerRow = sheet.createRow(0);
+        headerRow.createCell(0).setCellValue("Bairro");
+        headerRow.createCell(1).setCellValue("Vacina");
+        headerRow.createCell(2).setCellValue("Dose");
+        headerRow.createCell(3).setCellValue("Aplicador");
+        headerRow.createCell(4).setCellValue("Data aplicada");
+
+        List<VacinaBairroDto> relatorios = relatorioRepository.listar(dto);
+
+        int rowIdx = 1;
+        for (VacinaBairroDto relatorio : relatorios) {
+            Row row = sheet.createRow(rowIdx++);
+            row.createCell(0).setCellValue(relatorio.getBairro());
+            row.createCell(1).setCellValue(relatorio.getVacina());
+            row.createCell(2).setCellValue(relatorio.getDose());
+            row.createCell(3).setCellValue(relatorio.getAplicador());
+            row.createCell(4).setCellValue(relatorio.getDataAplicacao());
+        }
+
+        workbook.write(response.getOutputStream());
+        workbook.close();
+    }
 }
