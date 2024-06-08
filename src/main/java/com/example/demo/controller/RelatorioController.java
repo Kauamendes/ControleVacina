@@ -110,7 +110,7 @@ public class RelatorioController {
         if (!relatorioDto.getBairro().isBlank())
             mv.addObject(NomeVariaveisSessao.BAIRRO, Long.parseLong(relatorioDto.getBairro()));
         if (!relatorioDto.getVacina().isBlank())
-            mv.addObject(NomeVariaveisSessao.VACINA, Long.parseLong(relatorioDto.getBairro()));
+            mv.addObject(NomeVariaveisSessao.VACINA, Long.parseLong(relatorioDto.getVacina()));
         if (!relatorioDto.getDataInicio().isBlank())
             mv.addObject(NomeVariaveisSessao.DATA_INICIO, LocalDateTime.parse(relatorioDto.getDataInicio()));
         if (!relatorioDto.getDataFim().isBlank())
@@ -159,17 +159,19 @@ public class RelatorioController {
         headerRow.createCell(0).setCellValue("Bairro");
         headerRow.createCell(1).setCellValue("Vacina");
         headerRow.createCell(2).setCellValue("Dose");
-        headerRow.createCell(2).setCellValue("Aplicador");
-        headerRow.createCell(2).setCellValue("Data aplicada");
+        headerRow.createCell(3).setCellValue("Aplicador");
+        headerRow.createCell(4).setCellValue("Data aplicada");
 
-        List<VacinaBairroDto> relatorios = relatorioRepository.buscar(dto);
+        List<VacinaBairroDto> relatorios = relatorioRepository.listar(dto);
 
         int rowIdx = 1;
         for (VacinaBairroDto relatorio : relatorios) {
             Row row = sheet.createRow(rowIdx++);
             row.createCell(0).setCellValue(relatorio.getBairro());
             row.createCell(1).setCellValue(relatorio.getVacina());
-            row.createCell(2).setCellValue(relatorio.getQuantidade());
+            row.createCell(2).setCellValue(relatorio.getDose());
+            row.createCell(3).setCellValue(relatorio.getAplicador());
+            row.createCell(4).setCellValue(relatorio.getDataAplicacao());
         }
 
         workbook.write(response.getOutputStream());
