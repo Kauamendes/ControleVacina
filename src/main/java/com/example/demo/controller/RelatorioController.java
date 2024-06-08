@@ -118,8 +118,8 @@ public class RelatorioController {
         return mv;
     }
 
-    @PostMapping("/exportar")
-    public void exportarDados(HttpServletResponse response, RelatorioDto dto) throws IOException, SQLException {
+    @PostMapping("/exportar/quantitativo")
+    public void exportarDadosQuantitativo(HttpServletResponse response, RelatorioDto dto) throws IOException, SQLException {
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         response.setHeader("Content-Disposition", "attachment; filename=relatorio.xlsx");
 
@@ -131,6 +131,36 @@ public class RelatorioController {
         headerRow.createCell(0).setCellValue("Bairro");
         headerRow.createCell(1).setCellValue("Vacina");
         headerRow.createCell(2).setCellValue("Quantidade");
+
+        List<VacinaBairroDto> relatorios = relatorioRepository.buscar(dto);
+
+        int rowIdx = 1;
+        for (VacinaBairroDto relatorio : relatorios) {
+            Row row = sheet.createRow(rowIdx++);
+            row.createCell(0).setCellValue(relatorio.getBairro());
+            row.createCell(1).setCellValue(relatorio.getVacina());
+            row.createCell(2).setCellValue(relatorio.getQuantidade());
+        }
+
+        workbook.write(response.getOutputStream());
+        workbook.close();
+    }
+
+    @PostMapping("/exportar/descritivo")
+    public void exportarDadosDescritivo(HttpServletResponse response, RelatorioDto dto) throws IOException, SQLException {
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setHeader("Content-Disposition", "attachment; filename=relatorio.xlsx");
+
+
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Relatório de Vacinas");
+
+        Row headerRow = sheet.createRow(0);
+        headerRow.createCell(0).setCellValue("Bairro");
+        headerRow.createCell(1).setCellValue("Vacina");
+        headerRow.createCell(2).setCellValue("Dose");
+        headerRow.createCell(2).setCellValue("Aplicador");
+        headerRow.createCell(2).setCellValue("Data aplicada");
 
         List<VacinaBairroDto> relatorios = relatorioRepository.buscar(dto);
 

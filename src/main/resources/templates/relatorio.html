@@ -50,18 +50,34 @@
         <button type="submit" class="btn btn-primary mt-3">Buscar</button>
         <button type="button" class="btn btn-secondary mt-3" onclick="limparCampos()">Limpar Campos</button>
     </form>
-    <div class="d-flex justify-content-between mt-3 mb-3">
-        <form action="#" th:action="@{/relatorios/exportar}" method="post" class="d-inline">
-            <input type="hidden" name="bairro" th:value="${bairro}">
-            <input type="hidden" name="vacina" th:value="${vacina}">
-            <input type="hidden" name="quantidade" th:value="${quantidade}">
-            <button type="submit" class="btn btn-secondary">Exportar dados</button>
-        </form>
+
+    <div class="d-flex justify-content-between mt-2 mb-2">
+    <form action="#" th:action="@{/relatorios/exportar/quantitativo}" method="post" class="d-inline">
+        <input id="bairroExportar" type="hidden" name="bairro" th:value="${bairro}">
+        <input id="vacinaExportar" type="hidden" name="vacina" th:value="${vacina}">
+        <input id="dataInicioExportar" type="hidden" name="dataInicio" th:value="${dataInicio}">
+        <input id="dataFimExportar" type="hidden" name="dataFim" th:value="${dataFim}">
+        <button type="submit" class="btn btn-success" onclick="prepareData()">Exportar dados</button>
+    </form>
     </div>
+
     <script>
         function limparCampos() {
            window.location.href = window.location.origin + "/relatorios";
         }
+
+        function prepareData() {
+            var bairro = document.getElementById('bairro').value;
+            var vacina = document.getElementById('vacina').value;
+            var dataInicio = document.getElementById('dataInicio').value;
+            var dataFim = document.getElementById('dataFim').value;
+
+            document.getElementById('bairroExportar').value = bairro;
+            document.getElementById('vacinaExportar').value = vacina;
+            document.getElementById('dataInicioExportar').value = dataInicio;
+            document.getElementById('dataFimExportar').value = dataFim;
+        }
+
     </script>
 
     <hr>
