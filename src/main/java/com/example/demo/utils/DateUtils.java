@@ -10,7 +10,7 @@ import java.util.Date;
 public class DateUtils {
 
     public static String parseDateToString(java.util.Date data) {
-        SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         return formato.format(data);
     }
 
@@ -20,7 +20,7 @@ public class DateUtils {
     }
 
     public static String parseTimestampToString(Timestamp data) {
-        SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        SimpleDateFormat formato = new SimpleDateFormat(" dd/MM/yyyy HH:mm:ss");
         return formato.format(data);
     }
 }

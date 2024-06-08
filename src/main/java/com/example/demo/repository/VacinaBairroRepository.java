@@ -1,6 +1,7 @@
 package com.example.demo.repository;
 
 import java.sql.*;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -104,10 +105,10 @@ public class VacinaBairroRepository {
         return null;
     }
 
-    public List<VacinaBairroDto> listarUltimoPorUsuario(String usuarioLogado) { Conexao conexao = new Conexao();
+    public List<VacinaBairroDto> listarUltimosPorUsuario(String usuarioLogado) {
+        Conexao conexao = new Conexao();
         Connection conn = conexao.conectar();
         List<VacinaBairroDto> vacinas = new ArrayList<>();
-        List<Object> params = new ArrayList<>();
 
         StringBuilder query = new StringBuilder("SELECT vb.id as id, v.NOME AS vacina, b.NOME AS bairro, vb.aplicador as aplicador, vb.dose as dose, vb.data_aplicacao as data FROM VACINA_BAIRRO vb ");
         query.append(" INNER JOIN BAIRRO b ON b.id = vb.BAIRRO_ID ");
@@ -140,5 +141,57 @@ public class VacinaBairroRepository {
 
     private String getDose(String dose) {
         return Objects.nonNull(dose) && !dose.isEmpty() ? DosagemEnum.findByValor(Integer.parseInt(dose)) : "";
+    }
+
+    public VacinaBairroDto buscarVacinaBairroPorId(Long id) {
+        Conexao conexao = new Conexao();
+        Connection conn = conexao.conectar();
+        VacinaBairroDto vacina = null;
+
+        StringBuilder query = new StringBuilder("SELECT vb.id as id, vb.vacina_id AS vacina, vb.bairro_id AS bairro FROM VACINA_BAIRRO vb ");
+        query.append(" WHERE vb.id=? ");
+
+        try (PreparedStatement stmt = conn.prepareStatement(query.toString())) {
+            stmt.setObject(1, id);
+            ResultSet resultSet = stmt.executeQuery();
+
+            while (resultSet.next()) {
+                vacina = VacinaBairroDto.builder()
+                        .id(resultSet.getLong("id"))
+                        .vacina(resultSet.getString("vacina"))
+                        .bairro(resultSet.getString("bairro"))
+                        .build();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            conexao.desconectar(conn);
+        }
+
+        return vacina;
+    }
+
+    public void update(VacinaBairro vacinaBairro) {
+        Conexao conexao = new Conexao();
+        Connection conn = conexao.conectar();
+
+        try {
+            String query = "UPDATE VACINA_BAIRRO " +
+                    "SET VACINA_ID=?, BAIRRO_ID=?, DOSE=?, APLICADOR=?, DATA_APLICACAO=? WHERE ID=?";
+
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setLong(1, vacinaBairro.getVacinaId());
+            ps.setLong(2, vacinaBairro.getBairroId());
+            ps.setString(3, vacinaBairro.getDose());
+            ps.setString(4, vacinaBairro.getAplicador());
+            ps.setTimestamp(5, Timestamp.from(Instant.now()));
+            ps.setLong(6, vacinaBairro.getId());
+            ps.execute();
+            ps.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            conexao.desconectar(conn);
+        }
     }
 }

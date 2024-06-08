@@ -44,7 +44,7 @@ public class VacinaBairroService {
                 .build();
 
         vacinaBairroRepository.insert(vacinaBairro);
-        return Mensagem.builder().mensagem("Vacina salva com sucesso!!").nomeVariavelSessao(NomeVariaveisSessao.MSG_SALVO).build();
+        return Mensagem.builder().mensagem("Vacina salva com sucesso!").nomeVariavelSessao(NomeVariaveisSessao.MSG_SALVO).build();
     }
 
     public void atualizarVacinaEBairroSessao(VacinaBairroDto vacinaBairroDto, Long vacinaSessaoId, Long bairroSessaoId, HttpSession session) {
@@ -68,11 +68,13 @@ public class VacinaBairroService {
     private void atualizarMensagensModelAndViewComVariaveisSessao(ModelAndView mv, HttpSession session) {
         Long vacinaSessaoId = (Long) session.getAttribute(NomeVariaveisSessao.VACINA);
         Long bairroSessaoId = (Long) session.getAttribute(NomeVariaveisSessao.BAIRRO);
+        Long editandoId = (Long) session.getAttribute(NomeVariaveisSessao.EDITANDO_ID);
         String cargo = (String) session.getAttribute(NomeVariaveisSessao.CARGO);
 
         if (vacinaSessaoId != null) mv.addObject(NomeVariaveisSessao.VACINA, vacinaSessaoId);
         if (bairroSessaoId != null) mv.addObject(NomeVariaveisSessao.BAIRRO, bairroSessaoId);
         if (cargo != null) mv.addObject(NomeVariaveisSessao.CARGO, cargo);
+        if (editandoId != null) mv.addObject(NomeVariaveisSessao.EDITANDO_ID, cargo);
 
         String msgSalvar = (String) session.getAttribute(NomeVariaveisSessao.MSG_SALVO);
         String msgErro = (String) session.getAttribute(NomeVariaveisSessao.MSG_ERRO);
@@ -105,7 +107,31 @@ public class VacinaBairroService {
         return bairroRepository.buscarBairroPorNome(nomeBairro);
     }
 
-    public List<VacinaBairroDto> listarUltimoCadastradosPorUsuario(String usuarioLogado) {
-        return vacinaBairroRepository.listarUltimoPorUsuario(usuarioLogado);
+    public List<VacinaBairroDto> listarUltimosCadastradosPorUsuario(String usuarioLogado) {
+        return vacinaBairroRepository.listarUltimosPorUsuario(usuarioLogado);
+    }
+
+    public VacinaBairroDto buscarVacinaPorId(Long id) {
+        return vacinaBairroRepository.buscarVacinaBairroPorId(id);
+    }
+
+    public Mensagem editar(VacinaBairroDto vacinaBairroDto) {
+        String vacina = vacinaBairroDto.getVacina().substring(0, vacinaBairroDto.getVacina().indexOf(","));
+        String dosagem = vacinaBairroDto.getVacina().substring(vacinaBairroDto.getVacina().indexOf(",") + 1);
+
+        if(vacinaBairroDto.getDose().isBlank() && Boolean.parseBoolean(dosagem)) {
+            return Mensagem.builder().mensagem("Informe a dosagem da vacina!").nomeVariavelSessao(NomeVariaveisSessao.MSG_ERRO).build();
+        }
+
+        VacinaBairro vacinaBairro = VacinaBairro.builder()
+                .id(vacinaBairroDto.getId())
+                .bairroId(Long.valueOf(vacinaBairroDto.getBairro()))
+                .vacinaId(Long.valueOf(vacina))
+                .dose(vacinaBairroDto.getDose())
+                .aplicador(vacinaBairroDto.getAplicador())
+                .build();
+
+        vacinaBairroRepository.update(vacinaBairro);
+        return Mensagem.builder().mensagem("Vacina editada com sucesso!").nomeVariavelSessao(NomeVariaveisSessao.MSG_SALVO).build();
     }
 }

@@ -38,6 +38,7 @@ public class LoginController {
         session.removeAttribute(NomeVariaveisSessao.USUARIO_LOGADO);
         session.removeAttribute(NomeVariaveisSessao.VACINA);
         session.removeAttribute(NomeVariaveisSessao.BAIRRO);
+        session.removeAttribute(NomeVariaveisSessao.EDITANDO_ID);
         return "redirect:/";
     }
 }

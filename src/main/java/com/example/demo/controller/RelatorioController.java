@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -76,6 +77,7 @@ public class RelatorioController {
     public ModelAndView listar(HttpSession session, HttpServletResponse response) throws IOException, SQLException {
         ModelAndView mv = new ModelAndView("listagemVacina");
         String cargo = (String) session.getAttribute(NomeVariaveisSessao.CARGO);
+
         if (cargo == null) {
             response.sendRedirect("/");
         } else if (cargo.equals(Usuario.TIP_CARGO_APLICADOR)) {
@@ -102,9 +104,9 @@ public class RelatorioController {
         if (!relatorioDto.getVacina().isBlank())
             mv.addObject(NomeVariaveisSessao.VACINA, Long.parseLong(relatorioDto.getBairro()));
         if (!relatorioDto.getDataInicio().isBlank())
-            mv.addObject(NomeVariaveisSessao.DATA_INICIO, Date.valueOf(relatorioDto.getDataInicio()));
+            mv.addObject(NomeVariaveisSessao.DATA_INICIO, LocalDateTime.parse(relatorioDto.getDataInicio()));
         if (!relatorioDto.getDataFim().isBlank())
-            mv.addObject(NomeVariaveisSessao.DATA_FIM, Date.valueOf(relatorioDto.getDataFim()));
+            mv.addObject(NomeVariaveisSessao.DATA_FIM, LocalDateTime.parse(relatorioDto.getDataFim()));
         return mv;
     }
 

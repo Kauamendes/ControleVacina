@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.NomeVariaveisSessao;
 import com.example.demo.domain.Mensagem;
+import com.example.demo.domain.VacinaBairro;
 import com.example.demo.dto.RelatorioDto;
 import com.example.demo.dto.VacinaBairroDto;
 import com.example.demo.enums.DosagemEnum;
@@ -12,12 +13,14 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/vacinas")
@@ -25,9 +28,6 @@ public class VacinaBairroController {
 
     @Autowired
     private VacinaBairroService service;
-
-    @Autowired
-    private RelatorioRepository relatorioRepository;
 
     @GetMapping
     public ModelAndView telaCadastroVacina(HttpSession session, HttpServletResponse response) throws SQLException, IOException {
@@ -38,7 +38,7 @@ public class VacinaBairroController {
         mv.addObject("bairros", service.listarBairros());
         mv.addObject("vacinas", service.listarVacinas());
         mv.addObject("dosagens", DosagemEnum.values());
-        mv.addObject("vacinasBairro", service.listarUltimoCadastradosPorUsuario(usuarioLogado));
+        mv.addObject("vacinasBairro", service.listarUltimosCadastradosPorUsuario(usuarioLogado));
 
         return service.atualizarModelAndViewComVariaveisSessao(mv, session);
     }
@@ -48,14 +48,34 @@ public class VacinaBairroController {
         Long vacinaSessaoId = (Long) session.getAttribute(NomeVariaveisSessao.VACINA);
         Long bairroSessaoId = (Long) session.getAttribute(NomeVariaveisSessao.BAIRRO);
         String usuarioLogado = (String) session.getAttribute(NomeVariaveisSessao.USUARIO_LOGADO);
+        Long editandoId = (Long) session.getAttribute(NomeVariaveisSessao.EDITANDO_ID);
 
         service.atualizarVacinaEBairroSessao(vacinaBairroDto, vacinaSessaoId, bairroSessaoId, session);
 
         if (vacinaBairroDto.getDose().isBlank()) vacinaBairroDto.setDose(DosagemEnum.UNICA.getValor().toString());
         vacinaBairroDto.setAplicador(usuarioLogado);
 
+        if (Objects.nonNull(editandoId)) {
+            vacinaBairroDto.setId(editandoId);
+            Mensagem mensagem = service.editar(vacinaBairroDto);
+            session.removeAttribute(NomeVariaveisSessao.EDITANDO_ID);
+            session.setAttribute(mensagem.getNomeVariavelSessao(), mensagem.getMensagem());
+            return "redirect:/vacinas";
+        }
+
         Mensagem mensagem = service.insert(vacinaBairroDto);
         session.setAttribute(mensagem.getNomeVariavelSessao(), mensagem.getMensagem());
+        return "redirect:/vacinas";
+    }
+
+    @GetMapping("/editarTela/{id}")
+    public String editarTela(@PathVariable("id") String id, HttpSession session) {
+        VacinaBairroDto vacinaSalva = service.buscarVacinaPorId(Long.parseLong(id));
+        if (Objects.nonNull(vacinaSalva)) {
+            session.setAttribute(NomeVariaveisSessao.EDITANDO_ID, vacinaSalva.getId());
+            session.setAttribute(NomeVariaveisSessao.VACINA, Long.parseLong(vacinaSalva.getVacina()));
+            session.setAttribute(NomeVariaveisSessao.BAIRRO, Long.parseLong(vacinaSalva.getBairro()));
+        }
         return "redirect:/vacinas";
     }
 }
