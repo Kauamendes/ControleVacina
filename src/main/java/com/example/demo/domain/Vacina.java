@@ -12,5 +12,9 @@ public class Vacina {
 
     private Long id;
     private String nome;
-    private String lote;
+    private boolean dosagem;
+
+    public boolean hasDosagem() {
+        return dosagem;
+    }
 }
