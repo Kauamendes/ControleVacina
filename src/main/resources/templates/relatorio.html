@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link href="../static/css/global.css" rel="stylesheet">
 </head>
 <body>
@@ -14,7 +15,8 @@
         <div class="row">
             <div class="form-group col-md-6">
                 <label for="dataInicio">Data Início:</label>
-                <input class="form-control" id="dataInicio" name="dataInicio" th:value="${dataInicio}" type="datetime-local">
+                <input class="form-control" id="dataInicio" name="dataInicio" th:value="${dataInicio}"
+                       type="datetime-local">
             </div>
             <div class="form-group col-md-6">
                 <label for="dataFim">Data Fim:</label>
@@ -49,14 +51,38 @@
         <button type="button" class="btn btn-secondary mt-3" onclick="limparCampos()">Limpar Campos</button>
     </form>
 
+    <div class="d-flex justify-content-between mt-2 mb-2">
+    <form action="#" th:action="@{/relatorios/exportar/quantitativo}" method="post" class="d-inline">
+        <input id="bairroExportar" type="hidden" name="bairro" th:value="${bairro}">
+        <input id="vacinaExportar" type="hidden" name="vacina" th:value="${vacina}">
+        <input id="dataInicioExportar" type="hidden" name="dataInicio" th:value="${dataInicio}">
+        <input id="dataFimExportar" type="hidden" name="dataFim" th:value="${dataFim}">
+        <button type="submit" class="btn btn-success" onclick="prepareData()">Exportar dados</button>
+    </form>
+    </div>
+
     <script>
         function limparCampos() {
            window.location.href = window.location.origin + "/relatorios";
         }
+
+        function prepareData() {
+            var bairro = document.getElementById('bairro').value;
+            var vacina = document.getElementById('vacina').value;
+            var dataInicio = document.getElementById('dataInicio').value;
+            var dataFim = document.getElementById('dataFim').value;
+
+            document.getElementById('bairroExportar').value = bairro;
+            document.getElementById('vacinaExportar').value = vacina;
+            document.getElementById('dataInicioExportar').value = dataInicio;
+            document.getElementById('dataFimExportar').value = dataFim;
+        }
+
     </script>
 
     <hr>
 
+    <form class="container">
     <div class="row">
         <div class="col-md-12">
             <h1>Resultados</h1>
@@ -78,6 +104,7 @@
             </table>
         </div>
     </div>
+    </form>
 </div>
 </body>
 </html>
