@@ -26,4 +26,4 @@ WORKDIR /app
 COPY --from=build /app/target/demo-1.0.0.jar app.jar
 
 # Define o ponto de entrada e ativa o perfil 'prod'
-ENTRYPOINT [ "java", "-jar", "app.jar" ]
+ENTRYPOINT [ "java", "-jar", "app.jar", "--spring.profiles.active=prod" ]
