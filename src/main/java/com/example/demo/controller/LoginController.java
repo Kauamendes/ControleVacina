@@ -36,12 +36,12 @@ public class LoginController {
     }
 
     @GetMapping("/sair")
-    public String sair(HttpSession session) {
+    public void sair(HttpSession session, HttpServletResponse response) throws IOException {
         session.removeAttribute(NomeVariaveisSessao.CARGO);
         session.removeAttribute(NomeVariaveisSessao.USUARIO_LOGADO);
         session.removeAttribute(NomeVariaveisSessao.VACINA);
         session.removeAttribute(NomeVariaveisSessao.BAIRRO);
         session.removeAttribute(NomeVariaveisSessao.EDITANDO_ID);
-        return "redirect:/";
+        response.sendRedirect("/");
     }
 }
