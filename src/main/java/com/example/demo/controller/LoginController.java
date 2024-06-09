@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.IOException;
+
 @Controller
 @RequestMapping("/")
 public class LoginController {
@@ -21,8 +23,8 @@ public class LoginController {
     private LoginService service;
 
     @PostMapping
-    public String login(LoginDto loginDto, HttpSession session, HttpServletResponse response) {
-        return service.findByAccess(loginDto, session, response);
+    public void login(LoginDto loginDto, HttpSession session, HttpServletResponse response) throws IOException {
+        service.findByAccess(loginDto, session, response);
     }
 
     @GetMapping
