@@ -5,12 +5,9 @@ import com.example.demo.domain.Usuario;
 import com.example.demo.dto.AlteracaoSenhaDto;
 import com.example.demo.dto.LoginDto;
 import com.example.demo.repository.UsuarioRepository;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.io.IOException;
 
 @Service
 public class LoginService {
@@ -18,23 +15,23 @@ public class LoginService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public void findByAccess(LoginDto login, HttpSession session, HttpServletResponse response) throws IOException {
+    public String findByAccess(LoginDto login, HttpSession session) {
         Usuario usuarioLogado = usuarioRepository.findByAccess(login);
         if (usuarioLogado == null) {
             session.setAttribute(NomeVariaveisSessao.MSG_ERRO, "Usuário ou senha inválidos!");
-            response.sendRedirect("/");
+            return "redirect:/";
         }
 
         session.setAttribute(NomeVariaveisSessao.CARGO, usuarioLogado.getCargo());
         session.setAttribute(NomeVariaveisSessao.USUARIO_LOGADO, usuarioLogado.getLogin());
         removerAtributosSessao(session);
         if (usuarioLogado.isAplicador()) {
-            response.sendRedirect("/vacinas");
+            return "redirect:/vacinas";
         }
         if (usuarioLogado.isAdmin()) {
-            response.encodeRedirectURL("/usuarios");
+            return "redirect:/usuarios";
         }
-        response.encodeRedirectURL("/relatorios");
+        return "redirect:/relatorios";
     }
 
     private void removerAtributosSessao(HttpSession session) {
