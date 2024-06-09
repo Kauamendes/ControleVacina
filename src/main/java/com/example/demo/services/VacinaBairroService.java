@@ -9,6 +9,8 @@ import com.example.demo.repository.VacinaRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -28,6 +30,7 @@ public class VacinaBairroService {
     @Autowired
     private BairroRepository bairroRepository;
 
+    @CacheEvict(value="ultimasVacinasCadastradasPorUsuario", allEntries=true)
     public Mensagem insert(VacinaBairroDto vacinaBairroDto) {
         String vacina = vacinaBairroDto.getVacina().substring(0, vacinaBairroDto.getVacina().indexOf(","));
         String dosagem = vacinaBairroDto.getVacina().substring(vacinaBairroDto.getVacina().indexOf(",") + 1);
@@ -86,10 +89,12 @@ public class VacinaBairroService {
         session.removeAttribute(NomeVariaveisSessao.MSG_ERRO);
     }
 
+    @Cacheable("bairros")
     public List<Bairro> listarBairros() throws SQLException {
         return bairroRepository.listarBairros();
     }
 
+    @Cacheable("vacinas")
     public List<Vacina> listarVacinas() throws SQLException {
         return vacinaRepository.listarVacinas();
     }
@@ -103,18 +108,22 @@ public class VacinaBairroService {
         }
     }
 
+    @Cacheable("bairros")
     public Bairro buscarBairroPorNome(String nomeBairro) throws SQLException {
         return bairroRepository.buscarBairroPorNome(nomeBairro);
     }
 
+    @Cacheable("ultimasVacinasCadastradasPorUsuario")
     public List<VacinaBairroDto> listarUltimosCadastradosPorUsuario(String usuarioLogado) {
         return vacinaBairroRepository.listarUltimosPorUsuario(usuarioLogado);
     }
 
+    @Cacheable("vacinas")
     public VacinaBairroDto buscarVacinaPorId(Long id) {
         return vacinaBairroRepository.buscarVacinaBairroPorId(id);
     }
 
+    @CacheEvict(value="ultimasVacinasCadastradasPorUsuario", allEntries=true)
     public Mensagem editar(VacinaBairroDto vacinaBairroDto) {
         String vacina = vacinaBairroDto.getVacina().substring(0, vacinaBairroDto.getVacina().indexOf(","));
         String dosagem = vacinaBairroDto.getVacina().substring(vacinaBairroDto.getVacina().indexOf(",") + 1);

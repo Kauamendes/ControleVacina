@@ -25,12 +25,12 @@
 </head>
 <body>
 
-<header class="navbar" th:fragment="cabecalho">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+<header class="navbar mb-5" th:fragment="cabecalho">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container-fluid">
-<!--            <a class="navbar-brand" href="#">-->
-<!--                <img src="/img/logo.png" alt="Logo" height="40">-->
-<!--            </a>-->
+            <a class="navbar-brand" href="#">
+                <img th:src="@{/logo.svg}" alt="Logo" class="d-inline-block align-top" height="50">
+            </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -38,7 +38,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto">
                     <li th:if="${cargo != null && (cargo == 'Aplicador' || cargo == 'Admin')}" class="nav-item">
-                        <a class="nav-link" href="/vacinas">Cadastro de Vacinas</a>
+                        <a class="nav-link bg-dark" href="/vacinas">Cadastro de Vacinas</a>
                     </li>
                     <li th:if="${cargo != null && cargo == 'Admin'}" class="nav-item">
                         <a class="nav-link" href="/usuarios">Cadastro de Usuários</a>
@@ -59,6 +59,8 @@
             </div>
         </div>
     </nav>
+
 </header>
+<div class="mt-5"></div>
 </body>
 </html>

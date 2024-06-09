@@ -87,8 +87,9 @@
     </script>
 </head>
 <body>
+<div th:replace="~{fragmentos/fragmentos ::cabecalho}"></div>
 <div class="container">
-    <h5 class="mt-5">Cadastro de vacinas</h5>
+    <h5 class="pt-5">Cadastro de vacinas</h5>
     <form action="/vacinas" method="post">
 
         <label for="vacina">Vacina</label>
@@ -193,6 +194,8 @@
                                 </tbody>
                             </table>
                         </div>
+
+                        <p th:if="${vacinasBairro != null && vacinasBairro.size() <= 0}" class="alert alert-danger auto-hide" role="alert">Nenhum registro encontrado</p>
                     </div>
                 </div>
             </div>

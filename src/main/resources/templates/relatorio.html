@@ -10,7 +10,7 @@
 <body>
 <div th:replace="~{fragmentos/fragmentos ::cabecalho}"></div>
 <div class="container">
-    <h5 class="mt-5 mb-2">Buscar por data e bairro</h5>
+    <h5 class="pt-5">Buscar por data e bairro</h5>
     <form action="/relatorios/buscar" method="post" id="formularioRelatorioPorDataEBairro">
         <div class="row">
             <div class="form-group col-md-6">
@@ -103,6 +103,9 @@
                 </tbody>
             </table>
         </div>
+
+        <p th:if="${vacinasBairro != null && vacinasBairro.size() <= 0}" class="alert alert-danger auto-hide" role="alert">Nenhum registro encontrado</p>
+
     </div>
     </form>
 </div>

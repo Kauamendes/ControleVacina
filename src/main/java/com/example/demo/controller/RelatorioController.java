@@ -8,6 +8,7 @@ import com.example.demo.dto.VacinaBairroDto;
 import com.example.demo.repository.BairroRepository;
 import com.example.demo.repository.RelatorioRepository;
 import com.example.demo.repository.VacinaRepository;
+import com.example.demo.services.VacinaBairroService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.apache.poi.ss.usermodel.Row;
@@ -27,6 +28,7 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
@@ -39,10 +41,7 @@ public class RelatorioController {
     private RelatorioRepository relatorioRepository;
 
     @Autowired
-    private BairroRepository bairroRepository;
-
-    @Autowired
-    private VacinaRepository vacinaRepository;
+    private VacinaBairroService vacinaBairroService;
 
     @GetMapping
     public ModelAndView relatorio(HttpSession session, HttpServletResponse response) throws IOException, SQLException {
@@ -54,8 +53,8 @@ public class RelatorioController {
             response.sendRedirect("/vacinas");
         }
         mv.addObject(NomeVariaveisSessao.CARGO, cargo);
-        mv.addObject("bairros", bairroRepository.listarBairros());
-        mv.addObject("vacinas", vacinaRepository.listarVacinas());
+        mv.addObject("bairros", vacinaBairroService.listarBairros());
+        mv.addObject("vacinas", vacinaBairroService.listarVacinas());
         return mv;
     }
 
@@ -66,8 +65,8 @@ public class RelatorioController {
         String cargo = (String) session.getAttribute(NomeVariaveisSessao.CARGO);
         if (Objects.nonNull(cargo)) mv.addObject(NomeVariaveisSessao.CARGO, cargo);
 
-        mv.addObject("bairros", bairroRepository.listarBairros());
-        mv.addObject("vacinas", vacinaRepository.listarVacinas());
+        mv.addObject("bairros", vacinaBairroService.listarBairros());
+        mv.addObject("vacinas", vacinaBairroService.listarVacinas());
         mv.addObject("vacinasBairros", relatorioRepository.buscar(relatorioDto));
 
         if (!relatorioDto.getBairro().isBlank())
@@ -92,16 +91,16 @@ public class RelatorioController {
             response.sendRedirect("/vacinas");
         }
         mv.addObject(NomeVariaveisSessao.CARGO, cargo);
-        mv.addObject("bairros", bairroRepository.listarBairros());
-        mv.addObject("vacinas", vacinaRepository.listarVacinas());
+        mv.addObject("bairros", vacinaBairroService.listarBairros());
+        mv.addObject("vacinas", vacinaBairroService.listarVacinas());
         return mv;
     }
 
     @PostMapping("/listar")
     public ModelAndView listar(RelatorioDto relatorioDto, HttpSession session) throws SQLException {
         ModelAndView mv = new ModelAndView("listagemVacina");
-        mv.addObject("bairros", bairroRepository.listarBairros());
-        mv.addObject("vacinas", vacinaRepository.listarVacinas());
+        mv.addObject("bairros", vacinaBairroService.listarBairros());
+        mv.addObject("vacinas", vacinaBairroService.listarVacinas());
         mv.addObject("vacinasBairros", relatorioRepository.listar(relatorioDto));
 
         String cargo = (String) session.getAttribute(NomeVariaveisSessao.CARGO);

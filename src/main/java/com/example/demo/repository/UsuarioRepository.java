@@ -4,6 +4,7 @@ import com.example.demo.config.Conexao;
 import com.example.demo.domain.Usuario;
 import com.example.demo.dto.AlteracaoSenhaDto;
 import com.example.demo.dto.LoginDto;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
@@ -14,6 +15,7 @@ import java.sql.SQLException;
 @Repository
 public class UsuarioRepository {
 
+    @Cacheable("usuarios")
     public Usuario findByAccess(LoginDto login) {
         Conexao conexao = new Conexao();
         Connection conn = conexao.conectar();
@@ -42,6 +44,7 @@ public class UsuarioRepository {
         return usuario;
     }
 
+    @Cacheable("usuarios")
     public Usuario findByLogin(String login) {
         Conexao conexao = new Conexao();
         Connection conn = conexao.conectar();
