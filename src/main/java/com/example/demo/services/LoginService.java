@@ -5,6 +5,7 @@ import com.example.demo.domain.Usuario;
 import com.example.demo.dto.AlteracaoSenhaDto;
 import com.example.demo.dto.LoginDto;
 import com.example.demo.repository.UsuarioRepository;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,7 @@ public class LoginService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public String findByAccess(LoginDto login, HttpSession session) {
+    public String findByAccess(LoginDto login, HttpSession session, HttpServletResponse response) {
         Usuario usuarioLogado = usuarioRepository.findByAccess(login);
         if (usuarioLogado == null) {
             session.setAttribute(NomeVariaveisSessao.MSG_ERRO, "Usuário ou senha inválidos!");
@@ -26,12 +27,12 @@ public class LoginService {
         session.setAttribute(NomeVariaveisSessao.USUARIO_LOGADO, usuarioLogado.getLogin());
         removerAtributosSessao(session);
         if (usuarioLogado.isAplicador()) {
-            return "redirect:/vacinas";
+            return response.encodeRedirectURL("/vacinas");
         }
         if (usuarioLogado.isAdmin()) {
-            return "redirect:/usuarios";
+            return response.encodeRedirectURL("/usuarios");
         }
-        return "redirect:/relatorios";
+        return response.encodeRedirectURL("/relatorios");
     }
 
     private void removerAtributosSessao(HttpSession session) {

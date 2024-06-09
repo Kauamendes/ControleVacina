@@ -4,6 +4,7 @@ import com.example.demo.NomeVariaveisSessao;
 import com.example.demo.dto.AlteracaoSenhaDto;
 import com.example.demo.dto.LoginDto;
 import com.example.demo.services.LoginService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,8 +21,8 @@ public class LoginController {
     private LoginService service;
 
     @PostMapping
-    public String login(LoginDto loginDto, HttpSession session) {
-        return service.findByAccess(loginDto, session);
+    public String login(LoginDto loginDto, HttpSession session, HttpServletResponse response) {
+        return service.findByAccess(loginDto, session, response);
     }
 
     @GetMapping
