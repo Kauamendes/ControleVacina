@@ -10,29 +10,31 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+
 @Service
 public class LoginService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public String findByAccess(LoginDto login, HttpSession session, HttpServletResponse response) {
+    public void findByAccess(LoginDto login, HttpSession session, HttpServletResponse response) throws IOException {
         Usuario usuarioLogado = usuarioRepository.findByAccess(login);
         if (usuarioLogado == null) {
             session.setAttribute(NomeVariaveisSessao.MSG_ERRO, "Usuário ou senha inválidos!");
-            return "redirect:/";
+            response.sendRedirect("/");
         }
 
         session.setAttribute(NomeVariaveisSessao.CARGO, usuarioLogado.getCargo());
         session.setAttribute(NomeVariaveisSessao.USUARIO_LOGADO, usuarioLogado.getLogin());
         removerAtributosSessao(session);
         if (usuarioLogado.isAplicador()) {
-            return response.encodeRedirectURL("/vacinas");
+            response.sendRedirect("/vacinas");
         }
         if (usuarioLogado.isAdmin()) {
-            return response.encodeRedirectURL("/usuarios");
+            response.encodeRedirectURL("/usuarios");
         }
-        return response.encodeRedirectURL("/relatorios");
+        response.encodeRedirectURL("/relatorios");
     }
 
     private void removerAtributosSessao(HttpSession session) {
