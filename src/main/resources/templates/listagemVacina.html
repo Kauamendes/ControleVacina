@@ -10,7 +10,7 @@
 <div th:replace="~{fragmentos/fragmentos ::cabecalho}"></div>
 <div class="container">
     <h5 class="mt-5 mb-2">Listar por bairro, vacina e data</h5>
-    <form action="/relatorios/listar" method="post" id="formularioRelatorioPorDataEBairro">
+    <form action="https://controlevacina.onrender.com/relatorios/listar" method="post" id="formularioRelatorioPorDataEBairro">
         <div class="row">
             <div class="form-group col-md-6">
                 <label for="dataInicio">Data Início:</label>
@@ -50,7 +50,7 @@
     </form>
 
     <div class="d-flex justify-content-between mt-2 mb-2">
-        <form action="#" th:action="@{/relatorios/exportar/descritivo}" method="post" class="d-inline">
+        <form action="#" th:action="@{https://controlevacina.onrender.com/relatorios/exportar/descritivo}" method="post" class="d-inline">
             <input id="bairroExportar" type="hidden" name="bairro" th:value="${bairro}">
             <input id="vacinaExportar" type="hidden" name="vacina" th:value="${vacina}">
             <input id="dataInicioExportar" type="hidden" name="dataInicio" th:value="${dataInicio}">
@@ -61,7 +61,7 @@
 
     <script>
         function limparCampos() {
-           window.location.href = window.location.origin + "/relatorios";
+           window.location.href = window.location.origin + "https://controlevacina.onrender.com/relatorios";
         }
 
         function prepareData() {

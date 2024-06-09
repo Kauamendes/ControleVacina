@@ -90,7 +90,7 @@
 <div th:replace="~{fragmentos/fragmentos ::cabecalho}"></div>
 <div class="container">
     <h5 class="mt-5">Cadastro de vacinas</h5>
-    <form action="/vacinas" method="post">
+    <form action="https://controlevacina.onrender.com/vacinas" method="post">
 
         <label for="vacina">Vacina</label>
         <select class="form-select form-select-md mb-2" id="vacina" name="vacina" required>
@@ -189,7 +189,7 @@
                                     <td th:text="${vacina.dose}"></td>
                                     <td th:text="${vacina.aplicador}"></td>
                                     <td th:text="${vacina.dataAplicacao}"></td>
-                                    <td><a th:href="@{/vacinas/editarTela/{vacinaId}(vacinaId=${vacina.id})}"><i class="bi bi-pencil"></i></a></td>
+                                    <td><a th:href="@{https://controlevacina.onrender.com/vacinas/editarTela/{vacinaId}(vacinaId=${vacina.id})}"><i class="bi bi-pencil"></i></a></td>
                                 </tr>
                                 </tbody>
                             </table>
