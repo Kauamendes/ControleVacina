@@ -21,7 +21,7 @@
     </script>
 </head>
 <body>
-<div th:replace="fragmentos/fragmentos ::cabecalho"></div>
+<div th:replace="~{fragmentos/fragmentos ::cabecalho}"></div>
 <div class="container">
     <h5 class="mt-5">Cadastro de usuários</h5>
     <form action="/usuarios" method="post">

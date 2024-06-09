@@ -7,7 +7,7 @@
     <link href="../static/css/global.css" rel="stylesheet">
 </head>
 <body>
-<div th:replace="fragmentos/fragmentos ::cabecalho"></div>
+<div th:replace="~{fragmentos/fragmentos ::cabecalho}"></div>
 <div class="container">
     <h5 class="mt-5 mb-2">Listar por bairro, vacina e data</h5>
     <form action="/relatorios/listar" method="post" id="formularioRelatorioPorDataEBairro">

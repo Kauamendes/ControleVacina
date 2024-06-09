@@ -8,7 +8,7 @@
     <link href="../static/css/global.css" rel="stylesheet">
 </head>
 <body>
-<div th:replace="fragmentos/fragmentos ::cabecalho"></div>
+<div th:replace="~{fragmentos/fragmentos ::cabecalho}"></div>
 <div class="container">
     <h5 class="mt-5 mb-2">Buscar por data e bairro</h5>
     <form action="/relatorios/buscar" method="post" id="formularioRelatorioPorDataEBairro">
