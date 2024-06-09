@@ -52,8 +52,6 @@ public class VacinaBairroController {
         Long editandoId = (Long) session.getAttribute(NomeVariaveisSessao.EDITANDO_ID);
 
         service.atualizarVacinaEBairroSessao(vacinaBairroDto, vacinaSessaoId, bairroSessaoId, session);
-
-        if (vacinaBairroDto.getDose().isBlank()) vacinaBairroDto.setDose(DosagemEnum.UNICA.getValor().toString());
         vacinaBairroDto.setAplicador(usuarioLogado);
 
         if (Objects.nonNull(editandoId)) {

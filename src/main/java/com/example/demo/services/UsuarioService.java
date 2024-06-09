@@ -28,7 +28,7 @@ public class UsuarioService {
             return "redirect:/usuarios/new_senha";
         }
         if (!usuarioDto.getSenha().equals(usuarioDto.getConfirmacaoSenha())) {
-            session.setAttribute(NomeVariaveisSessao.MSG_ERRO, "senhas diferentes!");
+            session.setAttribute(NomeVariaveisSessao.MSG_ERRO, "Senhas diferentes!");
             return "redirect:/usuarios";
         }
 
@@ -39,7 +39,7 @@ public class UsuarioService {
                 .build();
 
         usuarioRepository.insert(usuario);
-        session.setAttribute(NomeVariaveisSessao.MSG_SALVO, "usuário cadastrado com sucesso!");
+        session.setAttribute(NomeVariaveisSessao.MSG_SALVO, "Usuário cadastrado com sucesso!");
         return "redirect:/usuarios";
     }
 
@@ -63,7 +63,7 @@ public class UsuarioService {
         }
 
         if (!loginUpdateDto.getSenha_update().equals(loginUpdateDto.getConfirmacaoSenha_update())) {
-            session.setAttribute(NomeVariaveisSessao.MSG_ERRO, "senhas diferentes");
+            session.setAttribute(NomeVariaveisSessao.MSG_ERRO, "Senhas diferentes");
             return "redirect:/usuarios/new_senha";
         }
 

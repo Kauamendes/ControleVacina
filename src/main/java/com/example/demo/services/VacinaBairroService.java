@@ -3,6 +3,7 @@ package com.example.demo.services;
 import com.example.demo.NomeVariaveisSessao;
 import com.example.demo.domain.*;
 import com.example.demo.dto.VacinaBairroDto;
+import com.example.demo.enums.DosagemEnum;
 import com.example.demo.repository.BairroRepository;
 import com.example.demo.repository.VacinaBairroRepository;
 import com.example.demo.repository.VacinaRepository;
@@ -38,6 +39,7 @@ public class VacinaBairroService {
         if(vacinaBairroDto.getDose().isBlank() && Boolean.parseBoolean(dosagem)) {
             return Mensagem.builder().mensagem("Informe a dosagem da vacina!").nomeVariavelSessao(NomeVariaveisSessao.MSG_ERRO).build();
         }
+        if (vacinaBairroDto.getDose().isBlank()) vacinaBairroDto.setDose(DosagemEnum.UNICA.getValor().toString());
 
         VacinaBairro vacinaBairro = VacinaBairro.builder()
                 .bairroId(Long.valueOf(vacinaBairroDto.getBairro()))
@@ -131,6 +133,7 @@ public class VacinaBairroService {
         if(vacinaBairroDto.getDose().isBlank() && Boolean.parseBoolean(dosagem)) {
             return Mensagem.builder().mensagem("Informe a dosagem da vacina!").nomeVariavelSessao(NomeVariaveisSessao.MSG_ERRO).build();
         }
+        if (vacinaBairroDto.getDose().isBlank()) vacinaBairroDto.setDose(DosagemEnum.UNICA.getValor().toString());
 
         VacinaBairro vacinaBairro = VacinaBairro.builder()
                 .id(vacinaBairroDto.getId())
