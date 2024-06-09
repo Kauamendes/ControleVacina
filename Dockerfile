@@ -11,7 +11,7 @@ WORKDIR /app
 COPY . .
 
 # Compila o projeto e gera o arquivo JAR
-RUN mvn clean install -Pprod
+RUN mvn clean install
 
 # Etapa final
 FROM openjdk:17-jdk-slim
