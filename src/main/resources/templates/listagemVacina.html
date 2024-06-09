@@ -7,9 +7,9 @@
     <link href="../static/css/global.css" rel="stylesheet">
 </head>
 <body>
-<div th:replace="fragmentos/fragmentos ::cabecalho"></div>
+<div th:replace="~{fragmentos/fragmentos ::cabecalho}"></div>
 <div class="container">
-    <h5 class="mt-5 mb-2">Listar por bairro, vacina e data</h5>
+    <h5 class="pt-5">Listar por bairro, vacina e data</h5>
     <form action="/relatorios/listar" method="post" id="formularioRelatorioPorDataEBairro">
         <div class="row">
             <div class="form-group col-md-6">
@@ -50,7 +50,7 @@
     </form>
 
     <div class="d-flex justify-content-between mt-2 mb-2">
-        <form action="#" th:action="@{/relatorios/exportar/descritivo}" method="post" class="d-inline">
+        <form action="#" th:action="@{https://controlevacina.onrender.com/relatorios/exportar/descritivo}" method="post" class="d-inline">
             <input id="bairroExportar" type="hidden" name="bairro" th:value="${bairro}">
             <input id="vacinaExportar" type="hidden" name="vacina" th:value="${vacina}">
             <input id="dataInicioExportar" type="hidden" name="dataInicio" th:value="${dataInicio}">
@@ -61,7 +61,7 @@
 
     <script>
         function limparCampos() {
-           window.location.href = window.location.origin + "/relatorios";
+           window.location.href = window.location.origin + "https://controlevacina.onrender.com/relatorios";
         }
 
         function prepareData() {
@@ -105,6 +105,8 @@
                 </tr>
                 </tbody>
             </table>
+
+            <p th:if="${vacinasBairro != null && vacinasBairro.size() <= 0}" class="alert alert-danger auto-hide" role="alert">Nenhum registro encontrado</p>
         </div>
     </div>
 

@@ -9,6 +9,7 @@ import com.example.demo.repository.UsuarioRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -19,9 +20,15 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @CacheEvict("usuarios")
     public String insert(UsuarioDto usuarioDto, HttpSession session) {
+        Usuario usuarioSalvo = usuarioRepository.findByLogin(usuarioDto.getLogin());
+        if (usuarioSalvo != null) {
+            session.setAttribute(NomeVariaveisSessao.MSG_ERRO, "Já existe um usuário com esse login!");
+            return "redirect:/usuarios/new_senha";
+        }
         if (!usuarioDto.getSenha().equals(usuarioDto.getConfirmacaoSenha())) {
-            session.setAttribute(NomeVariaveisSessao.MSG_ERRO, "senhas diferentes!");
+            session.setAttribute(NomeVariaveisSessao.MSG_ERRO, "Senhas diferentes!");
             return "redirect:/usuarios";
         }
 
@@ -32,7 +39,7 @@ public class UsuarioService {
                 .build();
 
         usuarioRepository.insert(usuario);
-        session.setAttribute(NomeVariaveisSessao.MSG_SALVO, "usuário cadastrado com sucesso!");
+        session.setAttribute(NomeVariaveisSessao.MSG_SALVO, "Usuário cadastrado com sucesso!");
         return "redirect:/usuarios";
     }
 
@@ -47,24 +54,21 @@ public class UsuarioService {
         }
     }
 
+    @CacheEvict("usuarios")
     public String saveNewSenha(AlteracaoSenhaDto loginUpdateDto, HttpSession session) {
-        if (verificaSeUsuarioAdmin(loginUpdateDto, session)) {
-            if (!loginUpdateDto.getSenha_update().equals(loginUpdateDto.getConfirmacaoSenha_update())) {
-                session.setAttribute(NomeVariaveisSessao.MSG_ERRO, "senhas diferentes");
-                return "redirect:/usuarios/new_senha";
-            }
-
-            Usuario usuario = usuarioRepository.findByLogin(loginUpdateDto.getLogin_update());
-            if (usuario == null) {
-                session.setAttribute(NomeVariaveisSessao.MSG_ERRO, "usuario não encontrado!");
-                return "redirect:/usuarios/new_senha";
-            }
-
-            usuario.setSenha(loginUpdateDto.getSenha_update());
-            usuarioRepository.updateUsuario(usuario);
-            session.setAttribute(NomeVariaveisSessao.MSG_SALVO, "Alteração salva com sucesso");
+        Usuario usuario = usuarioRepository.findByLogin(loginUpdateDto.getLogin_update());
+        if (usuario == null) {
+            session.setAttribute(NomeVariaveisSessao.MSG_ERRO, "usuario não encontrado!");
             return "redirect:/usuarios/new_senha";
         }
+
+        if (!loginUpdateDto.getSenha_update().equals(loginUpdateDto.getConfirmacaoSenha_update())) {
+            session.setAttribute(NomeVariaveisSessao.MSG_ERRO, "Senhas diferentes");
+            return "redirect:/usuarios/new_senha";
+        }
+
+        usuario.setSenha(loginUpdateDto.getSenha_update());
+        usuarioRepository.updateUsuario(usuario);
         session.setAttribute(NomeVariaveisSessao.MSG_SALVO, "Alteração salva com sucesso");
         return "redirect:/usuarios/new_senha";
     }

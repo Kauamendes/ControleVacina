@@ -87,9 +87,9 @@
     </script>
 </head>
 <body>
-<div th:replace="fragmentos/fragmentos ::cabecalho"></div>
+<div th:replace="~{fragmentos/fragmentos ::cabecalho}"></div>
 <div class="container">
-    <h5 class="mt-5">Cadastro de vacinas</h5>
+    <h5 class="pt-5">Cadastro de vacinas</h5>
     <form action="/vacinas" method="post">
 
         <label for="vacina">Vacina</label>

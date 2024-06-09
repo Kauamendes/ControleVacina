@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.OffsetDateTime;
 import java.util.Objects;
 
 @Controller
@@ -51,8 +52,6 @@ public class VacinaBairroController {
         Long editandoId = (Long) session.getAttribute(NomeVariaveisSessao.EDITANDO_ID);
 
         service.atualizarVacinaEBairroSessao(vacinaBairroDto, vacinaSessaoId, bairroSessaoId, session);
-
-        if (vacinaBairroDto.getDose().isBlank()) vacinaBairroDto.setDose(DosagemEnum.UNICA.getValor().toString());
         vacinaBairroDto.setAplicador(usuarioLogado);
 
         if (Objects.nonNull(editandoId)) {
