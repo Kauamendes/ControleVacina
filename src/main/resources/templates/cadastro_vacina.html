@@ -194,6 +194,8 @@
                                 </tbody>
                             </table>
                         </div>
+
+                        <p th:if="${vacinasBairro != null && vacinasBairro.size() <= 0}" class="alert alert-danger auto-hide" role="alert">Nenhum registro encontrado</p>
                     </div>
                 </div>
             </div>
