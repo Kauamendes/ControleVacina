@@ -5,22 +5,25 @@
     <title>Cabeçalho padrão</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        /* Estilo para links na navbar */
         .navbar-nav .nav-link {
             color: #fff; /* Cor do texto dos links */
             transition: color 0.3s; /* Efeito de transição suave */
         }
 
-        /* Estilo para hover nos links da navbar */
         .navbar-nav .nav-link:hover {
             color: #fff; /* Cor do texto ao passar o mouse */
             background-color: #007bff; /* Cor de fundo ao passar o mouse */
         }
 
-        /* Estilo para o último item da navbar */
         .navbar-nav .nav-item:last-child {
             margin-left: auto; /* Alinha o último item à direita */
         }
+
+        .button-container {
+            display: flex; /* Enable flexbox layout */
+            justify-content: flex-end;
+        }
+
     </style>
 </head>
 <body>
@@ -52,10 +55,12 @@
                     <li th:if="${cargo != null && (cargo =='Gestor' || cargo == 'Admin')}" class="nav-item">
                         <a class="nav-link" href="/relatorios/listar">Listar ultimas vacinas</a>
                     </li>
-                    <li class="nav-item text-right">
-                        <a class="nav-link" href="/sair">Sair</a>
-                    </li>
                 </ul>
+                <div class="button-container">
+                    <form class="form-inline my-2 my-lg-0" action="/sair">
+                        <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Sair</button>
+                    </form>
+                </div>
             </div>
         </div>
     </nav>
