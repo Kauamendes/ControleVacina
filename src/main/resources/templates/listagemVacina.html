@@ -5,6 +5,7 @@
     <title>Listagem de vacinas</title>
     <link rel="icon" th:href="@{/logo.svg}" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="../static/css/global.css" rel="stylesheet">
 </head>
 <body>
@@ -46,23 +47,29 @@
             </select>
         </div>
 
-        <button type="submit" class="btn btn-primary mt-3">Listar</button>
-        <button type="button" class="btn btn-secondary mt-3" onclick="limparCampos()">Limpar Campos</button>
+        <button type="submit" class="btn btn-primary mt-3">
+            <i class="bi bi-search"> Buscar </i>
+        </button>
+        <button type="button" class="btn btn-secondary mt-3" onclick="limparCampos()">
+            <i class="bi bi-x-lg"> Limpar Campos </i>
+        </button>
     </form>
 
     <div class="d-flex justify-content-between mt-2 mb-2">
-        <form action="#" th:action="@{/relatorios/exportar/descritivo}" method="post" class="d-inline">
+        <form action="#" th:action="@{https://controlevacina.onrender.com/relatorios/exportar/descritivo}" method="post" class="d-inline">
             <input id="bairroExportar" type="hidden" name="bairro" th:value="${bairro}">
             <input id="vacinaExportar" type="hidden" name="vacina" th:value="${vacina}">
             <input id="dataInicioExportar" type="hidden" name="dataInicio" th:value="${dataInicio}">
             <input id="dataFimExportar" type="hidden" name="dataFim" th:value="${dataFim}">
-            <button type="submit" class="btn btn-success" onclick="prepareData()">Exportar dados</button>
+            <button type="submit" class="btn btn-success" onclick="prepareData()">
+                <i class="bi bi-file-earmark-arrow-down"> Exportar dados </i>
+            </button>
         </form>
     </div>
 
     <script>
         function limparCampos() {
-           window.location.href = window.location.origin + "/relatorios";
+           window.location.href = window.location.origin + "https://controlevacina.onrender.com/relatorios";
         }
 
         function prepareData() {
@@ -107,7 +114,7 @@
                 </tbody>
             </table>
 
-            <p th:if="${vacinasBairros != null && vacinasBairros.size() <= 0}" class="alert alert-danger auto-hide" role="alert">Nenhum registro encontrado</p>
+            <p th:if="${vacinasBairro != null && vacinasBairro.size() <= 0}" class="alert alert-danger auto-hide" role="alert">Nenhum registro encontrado</p>
         </div>
     </div>
 
