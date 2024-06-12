@@ -19,7 +19,7 @@ jobs:
           - name: Build project
             run: mvn clean install -DskipTests
           - name: Login DockerHub
-            run: docker login -u kauamendes80 -p kaua050104kaua
+            run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
           - name: BUild Docker Image
             run: docker build -t kauamendes80/deploy-controle-vacina .
           - name: Push Image Docker
