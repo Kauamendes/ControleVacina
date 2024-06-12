@@ -9,9 +9,9 @@ public class Conexao {
     public Connection conectar() {
         Connection conn = null;
         try {
-            String dbUrl = System.getenv("DB_URL");
-            String dbUser = System.getenv("DB_USER");
-            String dbPass = System.getenv("DB_PASS");
+            String dbUrl = System.getenv("jdbc:postgresql://54.166.219.179:5432/cadvacinas");
+            String dbUser = System.getenv("postgres");
+            String dbPass = System.getenv("senhacadvacinas");
 
             if (dbUrl == null || dbUser == null || dbPass == null) {
                 throw new IllegalArgumentException("Variáveis de ambiente DB_URL, DB_USER ou DB_PASS não estão definidas.");
