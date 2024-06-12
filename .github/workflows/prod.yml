@@ -30,6 +30,6 @@ jobs:
           runs-on: self-hosted
           steps:
             - name: Pull image from docker hub
-              run: docker pull kauamendes80/deploy-controle-vacina
+              run: sudo docker pull kauamendes80/deploy-controle-vacina
             - name: Run docker container
-              run: docker run -d -p 8080:8080 --name deploy-cadvacinas:latest
+              run: sudo docker run -d -p 8080:8080 --name deploy-cadvacinas:latest
