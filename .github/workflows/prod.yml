@@ -2,7 +2,7 @@ name: ControleVacinaDeployAws
 
 on:
     push:
-          branches: [master]
+          branches: [Deploy]
 
 jobs:
     build:
