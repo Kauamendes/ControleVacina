@@ -9,12 +9,24 @@ public class Conexao {
     public Connection conectar() {
         Connection conn = null;
         try {
+            String dbUrl = System.getenv("DB_URL");
+            String dbUser = System.getenv("DB_USER");
+            String dbPass = System.getenv("DB_PASS");
+
+            if (dbUrl == null || dbUser == null || dbPass == null) {
+                throw new IllegalArgumentException("Variáveis de ambiente DB_URL, DB_USER ou DB_PASS não estão definidas.");
+            }
+
             Class.forName("org.postgresql.Driver");
-            conn = DriverManager.getConnection("jdbc:postgresql://dpg-cpi76rcf7o1s73bd9bv0-a.oregon-postgres.render.com/cadvacinas_gypf", "cad_vacinas_senac_user", "NN0ZJ14TXeNj3lWvAXhqjW8I5vjmzMj2");
+            conn = DriverManager.getConnection(dbUrl, dbUser, dbPass);
         } catch (SQLException ex) {
             System.out.println("Erro: Não conseguiu conectar no BD.");
+            ex.printStackTrace();
         } catch (ClassNotFoundException ex) {
             System.out.println("Erro: Não encontrou o driver do BD.");
+            ex.printStackTrace();
+        } catch (IllegalArgumentException ex) {
+            System.out.println(ex.getMessage());
         }
         return conn;
     }
@@ -26,6 +38,7 @@ public class Conexao {
             }
         } catch (SQLException ex) {
             System.out.println("Não conseguiu desconectar do BD.");
+            ex.printStackTrace();
         }
     }
 }
