@@ -24,14 +24,15 @@ public class VacinaBairroRepository {
         Connection conn = conexao.conectar();
 
         try {
-            String query = "INSERT INTO VACINA_BAIRRO (VACINA_ID, BAIRRO_ID, DOSE, APLICADOR)" +
-                    " VALUES(?,?,?,?)";
+            String query = "INSERT INTO VACINA_BAIRRO (VACINA_ID, BAIRRO_ID, DOSE, APLICADOR, OBSERVACOES)" +
+                    " VALUES(?,?,?,?,?)";
 
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setLong(1, vacinaBairro.getVacinaId());
             ps.setLong(2, vacinaBairro.getBairroId());
             ps.setString(3, vacinaBairro.getDose());
             ps.setString(4, vacinaBairro.getAplicador());
+            ps.setString(5, vacinaBairro.getObservacoes());
             ps.execute();
             ps.close();
         } catch (Exception e) {
@@ -110,7 +111,7 @@ public class VacinaBairroRepository {
         Connection conn = conexao.conectar();
         List<VacinaBairroDto> vacinas = new ArrayList<>();
 
-        StringBuilder query = new StringBuilder("SELECT vb.id as id, v.NOME AS vacina, b.NOME AS bairro, vb.aplicador as aplicador, vb.dose as dose, vb.data_aplicacao as data FROM VACINA_BAIRRO vb ");
+        StringBuilder query = new StringBuilder("SELECT vb.id as id, v.NOME AS vacina, b.NOME AS bairro, vb.aplicador as aplicador, vb.dose as dose, vb.data_aplicacao as data, vb.observacoes as obs FROM VACINA_BAIRRO vb ");
         query.append(" INNER JOIN BAIRRO b ON b.id = vb.BAIRRO_ID ");
         query.append(" INNER JOIN VACINA v ON v.id = vb.VACINA_ID ");
         query.append(" WHERE vb.aplicador=LOWER(?) ");
@@ -128,6 +129,7 @@ public class VacinaBairroRepository {
                         .dose(getDose(resultSet.getString("dose")))
                         .aplicador(resultSet.getString("aplicador"))
                         .dataAplicacao(DateUtils.parseTimestampToString(resultSet.getTimestamp("data")))
+                        .observacoes(resultSet.getString("obs"))
                         .build());
             }
         } catch (SQLException e) {
@@ -177,7 +179,7 @@ public class VacinaBairroRepository {
 
         try {
             String query = "UPDATE VACINA_BAIRRO " +
-                    "SET VACINA_ID=?, BAIRRO_ID=?, DOSE=?, APLICADOR=?, DATA_APLICACAO=? WHERE ID=?";
+                    "SET VACINA_ID=?, BAIRRO_ID=?, DOSE=?, APLICADOR=?, MODIFIED_DATE=? WHERE ID=?";
 
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setLong(1, vacinaBairro.getVacinaId());

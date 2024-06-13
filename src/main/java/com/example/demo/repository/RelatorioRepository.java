@@ -89,7 +89,7 @@ public class RelatorioRepository {
         List<VacinaBairroDto> vacinas = new ArrayList<>();
         List<Object> params = new ArrayList<>();
 
-        StringBuilder query = new StringBuilder("SELECT vb.id as id, v.NOME AS vacina, b.NOME AS bairro, vb.aplicador as aplicador, vb.dose as dose, vb.data_aplicacao as data FROM VACINA_BAIRRO vb ");
+        StringBuilder query = new StringBuilder("SELECT vb.id as id, v.NOME AS vacina, b.NOME AS bairro, vb.aplicador as aplicador, vb.dose as dose, vb.data_aplicacao as data, vb.observacoes as obs FROM VACINA_BAIRRO vb ");
         query.append(" INNER JOIN BAIRRO b ON b.id = vb.BAIRRO_ID ");
         query.append(" INNER JOIN VACINA v ON v.id = vb.VACINA_ID ");
 
@@ -145,6 +145,7 @@ public class RelatorioRepository {
                         .dose(getDose(resultSet.getString("dose")))
                         .aplicador(resultSet.getString("aplicador"))
                         .dataAplicacao(DateUtils.parseTimestampToString(resultSet.getTimestamp("data")))
+                        .observacoes(resultSet.getString("obs"))
                         .build());
             }
         } finally {

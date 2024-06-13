@@ -16,6 +16,7 @@ public class VacinaBairroDto {
     private Integer quantidade;
     private String aplicador;
     private String dose;
+    private String observacoes;
 
     public VacinaBairroDto(String bairro, String vacina, Integer quantidade) {
         this.bairro = bairro;
