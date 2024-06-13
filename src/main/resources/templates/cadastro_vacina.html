@@ -14,6 +14,7 @@
     <link href="../static/css/global.css" rel="stylesheet">
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            $('#numeroQuantidade').hide();
             var divMensagemSalvo = document.getElementById('div-mensagem-salvo');
             var divMensagemErro = document.getElementById('div-mensagem-erro');
 
@@ -23,24 +24,22 @@
             var editar = document.getElementById('editar');
 
             if (editar && dosagemVacina == 'true') {
-               abreModalDosagem()
+                abreModalDosagem()
             }
 
             if (divMensagemSalvo) {
                 setTimeout(function() {
                     divMensagemSalvo.remove();
-                    if(dosagemVacina == 'true') {
+                    if (dosagemVacina == 'true') {
                         abreModalAposCadastro();
                     }
                 }, 1500);
             }
 
-
-
             if (divMensagemErro) {
                 setTimeout(function() {
                     divMensagemErro.remove();
-                    if(dosagemVacina == 'true'){
+                    if (dosagemVacina == 'true') {
                         abreModalDosagem()
                     }
                 }, 1500);
@@ -51,18 +50,26 @@
                 var valoresSeparados = valorVacina.split(',');
                 var dosagemVacina = valoresSeparados[1];
 
-                if(dosagemVacina == 'true'){
+                if (dosagemVacina == 'true') {
                     abreModalDosagem();
                 } else {
                     document.getElementById('dose').value = '';
                     fechaModalDosagem();
                 }
             });
+
+            $('#cadastroQuantidade').change(function() {
+                if ($(this).is(':checked')) {
+                    $('#numeroQuantidade').show();
+                } else {
+                    $('#numeroQuantidade').hide();
+                }
+            });
         });
 
-        function abreModalAposCadastro(){
+        function abreModalAposCadastro() {
             var vacina = document.getElementById('vacina').value;
-            if(vacina){
+            if (vacina) {
                 setTimeout(abreModalDosagem, 300);
             }
         }
@@ -72,18 +79,22 @@
             modalDosagem.hide();
         }
 
-        function abreModalDosagem(){
+        function abreModalDosagem() {
             const modalDosagem = new bootstrap.Modal(document.getElementById('modalDosagem'));
             modalDosagem.show();
         }
 
-        function okModalDosagem(){
+        function okModalDosagem() {
             var dosagemSelecionada = document.getElementById('dosagem').value;
 
-            if(dosagemSelecionada){
+            if (dosagemSelecionada) {
                 document.getElementById('dose').value = dosagemSelecionada;
             }
             fechaModalDosagem();
+        }
+
+        function botaoCadastrarOnClick() {
+            $('#numeroQuantidade').hide();
         }
     </script>
 </head>
@@ -112,10 +123,28 @@
             </th:block>
         </select>
 
+        <div class="mb-3">
+            <label for="observacoes">Observações</label>
+            <textarea class="form-control" id="observacoes" name="observacoes" rows="3"></textarea>
+        </div>
+
+        <div th:if="${editandoId == null}" class="row align-items-center mb-3">
+            <div class="col-auto">
+                <input type="checkbox" class="btn-check" id="cadastroQuantidade" autocomplete="off">
+                <label class="btn btn-outline-primary" for="cadastroQuantidade">Cadastro em quantidade</label>
+            </div>
+            <div class="col-auto" id="numeroQuantidade">
+                <input class="form-control" type="number" id="quantidade" name="quantidade" minlength="2" min="2" placeholder="Quantidade de vacinas">
+            </div>
+        </div>
+
+        <div class="mb-3"></div>
+
         <div>
             <input id="dose" name="dose" type="hidden">
             <input id="editar" name="editar" type="hidden" th:if="${editandoId != null}" value="1">
         </div>
+
         <button th:if="${editandoId != null}" type="submit" class="btn btn-primary" onclick="botaoCadastrarOnClick()">Alterar</button>
         <button th:if="${editandoId == null}" type="submit" class="btn btn-primary" onclick="botaoCadastrarOnClick()">Cadastrar</button>
 
