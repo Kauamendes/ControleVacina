@@ -13,63 +13,98 @@
         .input-group-text#exibirSenha:hover {
             cursor: pointer;
         }
+
+        .gradient-custom {
+            background: #0ddb7c;
+            background: -webkit-linear-gradient(to right, #0ddb7c, #004bfe, #0c9cad);
+            background: linear-gradient(to right, #0ddb7c, #004bfe, #0c9cad);
+            color: #ffffff;
+        }
+
+
+        .custom-card {
+            background-color: #e0e5ec;
+            border-radius: 1rem;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+        }
+
+        /* Novo estilo para o botão */
+        .custom-button {
+            background-color: #004bfe;
+            color: #ffffff;
+            transition: background-color 0.3s ease;
+        }
+
+        .custom-button:hover {
+            background-color: #11fb64;
+        }
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-   var msgErro = document.getElementById('msgErro');
-   if (msgErro) {
-     setTimeout(function() {
-       msgErro.remove();
-     }, 2000);
-   }
+            var msgErro = document.getElementById('msgErro');
+            if (msgErro) {
+                setTimeout(function() {
+                    msgErro.remove();
+                }, 2000);
+            }
 
-   const passwordField = document.getElementById('senha');
-   const passwordShowIcon = document.getElementById('exibirSenha');
+            const passwordField = document.getElementById('passwordField');
+            const passwordShowIcon = document.getElementById('exibirSenha');
 
-   passwordShowIcon.addEventListener('click', togglePasswordVisibility);
+            passwordShowIcon.addEventListener('click', togglePasswordVisibility);
 
-   function togglePasswordVisibility() {
-     if (passwordField.type === 'password') {
-       passwordField.type = 'text';
-       passwordShowIcon.classList.replace('bi-eye', 'bi-eye-slash');
-     } else {
-       passwordField.type = 'password';
-       passwordShowIcon.classList.replace('bi-eye-slash', 'bi-eye');
-     }
-   }
- });
+            function togglePasswordVisibility() {
+                if (passwordField.type === 'password') {
+                    passwordField.type = 'text';
+                    passwordShowIcon.classList.replace('bi-eye', 'bi-eye-slash');
+                } else {
+                    passwordField.type = 'password';
+                    passwordShowIcon.classList.replace('bi-eye-slash', 'bi-eye');
+                }
+            }
+        });
     </script>
 </head>
 <body>
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6 col-sm-10">
-            <div class="card mt-5">
-                <div class="card-body">
-                    <h5 class="card-title">Entrar</h5>
-                    <form action="/" method="post" class="mb-3">
-                        <div class="mb-3">
-                            <label for="login">Login</label>
-                            <input class="form-control" id="login" name="login" type="text" required>
+<section class="vh-100 gradient-custom">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                <div class="card custom-card text-dark">
+                    <div class="card-body p-5 text-center">
+
+                        <div class="mb-md-5 mt-md-4 pb-5">
+                            <form action="/" method="post">
+                                <img th:src="@{/logo.svg}" alt="Logo" class="d-inline-block align-top mb-2" height="150" width="200">
+
+                                <div data-mdb-input-init class="form-outline form-white mb-4">
+                                    <input type="text" id="login" name="login" class="form-control form-control-lg" placeholder="Digite seu login" required/>
+                                </div>
+
+                                <div data-mdb-input-init class="form-outline form-white mb-4">
+                                    <div class="input-group">
+                                        <input type="password" id="passwordField" name="senha" class="form-control form-control-lg" placeholder="Digite sua senha" required/>
+                                        <span class="input-group-text" id="exibirSenha" data-toggle="tooltip"
+                                              title="Exibir/ocultar Senha"><i class="bi bi-eye"></i></span>
+                                    </div>
+                                </div>
+
+                                <button class="btn btn-outline-light btn-lg px-5 custom-button" type="submit">Login
+                                </button>
+                                <div class="mt-2" id="msgErro">
+                                    <div th:if="${msgErro != null}" class="alert alert-danger auto-hide" role="alert">
+                                        <p th:text="${msgErro}"></p>
+                                    </div>
+                                </div>
+
+                            </form>
                         </div>
-                        <div class="mb-3">
-                            <label for="senha">Senha</label>
-                            <div class="input-group">
-                                <input class="form-control" id="senha" name="senha" type="password" required>
-                                <span class="input-group-text" id="exibirSenha" data-toggle="tooltip" title="Exibir/ocultar Senha"><i class="bi bi-eye"></i></span>
-                            </div>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Entrar</button>
-                        <div class="mt-2" id="msgErro">
-                            <div th:if="${msgErro != null}" class="alert alert-danger auto-hide" role="alert">
-                                <p th:text="${msgErro}"></p>
-                            </div>
-                        </div>
-                    </form>
+
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</section>
 </body>
 </html>

@@ -160,6 +160,7 @@ public class RelatorioController {
         headerRow.createCell(2).setCellValue("Dose");
         headerRow.createCell(3).setCellValue("Aplicador");
         headerRow.createCell(4).setCellValue("Data aplicada");
+        headerRow.createCell(5).setCellValue("Observações");
 
         List<VacinaBairroDto> relatorios = relatorioRepository.listar(dto);
 
@@ -171,6 +172,7 @@ public class RelatorioController {
             row.createCell(2).setCellValue(relatorio.getDose());
             row.createCell(3).setCellValue(relatorio.getAplicador());
             row.createCell(4).setCellValue(relatorio.getDataAplicacao());
+            row.createCell(5).setCellValue(relatorio.getObservacoes());
         }
 
         workbook.write(response.getOutputStream());

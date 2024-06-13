@@ -96,6 +96,15 @@
         function botaoCadastrarOnClick() {
             $('#numeroQuantidade').hide();
         }
+
+        function abrirModalDadosVacina(vacina) {
+            // Adicione aqui a lógica para preencher os dados da vacina na modal
+            // Você pode fazer uma requisição AJAX para buscar os dados da vacina usando o vacinaId
+            // e depois preencher os campos da modal com os dados retornados
+            // Aqui está um exemplo simples de como abrir a modal:
+            const modalDadosVacina = new bootstrap.Modal(document.getElementById('modalDadosVacina'));
+            modalDadosVacina.show(vacina);
+        }
     </script>
 </head>
 <body>
