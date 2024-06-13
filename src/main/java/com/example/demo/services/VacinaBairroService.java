@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class VacinaBairroService {
@@ -46,7 +47,15 @@ public class VacinaBairroService {
                 .vacinaId(Long.valueOf(vacina))
                 .dose(vacinaBairroDto.getDose())
                 .aplicador(vacinaBairroDto.getAplicador())
+                .observacoes(vacinaBairroDto.getObservacoes())
                 .build();
+
+        if (Objects.nonNull(vacinaBairroDto.getQuantidade()) && vacinaBairroDto.getQuantidade() > 1) {
+            for(int i = 0; i < vacinaBairroDto.getQuantidade(); i++) {
+                vacinaBairroRepository.insert(vacinaBairro);
+            }
+            return Mensagem.builder().mensagem("Vacinas salvas com sucesso!").nomeVariavelSessao(NomeVariaveisSessao.MSG_SALVO).build();
+        }
 
         vacinaBairroRepository.insert(vacinaBairro);
         return Mensagem.builder().mensagem("Vacina salva com sucesso!").nomeVariavelSessao(NomeVariaveisSessao.MSG_SALVO).build();

@@ -24,14 +24,15 @@ public class VacinaBairroRepository {
         Connection conn = conexao.conectar();
 
         try {
-            String query = "INSERT INTO VACINA_BAIRRO (VACINA_ID, BAIRRO_ID, DOSE, APLICADOR)" +
-                    " VALUES(?,?,?,?)";
+            String query = "INSERT INTO VACINA_BAIRRO (VACINA_ID, BAIRRO_ID, DOSE, APLICADOR, OBSERVACOES)" +
+                    " VALUES(?,?,?,?,?)";
 
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setLong(1, vacinaBairro.getVacinaId());
             ps.setLong(2, vacinaBairro.getBairroId());
             ps.setString(3, vacinaBairro.getDose());
             ps.setString(4, vacinaBairro.getAplicador());
+            ps.setString(5, vacinaBairro.getObservacoes());
             ps.execute();
             ps.close();
         } catch (Exception e) {
@@ -177,7 +178,7 @@ public class VacinaBairroRepository {
 
         try {
             String query = "UPDATE VACINA_BAIRRO " +
-                    "SET VACINA_ID=?, BAIRRO_ID=?, DOSE=?, APLICADOR=?, DATA_APLICACAO=? WHERE ID=?";
+                    "SET VACINA_ID=?, BAIRRO_ID=?, DOSE=?, APLICADOR=?, MODIFIED_DATE=? WHERE ID=?";
 
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setLong(1, vacinaBairro.getVacinaId());
