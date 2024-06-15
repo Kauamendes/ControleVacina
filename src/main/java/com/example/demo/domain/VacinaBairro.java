@@ -30,4 +30,6 @@ public class VacinaBairro {
     private Timestamp dataAplicacao;
 
     private String dose;
+    private String aplicador;
+    private String observacoes;
 }

@@ -5,6 +5,7 @@ import com.example.demo.domain.*;
 import com.example.demo.dto.RelatorioDto;
 import com.example.demo.dto.VacinaBairroDto;
 import com.example.demo.enums.CargoEnum;
+import com.example.demo.enums.DosagemEnum;
 import com.example.demo.repository.BairroRepository;
 import com.example.demo.repository.VacinaBairroRepository;
 import com.example.demo.repository.VacinaRepository;
@@ -12,6 +13,8 @@ import com.example.demo.utils.DateUtils;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -19,6 +22,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class VacinaBairroService {
@@ -32,6 +36,7 @@ public class VacinaBairroService {
     @Autowired
     private BairroRepository bairroRepository;
 
+    @CacheEvict(value="ultimasVacinasCadastradasPorUsuario", allEntries=true)
     public Mensagem insert(VacinaBairroDto vacinaBairroDto) {
         String vacina = vacinaBairroDto.getVacina().substring(0, vacinaBairroDto.getVacina().indexOf(","));
         String dosagem = vacinaBairroDto.getVacina().substring(vacinaBairroDto.getVacina().indexOf(",") + 1);
@@ -39,11 +44,14 @@ public class VacinaBairroService {
         if(vacinaBairroDto.getDose().isBlank() && Boolean.parseBoolean(dosagem)) {
             return Mensagem.builder().mensagem("Informe a dosagem da vacina!").nomeVariavelSessao(NomeVariaveisSessao.MSG_ERRO).build();
         }
+        if (vacinaBairroDto.getDose().isBlank()) vacinaBairroDto.setDose(DosagemEnum.UNICA.getValor().toString());
 
         VacinaBairro vacinaBairro = VacinaBairro.builder()
                 .bairro(Bairro.builder().id(Long.parseLong(vacinaBairroDto.getBairro())).build())
                 .vacina(Vacina.builder().id(Long.valueOf(vacina)).build())
                 .dose(vacinaBairroDto.getDose())
+                .aplicador(vacinaBairroDto.getAplicador())
+                .observacoes(vacinaBairroDto.getObservacoes())
                 .build();
         vacinaBairroRepository.save(vacinaBairro);
 
@@ -107,5 +115,40 @@ public class VacinaBairroService {
         Timestamp dataInicial = DateUtils.parseStringToTimestamp(relatorioDto.getDataInicio());
         Timestamp dataFinal = DateUtils.parseStringToTimestamp(relatorioDto.getDataFim());
         return vacinaBairroRepository.buscar(bairroId, vacinaID, dataInicial, dataFinal);
+    @Cacheable("bairros")
+    public Bairro buscarBairroPorNome(String nomeBairro) throws SQLException {
+        return bairroRepository.buscarBairroPorNome(nomeBairro);
+    }
+
+    @Cacheable("ultimasVacinasCadastradasPorUsuario")
+    public List<VacinaBairroDto> listarUltimosCadastradosPorUsuario(String usuarioLogado) {
+        return vacinaBairroRepository.listarUltimosPorUsuario(usuarioLogado);
+    }
+
+    @Cacheable("vacinas")
+    public VacinaBairroDto buscarVacinaPorId(Long id) {
+        return vacinaBairroRepository.buscarVacinaBairroPorId(id);
+    }
+
+    @CacheEvict(value="ultimasVacinasCadastradasPorUsuario", allEntries=true)
+    public Mensagem editar(VacinaBairroDto vacinaBairroDto) {
+        String vacina = vacinaBairroDto.getVacina().substring(0, vacinaBairroDto.getVacina().indexOf(","));
+        String dosagem = vacinaBairroDto.getVacina().substring(vacinaBairroDto.getVacina().indexOf(",") + 1);
+
+        if(vacinaBairroDto.getDose().isBlank() && Boolean.parseBoolean(dosagem)) {
+            return Mensagem.builder().mensagem("Informe a dosagem da vacina!").nomeVariavelSessao(NomeVariaveisSessao.MSG_ERRO).build();
+        }
+        if (vacinaBairroDto.getDose().isBlank()) vacinaBairroDto.setDose(DosagemEnum.UNICA.getValor().toString());
+
+        VacinaBairro vacinaBairro = VacinaBairro.builder()
+                .id(vacinaBairroDto.getId())
+                .bairroId(Long.valueOf(vacinaBairroDto.getBairro()))
+                .vacinaId(Long.valueOf(vacina))
+                .dose(vacinaBairroDto.getDose())
+                .aplicador(vacinaBairroDto.getAplicador())
+                .build();
+
+        vacinaBairroRepository.update(vacinaBairro);
+        return Mensagem.builder().mensagem("Vacina editada com sucesso!").nomeVariavelSessao(NomeVariaveisSessao.MSG_SALVO).build();
     }
 }

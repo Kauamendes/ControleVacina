@@ -11,5 +11,5 @@ public class NomeVariaveisSessao {
     public static final String MSG_ERRO = "msgErro";
     public static final String DATA_INICIO = "dataInicio";
     public static final String DATA_FIM = "dataFim";
-
+    public static final String EDITANDO_ID = "editandoId";
 }

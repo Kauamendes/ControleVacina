@@ -36,6 +36,9 @@ public class LoginController {
     public String sair(HttpSession session) {
         session.removeAttribute(NomeVariaveisSessao.CARGO);
         session.removeAttribute(NomeVariaveisSessao.USUARIO_LOGADO);
+        session.removeAttribute(NomeVariaveisSessao.VACINA);
+        session.removeAttribute(NomeVariaveisSessao.BAIRRO);
+        session.removeAttribute(NomeVariaveisSessao.EDITANDO_ID);
         return "redirect:/";
     }
 }
