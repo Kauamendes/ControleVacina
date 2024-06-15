@@ -1,16 +1,14 @@
-package com.example.demo.services;
+package com.example.demo.services.impl;
 
 import com.example.demo.mappers.VacinaBairroMapper;
 import com.example.demo.utils.NomeVariaveisSessao;
 import com.example.demo.domain.*;
-import com.example.demo.dto.RelatorioDto;
 import com.example.demo.dto.VacinaBairroDto;
 import com.example.demo.enums.CargoEnum;
 import com.example.demo.enums.DosagemEnum;
 import com.example.demo.repository.BairroRepository;
 import com.example.demo.repository.VacinaBairroRepository;
 import com.example.demo.repository.VacinaRepository;
-import com.example.demo.utils.DateUtils;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +18,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.List;
 
 @Service
-public class VacinaBairroService {
+public class VacinaBairroServiceImpl {
 
     private final VacinaBairroRepository vacinaBairroRepository;
 
@@ -35,10 +32,10 @@ public class VacinaBairroService {
     private final VacinaBairroMapper vacinaBairroMapper;
 
     @Autowired
-    public VacinaBairroService(VacinaBairroRepository vacinaBairroRepository,
-                               VacinaRepository vacinaRepository,
-                               BairroRepository bairroRepository,
-                               VacinaBairroMapper vacinaBairroMapper) {
+    public VacinaBairroServiceImpl(VacinaBairroRepository vacinaBairroRepository,
+                                   VacinaRepository vacinaRepository,
+                                   BairroRepository bairroRepository,
+                                   VacinaBairroMapper vacinaBairroMapper) {
         this.vacinaBairroRepository = vacinaBairroRepository;
         this.vacinaRepository = vacinaRepository;
         this.bairroRepository = bairroRepository;

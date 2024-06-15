@@ -14,7 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.domain.Usuario;
 import com.example.demo.dto.UsuarioDto;
-import com.example.demo.services.UsuarioService;
+import com.example.demo.services.impl.UsuarioServiceImpl;
 
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -24,7 +24,7 @@ import jakarta.servlet.http.HttpSession;
 public class UsuarioController {
 
     @Autowired
-    private UsuarioService service;
+    private UsuarioServiceImpl service;
 
     @PostMapping
     public String insert(UsuarioDto usuarioDto, HttpSession session) {

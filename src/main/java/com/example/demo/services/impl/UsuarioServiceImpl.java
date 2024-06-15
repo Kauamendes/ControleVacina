@@ -1,4 +1,4 @@
-package com.example.demo.services;
+package com.example.demo.services.impl;
 
 import com.example.demo.utils.NomeVariaveisSessao;
 import com.example.demo.domain.Usuario;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 
 @Service
-public class UsuarioService {
+public class UsuarioServiceImpl {
 
 
     private final UsuarioRepository usuarioRepository;
@@ -23,7 +23,7 @@ public class UsuarioService {
     private static final String REDIRECT_ALTERACAO_USUARIO = "redirect:/usuarios/new_senha";
 
     @Autowired
-    public UsuarioService(UsuarioRepository usuarioRepository) {
+    public UsuarioServiceImpl(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
     }
 

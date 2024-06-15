@@ -5,7 +5,7 @@ import com.example.demo.domain.Mensagem;
 import com.example.demo.dto.VacinaBairroDto;
 import com.example.demo.enums.DosagemEnum;
 import com.example.demo.repository.RelatorioRepository;
-import com.example.demo.services.VacinaBairroService;
+import com.example.demo.services.impl.VacinaBairroServiceImpl;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ import java.util.Objects;
 public class VacinaBairroController {
 
     @Autowired
-    private VacinaBairroService service;
+    private VacinaBairroServiceImpl service;
 
     @GetMapping
     public ModelAndView telaCadastroVacina(HttpSession session, HttpServletResponse response) throws SQLException, IOException {

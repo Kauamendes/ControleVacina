@@ -2,7 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.utils.NomeVariaveisSessao;
 import com.example.demo.dto.LoginDto;
-import com.example.demo.services.LoginService;
+import com.example.demo.services.impl.LoginServiceImpl;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class LoginController {
 
     @Autowired
-    private LoginService service;
+    private LoginServiceImpl service;
 
     @PostMapping
     public String login(LoginDto loginDto, HttpSession session) {
