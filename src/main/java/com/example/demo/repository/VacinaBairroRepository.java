@@ -30,4 +30,5 @@ public interface VacinaBairroRepository extends JpaRepository<VacinaBairro, Long
             @Param("dataInicio") Timestamp dataInicio,
             @Param("dataFim") Timestamp dataFim);
 
+    List<VacinaBairro> findAllByAplicadorOrderByCreatedDateDesc(String aplicador);
 }

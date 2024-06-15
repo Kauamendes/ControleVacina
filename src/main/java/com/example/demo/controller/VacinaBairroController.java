@@ -1,9 +1,7 @@
 package com.example.demo.controller;
 
-import com.example.demo.NomeVariaveisSessao;
+import com.example.demo.utils.NomeVariaveisSessao;
 import com.example.demo.domain.Mensagem;
-import com.example.demo.domain.VacinaBairro;
-import com.example.demo.dto.RelatorioDto;
 import com.example.demo.dto.VacinaBairroDto;
 import com.example.demo.enums.DosagemEnum;
 import com.example.demo.repository.RelatorioRepository;
@@ -20,7 +18,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.OffsetDateTime;
 import java.util.Objects;
 
 @Controller

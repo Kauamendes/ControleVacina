@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.NomeVariaveisSessao;
+import com.example.demo.utils.NomeVariaveisSessao;
 import com.example.demo.domain.Bairro;
 import com.example.demo.services.VacinaBairroService;
 import jakarta.servlet.http.HttpSession;

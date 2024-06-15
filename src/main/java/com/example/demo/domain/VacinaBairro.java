@@ -2,6 +2,7 @@ package com.example.demo.domain;
 
 import java.sql.Timestamp;
 
+import com.example.demo.enums.DosagemEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,7 +30,10 @@ public class VacinaBairro {
 
     private Timestamp dataAplicacao;
 
-    private String dose;
+    @Enumerated(EnumType.STRING)
+    private DosagemEnum dose;
+
     private String aplicador;
+
     private String observacoes;
 }

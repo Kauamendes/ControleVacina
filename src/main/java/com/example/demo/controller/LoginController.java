@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.NomeVariaveisSessao;
-import com.example.demo.dto.AlteracaoSenhaDto;
+import com.example.demo.utils.NomeVariaveisSessao;
 import com.example.demo.dto.LoginDto;
 import com.example.demo.services.LoginService;
 import jakarta.servlet.http.HttpSession;

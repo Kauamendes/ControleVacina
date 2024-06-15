@@ -1,8 +1,7 @@
 package com.example.demo.services;
 
-import com.example.demo.NomeVariaveisSessao;
+import com.example.demo.utils.NomeVariaveisSessao;
 import com.example.demo.domain.Usuario;
-import com.example.demo.dto.AlteracaoSenhaDto;
 import com.example.demo.dto.LoginDto;
 import com.example.demo.repository.UsuarioRepository;
 import jakarta.servlet.http.HttpSession;
@@ -41,7 +40,7 @@ public class LoginService {
 
     private void removerAtributosSessao(HttpSession session) {
         session.removeAttribute(NomeVariaveisSessao.MSG_ERRO);
-        session.removeAttribute(NomeVariaveisSessao.MSG_SALVO);
+        session.removeAttribute(NomeVariaveisSessao.MSG_SUCESSO);
         session.removeAttribute(NomeVariaveisSessao.VACINA);
         session.removeAttribute(NomeVariaveisSessao.BAIRRO);
     }

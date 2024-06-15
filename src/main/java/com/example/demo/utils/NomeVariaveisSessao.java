@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.utils;
 
 public class NomeVariaveisSessao {
 
@@ -7,7 +7,7 @@ public class NomeVariaveisSessao {
     public static final String BAIRRO_GEOLOCALIZACAO = "bairroGeolocalizacao";
     public static final String VACINA = "vacinaSelecionadaId";
     public static final String CARGO = "cargo";
-    public static final String MSG_SALVO = "msgSalvo";
+    public static final String MSG_SUCESSO = "msgSucesso";
     public static final String MSG_ERRO = "msgErro";
     public static final String DATA_INICIO = "dataInicio";
     public static final String DATA_FIM = "dataFim";

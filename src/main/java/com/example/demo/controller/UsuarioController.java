@@ -1,9 +1,8 @@
 package com.example.demo.controller;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
-import com.example.demo.NomeVariaveisSessao;
+import com.example.demo.utils.NomeVariaveisSessao;
 import com.example.demo.dto.AlteracaoSenhaDto;
 import com.example.demo.enums.CargoEnum;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,16 +36,16 @@ public class UsuarioController {
         service.verificaCargoSessao(session, response);
         ModelAndView mv = new ModelAndView("cadastro_usuario");
 
-        String msgSalva = (String) session.getAttribute(NomeVariaveisSessao.MSG_SALVO);
+        String msgSalva = (String) session.getAttribute(NomeVariaveisSessao.MSG_SUCESSO);
         String msgErro = (String) session.getAttribute(NomeVariaveisSessao.MSG_ERRO);
         CargoEnum cargo = (CargoEnum) session.getAttribute(NomeVariaveisSessao.CARGO);
 
-        if (msgSalva != null) mv.addObject(NomeVariaveisSessao.MSG_SALVO, msgSalva);
+        if (msgSalva != null) mv.addObject(NomeVariaveisSessao.MSG_SUCESSO, msgSalva);
         if (msgErro != null) mv.addObject(NomeVariaveisSessao.MSG_ERRO, msgErro);
         if (cargo != null) mv.addObject(NomeVariaveisSessao.CARGO, cargo.toString());
         mv.addObject("cargos", Usuario.getAllCargos());
 
-        session.removeAttribute(NomeVariaveisSessao.MSG_SALVO);
+        session.removeAttribute(NomeVariaveisSessao.MSG_SUCESSO);
         session.removeAttribute(NomeVariaveisSessao.MSG_ERRO);
         return mv;
     }
@@ -56,16 +55,16 @@ public class UsuarioController {
         service.verificaCargoSessao(session, response);
         ModelAndView mv = new ModelAndView("form_alteracao_senha");
 
-        String msgSalva = (String) session.getAttribute(NomeVariaveisSessao.MSG_SALVO);
+        String msgSalva = (String) session.getAttribute(NomeVariaveisSessao.MSG_SUCESSO);
         String msgErro = (String) session.getAttribute(NomeVariaveisSessao.MSG_ERRO);
         CargoEnum cargo = (CargoEnum) session.getAttribute(NomeVariaveisSessao.CARGO);
 
-        if (msgSalva != null) mv.addObject(NomeVariaveisSessao.MSG_SALVO, msgSalva);
+        if (msgSalva != null) mv.addObject(NomeVariaveisSessao.MSG_SUCESSO, msgSalva);
         if (msgErro != null) mv.addObject(NomeVariaveisSessao.MSG_ERRO, msgErro);
         if (cargo != null) mv.addObject(NomeVariaveisSessao.CARGO, cargo.toString());
         mv.addObject("cargos", Usuario.getAllCargos());
 
-        session.removeAttribute(NomeVariaveisSessao.MSG_SALVO);
+        session.removeAttribute(NomeVariaveisSessao.MSG_SUCESSO);
         session.removeAttribute(NomeVariaveisSessao.MSG_ERRO);
         return mv;
     }
