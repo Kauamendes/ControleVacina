@@ -205,6 +205,7 @@
                             <i class="bi bi-plus-circle"></i> Mostrar/Esconder
                         </button>
                     </div>
+
                     <hr class="border border-primary border-3 opacity-75 mt-2">
                     <div class="collapse mt-4" id="ultimosRegistros">
                         <div class="table-responsive">
@@ -217,7 +218,8 @@
                                     <th scope="col">Dose</th>
                                     <th scope="col">Aplicador</th>
                                     <th scope="col">Data</th>
-                                    <th scope="col">Editar</th>
+                                    <th scope="col">Observações</th>
+                                    <th scope="col">Ações</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -228,7 +230,11 @@
                                     <td th:text="${vacina.dose}"></td>
                                     <td th:text="${vacina.aplicador}"></td>
                                     <td th:text="${vacina.dataAplicacao}"></td>
-                                    <td><a th:href="@{/vacinas/editarTela/{vacinaId}(vacinaId=${vacina.id})}"><i class="bi bi-pencil"></i></a></td>
+                                    <td th:text="${vacina.observacoes}"></td>
+                                    <td>
+                                        <a th:href="@{/vacinas/editarTela/{vacinaId}(vacinaId=${vacina.id})}"><i class="bi bi-pencil" title="Editar"></i></a>
+                                        <a th:href="@{/vacinas/excluir/{vacinaId}(vacinaId=${vacina.id})}"><i class="bi bi-x-lg" title="Excluir"></i></a>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
