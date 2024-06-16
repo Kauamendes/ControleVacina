@@ -1,28 +1,34 @@
 package com.example.demo.services.impl;
 
+import com.example.demo.services.LoginService;
 import com.example.demo.utils.NomeVariaveisSessao;
 import com.example.demo.domain.Usuario;
 import com.example.demo.dto.LoginDto;
 import com.example.demo.repository.UsuarioRepository;
+import jakarta.persistence.Cacheable;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class LoginServiceImpl {
+public class LoginServiceImpl implements LoginService {
+
+    private final UsuarioRepository usuarioRepository;
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    public LoginServiceImpl(UsuarioRepository usuarioRepository) {
+        this.usuarioRepository = usuarioRepository;
+    }
 
-    public String findByAccess(LoginDto login, HttpSession session) {
+    public String logar(LoginDto login, HttpSession session) {
         Usuario usuarioLogado = usuarioRepository.findByLoginIgnoreCaseAndSenha(login.getLogin(), login.getSenha());
         if (usuarioLogado == null) {
             session.setAttribute(NomeVariaveisSessao.MSG_ERRO, "Usuário ou senha inválidos!");
             return "redirect:/";
         }
 
-        session.setAttribute(NomeVariaveisSessao.CARGO, usuario.getCargo());
-        session.setAttribute(NomeVariaveisSessao.USUARIO_LOGADO, usuario.getLogin());
+        session.setAttribute(NomeVariaveisSessao.CARGO, usuarioLogado.getCargo());
+        session.setAttribute(NomeVariaveisSessao.USUARIO_LOGADO, usuarioLogado.getLogin());
         removerAtributosSessao(session);
         if (usuarioLogado.isAplicador()) {
             return "redirect:/vacinas";
@@ -34,8 +40,8 @@ public class LoginServiceImpl {
     }
 
     @Cacheable("usuarios")
-    private Usuario buscarPorLogin(LoginDto login) {
-        return usuarioRepository.findByAccess(login);
+    private Usuario buscarPorLogin(String login) {
+        return usuarioRepository.findByLogin(login);
     }
 
     private void removerAtributosSessao(HttpSession session) {

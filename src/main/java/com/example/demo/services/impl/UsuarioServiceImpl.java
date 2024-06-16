@@ -1,5 +1,6 @@
 package com.example.demo.services.impl;
 
+import com.example.demo.services.UsuarioService;
 import com.example.demo.utils.NomeVariaveisSessao;
 import com.example.demo.domain.Usuario;
 import com.example.demo.dto.AlteracaoSenhaDto;
@@ -15,8 +16,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 
 @Service
-public class UsuarioServiceImpl {
-
+public class UsuarioServiceImpl implements UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
 
@@ -28,7 +28,7 @@ public class UsuarioServiceImpl {
     }
 
     @CacheEvict("usuarios")
-    public String insert(UsuarioDto usuarioDto, HttpSession session) {
+    public String salvar(UsuarioDto usuarioDto, HttpSession session) {
         Usuario usuarioSalvo = usuarioRepository.findByLogin(usuarioDto.getLogin());
         if (usuarioSalvo != null) {
             session.setAttribute(NomeVariaveisSessao.MSG_ERRO, "Já existe um usuário com esse login!");
@@ -62,7 +62,7 @@ public class UsuarioServiceImpl {
     }
 
     @CacheEvict("usuarios")
-    public String saveNewSenha(AlteracaoSenhaDto loginUpdateDto, HttpSession session) {
+    public String alterarSenha(AlteracaoSenhaDto loginUpdateDto, HttpSession session) {
         Usuario usuario = usuarioRepository.findByLogin(loginUpdateDto.getLogin_update());
         if (usuario == null) {
             session.setAttribute(NomeVariaveisSessao.MSG_ERRO, "usuario não encontrado!");

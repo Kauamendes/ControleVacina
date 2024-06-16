@@ -1,4 +1,4 @@
 package com.example.demo.services;
 
-public class VacinaService {
+public interface VacinaService {
 }

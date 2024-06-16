@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.services.VacinaBairroService;
 import com.example.demo.utils.NomeVariaveisSessao;
 import com.example.demo.domain.Mensagem;
 import com.example.demo.dto.VacinaBairroDto;
@@ -24,21 +25,25 @@ import java.util.Objects;
 @RequestMapping("/vacinas")
 public class VacinaBairroController {
 
+    private final VacinaBairroService vacinaBairroService;
+
     @Autowired
-    private VacinaBairroServiceImpl service;
+    public VacinaBairroController(VacinaBairroService vacinaBairroService) {
+        this.vacinaBairroService = vacinaBairroService;
+    }
 
     @GetMapping
     public ModelAndView telaCadastroVacina(HttpSession session, HttpServletResponse response) throws SQLException, IOException {
-        service.verificaCargoSessao(session, response);
+        vacinaBairroService.verificaCargoSessao(session, response);
         String usuarioLogado = (String) session.getAttribute(NomeVariaveisSessao.USUARIO_LOGADO);
         
         ModelAndView mv = new ModelAndView("cadastro_vacina");
         mv.addObject("bairros", service.listarBairros());
         mv.addObject("vacinas", service.listarVacinas());
         mv.addObject("dosagens", DosagemEnum.values());
-        mv.addObject("vacinasBairro", service.listarUltimosCadastradosPorUsuario(usuarioLogado));
+        mv.addObject("vacinasBairro", vacinaBairroService.listarUltimosCadastradosPorUsuario(usuarioLogado));
 
-        return service.atualizarModelAndViewComVariaveisSessao(mv, session);
+        return vacinaBairroService.atualizarModelAndViewComVariaveisSessao(mv, session);
     }
 
     @PostMapping
@@ -48,25 +53,25 @@ public class VacinaBairroController {
         String usuarioLogado = (String) session.getAttribute(NomeVariaveisSessao.USUARIO_LOGADO);
         Long editandoId = (Long) session.getAttribute(NomeVariaveisSessao.EDITANDO_ID);
 
-        service.atualizarVacinaEBairroSessao(vacinaBairroDto, vacinaSessaoId, bairroSessaoId, session);
+        vacinaBairroService.atualizarVacinaEBairroSessao(vacinaBairroDto, vacinaSessaoId, bairroSessaoId, session);
         vacinaBairroDto.setAplicador(usuarioLogado);
 
         if (Objects.nonNull(editandoId)) {
             vacinaBairroDto.setId(editandoId);
-            Mensagem mensagem = service.editar(vacinaBairroDto);
+            Mensagem mensagem = vacinaBairroService.editar(vacinaBairroDto);
             session.removeAttribute(NomeVariaveisSessao.EDITANDO_ID);
             session.setAttribute(mensagem.getNomeVariavelSessao(), mensagem.getMensagem());
             return "redirect:/vacinas";
         }
 
-        Mensagem mensagem = service.insert(vacinaBairroDto);
+        Mensagem mensagem = vacinaBairroService.salvar(vacinaBairroDto);
         session.setAttribute(mensagem.getNomeVariavelSessao(), mensagem.getMensagem());
         return "redirect:/vacinas";
     }
 
     @GetMapping("/editarTela/{id}")
     public String editarTela(@PathVariable("id") String id, HttpSession session) {
-        VacinaBairroDto vacinaSalva = service.buscarVacinaPorId(Long.parseLong(id));
+        VacinaBairroDto vacinaSalva = vacinaBairroService.buscarPorId(Long.parseLong(id));
         if (Objects.nonNull(vacinaSalva)) {
             session.setAttribute(NomeVariaveisSessao.EDITANDO_ID, vacinaSalva.getId());
             session.setAttribute(NomeVariaveisSessao.VACINA, Long.parseLong(vacinaSalva.getVacina()));
