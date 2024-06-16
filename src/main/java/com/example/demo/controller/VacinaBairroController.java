@@ -31,7 +31,7 @@ public class VacinaBairroController {
     public ModelAndView telaCadastroVacina(HttpSession session, HttpServletResponse response) throws SQLException, IOException {
         service.verificaCargoSessao(session, response);
         String usuarioLogado = (String) session.getAttribute(NomeVariaveisSessao.USUARIO_LOGADO);
-        
+
         ModelAndView mv = new ModelAndView("cadastro_vacina");
         mv.addObject("bairros", service.listarBairros());
         mv.addObject("vacinas", service.listarVacinas());
