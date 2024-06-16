@@ -196,4 +196,20 @@ public class VacinaBairroRepository {
             conexao.desconectar(conn);
         }
     }
+
+    public void excluirPorId(Long id) {
+        Conexao conexao = new Conexao();
+        Connection conn = conexao.conectar();
+
+        String query = "DELETE FROM VACINA_BAIRRO WHERE ID=?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setObject(1, id);
+            stmt.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            conexao.desconectar(conn);
+        }
+    }
 }

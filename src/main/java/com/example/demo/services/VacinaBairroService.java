@@ -155,4 +155,9 @@ public class VacinaBairroService {
         vacinaBairroRepository.update(vacinaBairro);
         return Mensagem.builder().mensagem("Vacina editada com sucesso!").nomeVariavelSessao(NomeVariaveisSessao.MSG_SALVO).build();
     }
+
+    @CacheEvict(value="ultimasVacinasCadastradasPorUsuario", allEntries=true)
+    public void excluirPorId(Long id) {
+        vacinaBairroRepository.excluirPorId(id);
+    }
 }

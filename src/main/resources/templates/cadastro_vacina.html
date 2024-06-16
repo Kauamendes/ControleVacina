@@ -232,6 +232,7 @@
                                     <td th:text="${vacina.observacoes}"></td>
                                     <td>
                                         <a th:href="@{/vacinas/editarTela/{vacinaId}(vacinaId=${vacina.id})}"><i class="bi bi-pencil" title="Editar"></i></a>
+                                        <a th:href="@{/vacinas/excluir/{vacinaId}(vacinaId=${vacina.id})}"><i class="bi bi-x-lg" title="Excluir"></i></a>
                                     </td>
                                 </tr>
                                 </tbody>
