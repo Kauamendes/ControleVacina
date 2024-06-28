@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import com.example.demo.services.LoginService;
+import com.example.demo.services.UsuarioService;
 import com.example.demo.utils.NomeVariaveisSessao;
 import com.example.demo.dto.LoginDto;
 import com.example.demo.services.impl.LoginServiceImpl;
@@ -15,12 +17,15 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/")
 public class LoginController {
 
-    @Autowired
-    private LoginServiceImpl service;
+    private final LoginService loginService;
+
+    public LoginController(LoginService loginService) {
+        this.loginService = loginService;
+    }
 
     @PostMapping
     public String login(LoginDto loginDto, HttpSession session) {
-        return service.findByAccess(loginDto, session);
+        return loginService.logar(loginDto, session);
     }
 
     @GetMapping

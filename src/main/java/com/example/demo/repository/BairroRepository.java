@@ -4,9 +4,11 @@ import com.example.demo.domain.Bairro;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface BairroRepository extends JpaRepository<Bairro, Long> {
 
-    Bairro findByNome(String nome);
+    Optional<Bairro> findByNome(String nome);
 
 }

@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import java.io.IOException;
 
+import com.example.demo.services.UsuarioService;
 import com.example.demo.utils.NomeVariaveisSessao;
 import com.example.demo.dto.AlteracaoSenhaDto;
 import com.example.demo.enums.CargoEnum;
@@ -23,17 +24,20 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping("/usuarios")
 public class UsuarioController {
 
-    @Autowired
-    private UsuarioServiceImpl service;
+    private final UsuarioService usuarioService;
+
+    public UsuarioController(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
+    }
 
     @PostMapping
     public String insert(UsuarioDto usuarioDto, HttpSession session) {
-        return service.insert(usuarioDto, session);
+        return usuarioService.salvar(usuarioDto, session);
     }
 
     @GetMapping
     public ModelAndView telaCadastroUsuario(HttpSession session, HttpServletResponse response) throws IOException {
-        service.verificaCargoSessao(session, response);
+        usuarioService.verificaCargoSessao(session, response);
         ModelAndView mv = new ModelAndView("cadastro_usuario");
 
         String msgSalva = (String) session.getAttribute(NomeVariaveisSessao.MSG_SUCESSO);
@@ -52,7 +56,7 @@ public class UsuarioController {
 
     @GetMapping("/new_senha")
     public ModelAndView telaAlteracaoUsuario(HttpSession session, HttpServletResponse response) throws IOException {
-        service.verificaCargoSessao(session, response);
+        usuarioService.verificaCargoSessao(session, response);
         ModelAndView mv = new ModelAndView("form_alteracao_senha");
 
         String msgSalva = (String) session.getAttribute(NomeVariaveisSessao.MSG_SUCESSO);
@@ -71,6 +75,6 @@ public class UsuarioController {
 
     @PostMapping("/new_senha")
     public String saveNewSenha(AlteracaoSenhaDto loginUpdateDto, HttpSession session) {
-       return service.saveNewSenha(loginUpdateDto, session);
+       return usuarioService.alterarSenha(loginUpdateDto, session);
     }
 }

@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.services.BairroService;
 import com.example.demo.utils.NomeVariaveisSessao;
 import com.example.demo.domain.Bairro;
 import com.example.demo.services.impl.VacinaBairroServiceImpl;
@@ -15,14 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class GeolocalizacaoController {
 
     @Autowired
-    private VacinaBairroServiceImpl vacinaBairroServiceImpl;
+    private BairroService bairroService;
 
     @GetMapping("/geolocalizacao/{nomeBairro}")
     public boolean obterBairro(@PathVariable String nomeBairro, HttpSession session) throws Exception {
         if (nomeBairro.equalsIgnoreCase("undefined")) return false;
         Bairro bairroNaSessao = (Bairro) session.getAttribute(NomeVariaveisSessao.BAIRRO_GEOLOCALIZACAO);
         if (bairroNaSessao == null || !bairroNaSessao.getNome().equalsIgnoreCase(nomeBairro)) {
-            Bairro bairro = vacinaBairroServiceImpl.buscarBairroPorNome(nomeBairro);
+            Bairro bairro = bairroService.buscarPorNome(nomeBairro);
             if (bairro == null || bairro.getId() == null) {
                 throw new Exception("Bairro não encontrado");
             }

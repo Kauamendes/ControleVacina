@@ -1,5 +1,9 @@
 package com.example.demo.controller;
 
+import com.example.demo.enums.CargoEnum;
+import com.example.demo.services.BairroService;
+import com.example.demo.services.VacinaBairroService;
+import com.example.demo.services.VacinaService;
 import com.example.demo.utils.NomeVariaveisSessao;
 import com.example.demo.domain.Usuario;
 import com.example.demo.dto.RelatorioDto;
@@ -29,11 +33,17 @@ import java.util.Objects;
 @RequestMapping("/relatorios")
 public class RelatorioController {
 
-    @Autowired
-    private RelatorioRepository relatorioRepository;
+    private final VacinaBairroService vacinaBairroService;
+    private final VacinaService vacinaService;
+    private final BairroService bairroService;
 
-    @Autowired
-    private VacinaBairroServiceImpl vacinaBairroServiceImpl;
+    public RelatorioController(VacinaBairroService vacinaBairroService,
+                               VacinaService vacinaService,
+                               BairroService bairroService) {
+        this.vacinaBairroService = vacinaBairroService;
+        this.vacinaService = vacinaService;
+        this.bairroService = bairroService;
+    }
 
     @GetMapping
     public ModelAndView relatorio(HttpSession session, HttpServletResponse response) throws IOException {
@@ -45,8 +55,8 @@ public class RelatorioController {
             response.sendRedirect("/vacinas");
         }
         mv.addObject(NomeVariaveisSessao.CARGO, cargo);
-        mv.addObject("bairros", vacinaBairroServiceImpl.listarBairros());
-        mv.addObject("vacinas", vacinaBairroServiceImpl.listarVacinas());
+        mv.addObject("bairros", bairroService.listar());
+        mv.addObject("vacinas", vacinaService.listar());
         return mv;
     }
 
@@ -57,9 +67,9 @@ public class RelatorioController {
         CargoEnum cargo = (CargoEnum) session.getAttribute(NomeVariaveisSessao.CARGO);
         if (Objects.nonNull(cargo)) mv.addObject(NomeVariaveisSessao.CARGO, cargo.toString());
 
-        mv.addObject("bairros", vacinaBairroServiceImpl.listarBairros());
-        mv.addObject("vacinas", vacinaBairroServiceImpl.listarVacinas());
-        mv.addObject("vacinasBairros", relatorioRepository.buscar(relatorioDto));
+        mv.addObject("bairros", bairroService.listar());
+        mv.addObject("vacinas", vacinaService.listar());
+        mv.addObject("vacinasBairros", vacinaBairroService.buscar(relatorioDto));
 
         if (!relatorioDto.getBairro().isBlank())
             mv.addObject(NomeVariaveisSessao.BAIRRO, Long.parseLong(relatorioDto.getBairro()));
@@ -83,8 +93,8 @@ public class RelatorioController {
             response.sendRedirect("/vacinas");
         }
         mv.addObject(NomeVariaveisSessao.CARGO, cargo);
-        mv.addObject("bairros", vacinaBairroServiceImpl.listarBairros());
-        mv.addObject("vacinas", vacinaBairroServiceImpl.listarVacinas());
+        mv.addObject("bairros", bairroService.listar());
+        mv.addObject("vacinas", vacinaService.listar());
         return mv;
     }
 
@@ -98,9 +108,9 @@ public class RelatorioController {
     @PostMapping("/listar")
     public ModelAndView listar(RelatorioDto relatorioDto, HttpSession session) throws SQLException {
         ModelAndView mv = new ModelAndView("listagemVacina");
-        mv.addObject("bairros", vacinaBairroServiceImpl.listarBairros());
-        mv.addObject("vacinas", vacinaBairroServiceImpl.listarVacinas());
-        mv.addObject("vacinasBairros", relatorioRepository.listar(relatorioDto));
+        mv.addObject("bairros", bairroService.listar());
+        mv.addObject("vacinas", vacinaService.listar());
+        mv.addObject("vacinasBairros", vacinaBairroService.listar(relatorioDto));
 
         String cargo = (String) session.getAttribute(NomeVariaveisSessao.CARGO);
         if (Objects.nonNull(cargo)) mv.addObject(NomeVariaveisSessao.CARGO, cargo);
@@ -130,7 +140,7 @@ public class RelatorioController {
         headerRow.createCell(1).setCellValue("Vacina");
         headerRow.createCell(2).setCellValue("Quantidade");
 
-        List<VacinaBairroDto> relatorios = relatorioRepository.buscar(dto);
+        List<VacinaBairroDto> relatorios = vacinaBairroService.buscar(dto);
 
         int rowIdx = 1;
         for (VacinaBairroDto relatorio : relatorios) {
@@ -161,7 +171,7 @@ public class RelatorioController {
         headerRow.createCell(4).setCellValue("Data aplicada");
         headerRow.createCell(5).setCellValue("Observações");
 
-        List<VacinaBairroDto> relatorios = relatorioRepository.listar(dto);
+        List<VacinaBairroDto> relatorios = vacinaBairroService.listar(dto);
 
         int rowIdx = 1;
         for (VacinaBairroDto relatorio : relatorios) {

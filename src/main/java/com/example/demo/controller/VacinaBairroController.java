@@ -1,12 +1,15 @@
 package com.example.demo.controller;
 
+import com.example.demo.services.BairroService;
 import com.example.demo.services.VacinaBairroService;
+import com.example.demo.services.VacinaService;
 import com.example.demo.utils.NomeVariaveisSessao;
 import com.example.demo.domain.Mensagem;
 import com.example.demo.dto.VacinaBairroDto;
 import com.example.demo.enums.DosagemEnum;
 import com.example.demo.repository.RelatorioRepository;
 import com.example.demo.services.impl.VacinaBairroServiceImpl;
+import com.example.demo.utils.Sessao;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,24 +26,30 @@ import java.util.Objects;
 public class VacinaBairroController {
 
     private final VacinaBairroService vacinaBairroService;
+    private final BairroService bairroService;
+    private final VacinaService vacinaService;
 
     @Autowired
-    public VacinaBairroController(VacinaBairroService vacinaBairroService) {
+    public VacinaBairroController(VacinaBairroService vacinaBairroService,
+                                  BairroService bairroService,
+                                  VacinaService vacinaService) {
         this.vacinaBairroService = vacinaBairroService;
+        this.bairroService = bairroService;
+        this.vacinaService = vacinaService;
     }
 
     @GetMapping
-    public ModelAndView telaCadastroVacina(HttpSession session, HttpServletResponse response) throws SQLException, IOException {
-        vacinaBairroService.verificaCargoSessao(session, response);
+    public ModelAndView telaCadastroVacina(HttpSession session, HttpServletResponse response) throws IOException {
+        Sessao.verificaCargoSessao(session, response);
         String usuarioLogado = (String) session.getAttribute(NomeVariaveisSessao.USUARIO_LOGADO);
 
         ModelAndView mv = new ModelAndView("cadastro_vacina");
-        mv.addObject("bairros", service.listarBairros());
-        mv.addObject("vacinas", service.listarVacinas());
+        mv.addObject("bairros", bairroService.listar());
+        mv.addObject("vacinas", vacinaService.listar());
         mv.addObject("dosagens", DosagemEnum.values());
         mv.addObject("vacinasBairro", vacinaBairroService.listarUltimosCadastradosPorUsuario(usuarioLogado));
 
-        return vacinaBairroService.atualizarModelAndViewComVariaveisSessao(mv, session);
+        return Sessao.atualizarModelAndViewComVariaveisSessao(mv, session);
     }
 
     @PostMapping
@@ -50,12 +59,12 @@ public class VacinaBairroController {
         String usuarioLogado = (String) session.getAttribute(NomeVariaveisSessao.USUARIO_LOGADO);
         Long editandoId = (Long) session.getAttribute(NomeVariaveisSessao.EDITANDO_ID);
 
-        vacinaBairroService.atualizarVacinaEBairroSessao(vacinaBairroDto, vacinaSessaoId, bairroSessaoId, session);
+        Sessao.atualizarVacinaEBairroSessao(vacinaBairroDto, vacinaSessaoId, bairroSessaoId, session);
         vacinaBairroDto.setAplicador(usuarioLogado);
 
         if (Objects.nonNull(editandoId)) {
             vacinaBairroDto.setId(editandoId);
-            Mensagem mensagem = vacinaBairroService.editar(vacinaBairroDto);
+            Mensagem mensagem = vacinaBairroService.atualizar(vacinaBairroDto);
             session.removeAttribute(NomeVariaveisSessao.EDITANDO_ID);
             session.setAttribute(mensagem.getNomeVariavelSessao(), mensagem.getMensagem());
             return "redirect:/vacinas";
@@ -79,7 +88,7 @@ public class VacinaBairroController {
 
     @GetMapping("/excluir/{id}")
     public String excluir(@PathVariable("id") String id) {
-        service.excluirPorId(Long.parseLong(id));
+        vacinaBairroService.excluirPorId(Long.parseLong(id));
         return "redirect:/vacinas";
     }
 }
