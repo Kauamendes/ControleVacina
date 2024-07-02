@@ -1,29 +1,26 @@
-# Etapa de build
 FROM ubuntu:latest AS build
 
-# Atualiza os pacotes e instala o JDK 17 e o Maven
-RUN apt-get update && apt-get install -y openjdk-17-jdk maven
+RUN apt-get update && apt-get install -y openjdk-17-jdk maven postgresql-client
 
-# Define o diretório de trabalho
 WORKDIR /app
 
-# Copia o código-fonte para a imagem
 COPY . .
 
-# Compila o projeto e gera o arquivo JAR
 RUN mvn clean install
 
-# Etapa final
 FROM openjdk:17-jdk-slim
 
-# Expõe a porta 8080
-EXPOSE 8080
+RUN apt-get update && apt-get install -y postgresql
 
-# Define o diretório de trabalho
+EXPOSE 8080 5432
+
 WORKDIR /app
 
-# Copia o arquivo JAR gerado na etapa de build para a imagem final
 COPY --from=build /app/target/demo-1.0.0.jar app.jar
 
-# Define o ponto de entrada e ativa o perfil 'prod'
-ENTRYPOINT [ "java", "-jar", "app.jar", "--spring.profiles.active=prod" ]
+RUN service postgresql start && \
+    sudo -u postgres psql -c "CREATE USER cad_vacinas_senac_user WITH ENCRYPTED PASSWORD 'NN0ZJ14TXeNj3lWvAXhqjW8I5vjmzMj2';" && \
+    sudo -u postgres psql -c "CREATE DATABASE cadvacinas WITH OWNER cad_vacinas_senac_user;"
+
+ENTRYPOINT service postgresql start && \
+           java -jar app.jar --spring.profiles.active=prod
