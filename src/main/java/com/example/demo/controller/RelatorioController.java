@@ -5,6 +5,7 @@ import com.example.demo.domain.Usuario;
 import com.example.demo.domain.VacinaBairro;
 import com.example.demo.dto.RelatorioDto;
 import com.example.demo.dto.VacinaBairroDto;
+import com.example.demo.enums.DosagemEnum;
 import com.example.demo.repository.BairroRepository;
 import com.example.demo.repository.RelatorioRepository;
 import com.example.demo.repository.VacinaRepository;
@@ -30,6 +31,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -55,6 +57,7 @@ public class RelatorioController {
         mv.addObject(NomeVariaveisSessao.CARGO, cargo);
         mv.addObject("bairros", vacinaBairroService.listarBairros());
         mv.addObject("vacinas", vacinaBairroService.listarVacinas());
+        mv.addObject("dosagens",  Arrays.stream(DosagemEnum.values()).toList());
         return mv;
     }
 
@@ -65,14 +68,23 @@ public class RelatorioController {
         String cargo = (String) session.getAttribute(NomeVariaveisSessao.CARGO);
         if (Objects.nonNull(cargo)) mv.addObject(NomeVariaveisSessao.CARGO, cargo);
 
+        List<VacinaBairroDto> vacinas = relatorioRepository.buscar(relatorioDto);
+        mv.addObject("unicaDose", vacinas.stream().filter(VacinaBairroDto::isUnica).toList());
+        mv.addObject("primeiraDose", vacinas.stream().filter(VacinaBairroDto::isPrimeiraDose).toList());
+        mv.addObject("segundaaDose", vacinas.stream().filter(VacinaBairroDto::isSegundaDose).toList());
+        mv.addObject("terceiraDose", vacinas.stream().filter(VacinaBairroDto::isTerceiraDose).toList());
+        mv.addObject("reforcoDose", vacinas.stream().filter(VacinaBairroDto::isReforco).toList());
+
         mv.addObject("bairros", vacinaBairroService.listarBairros());
         mv.addObject("vacinas", vacinaBairroService.listarVacinas());
-        mv.addObject("vacinasBairros", relatorioRepository.buscar(relatorioDto));
+        mv.addObject("dosagens",  Arrays.stream(DosagemEnum.values()).toList());
 
         if (!relatorioDto.getBairro().isBlank())
             mv.addObject(NomeVariaveisSessao.BAIRRO, Long.parseLong(relatorioDto.getBairro()));
         if (!relatorioDto.getVacina().isBlank())
             mv.addObject(NomeVariaveisSessao.VACINA, Long.parseLong(relatorioDto.getVacina()));
+        if (!relatorioDto.getDosagem().isBlank())
+            mv.addObject(NomeVariaveisSessao.DOSAGEM, Long.parseLong(relatorioDto.getDosagem()));
         if (!relatorioDto.getDataInicio().isBlank())
             mv.addObject(NomeVariaveisSessao.DATA_INICIO, LocalDateTime.parse(relatorioDto.getDataInicio()));
         if (!relatorioDto.getDataFim().isBlank())
@@ -93,6 +105,7 @@ public class RelatorioController {
         mv.addObject(NomeVariaveisSessao.CARGO, cargo);
         mv.addObject("bairros", vacinaBairroService.listarBairros());
         mv.addObject("vacinas", vacinaBairroService.listarVacinas());
+        mv.addObject("dosagens",  Arrays.stream(DosagemEnum.values()).toList());
         return mv;
     }
 
@@ -102,6 +115,7 @@ public class RelatorioController {
         mv.addObject("bairros", vacinaBairroService.listarBairros());
         mv.addObject("vacinas", vacinaBairroService.listarVacinas());
         mv.addObject("vacinasBairros", relatorioRepository.listar(relatorioDto));
+        mv.addObject("dosagens",  Arrays.stream(DosagemEnum.values()).toList());
 
         String cargo = (String) session.getAttribute(NomeVariaveisSessao.CARGO);
         if (Objects.nonNull(cargo)) mv.addObject(NomeVariaveisSessao.CARGO, cargo);
@@ -114,6 +128,9 @@ public class RelatorioController {
             mv.addObject(NomeVariaveisSessao.DATA_INICIO, LocalDateTime.parse(relatorioDto.getDataInicio()));
         if (!relatorioDto.getDataFim().isBlank())
             mv.addObject(NomeVariaveisSessao.DATA_FIM, LocalDateTime.parse(relatorioDto.getDataFim()));
+        if (!relatorioDto.getDosagem().isBlank())
+            mv.addObject(NomeVariaveisSessao.DOSAGEM, Long.parseLong(relatorioDto.getDosagem()));
+
         return mv;
     }
 

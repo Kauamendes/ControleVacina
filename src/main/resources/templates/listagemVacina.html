@@ -24,16 +24,29 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <label for="bairro">Bairro:</label>
-            <select class="form-control" id="bairro" name="bairro">
-                <option value="">Selecione um bairro</option>
-                <th:block th:each="bairro : ${bairros}">
-                    <option th:selected="${bairroSelecionadoId != null && bairroSelecionadoId == bairro.id}"
-                            th:text="${bairro.nome}"
-                            th:value="${bairro.id}"></option>
-                </th:block>
-            </select>
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label for="bairro">Bairro:</label>
+                <select class="form-control" id="bairro" name="bairro">
+                    <option value="">Selecione um bairro</option>
+                    <th:block th:each="bairro : ${bairros}">
+                        <option th:selected="${bairroSelecionadoId != null && bairroSelecionadoId == bairro.id}"
+                                th:text="${bairro.nome}"
+                                th:value="${bairro.id}"></option>
+                    </th:block>
+                </select>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="bairro">Dosagem:</label>
+                <select class="form-control" id="dosagem" name="dosagem">
+                    <option value="">Selecione uma dosagem</option>
+                    <th:block th:each="dosagem : ${dosagens}">
+                        <option th:selected="${doseSelecionada != null && doseSelecionada == dosagem.valor}"
+                                th:text="${dosagem.nome}"
+                                th:value="${dosagem.valor}"></option>
+                    </th:block>
+                </select>
+            </div>
         </div>
 
         <div class="form-group">

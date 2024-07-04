@@ -84,11 +84,13 @@ public class VacinaBairroService {
         Long bairroSessaoId = (Long) session.getAttribute(NomeVariaveisSessao.BAIRRO);
         Long editandoId = (Long) session.getAttribute(NomeVariaveisSessao.EDITANDO_ID);
         String cargo = (String) session.getAttribute(NomeVariaveisSessao.CARGO);
+        String observacoes = (String) session.getAttribute(NomeVariaveisSessao.OBSERVACOES);
 
         if (vacinaSessaoId != null) mv.addObject(NomeVariaveisSessao.VACINA, vacinaSessaoId);
         if (bairroSessaoId != null) mv.addObject(NomeVariaveisSessao.BAIRRO, bairroSessaoId);
         if (cargo != null) mv.addObject(NomeVariaveisSessao.CARGO, cargo);
         if (editandoId != null) mv.addObject(NomeVariaveisSessao.EDITANDO_ID, cargo);
+        if (observacoes != null) mv.addObject(NomeVariaveisSessao.OBSERVACOES, observacoes);
 
         String msgSalvar = (String) session.getAttribute(NomeVariaveisSessao.MSG_SALVO);
         String msgErro = (String) session.getAttribute(NomeVariaveisSessao.MSG_ERRO);
@@ -150,6 +152,7 @@ public class VacinaBairroService {
                 .vacinaId(Long.valueOf(vacina))
                 .dose(vacinaBairroDto.getDose())
                 .aplicador(vacinaBairroDto.getAplicador())
+                .observacoes(vacinaBairroDto.getObservacoes())
                 .build();
 
         vacinaBairroRepository.update(vacinaBairro);

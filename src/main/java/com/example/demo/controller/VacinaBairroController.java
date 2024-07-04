@@ -71,6 +71,7 @@ public class VacinaBairroController {
             session.setAttribute(NomeVariaveisSessao.EDITANDO_ID, vacinaSalva.getId());
             session.setAttribute(NomeVariaveisSessao.VACINA, Long.parseLong(vacinaSalva.getVacina()));
             session.setAttribute(NomeVariaveisSessao.BAIRRO, Long.parseLong(vacinaSalva.getBairro()));
+            session.setAttribute(NomeVariaveisSessao.OBSERVACOES, vacinaSalva.getObservacoes());
         }
         return "redirect:/vacinas";
     }

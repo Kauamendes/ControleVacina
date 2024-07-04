@@ -21,18 +21,18 @@ public class RelatorioRepository {
         List<VacinaBairroDto> vacinas = new ArrayList<>();
         List<Object> params = new ArrayList<>();
 
-        StringBuilder query = new StringBuilder("SELECT v.NOME AS vacina, b.NOME AS bairro, count(*) as quantidade FROM VACINA_BAIRRO vb");
+        StringBuilder query = new StringBuilder("SELECT v.NOME AS vacina, b.NOME AS bairro, vb.dose as dose, count(*) as quantidade FROM VACINA_BAIRRO vb");
         query.append(" INNER JOIN BAIRRO b ON b.id = vb.BAIRRO_ID");
         query.append(" INNER JOIN VACINA v ON v.id = vb.VACINA_ID");
 
         StringBuilder whereClause = new StringBuilder();
 
-        if (relatorioDto.getBairro() != null && !relatorioDto.getBairro().equals("")) {
+        if (relatorioDto.getBairro() != null && !relatorioDto.getBairro().isEmpty()) {
             whereClause.append(" WHERE b.id = ?");
             params.add(Long.parseLong(relatorioDto.getBairro()));
         }
 
-        if (relatorioDto.getVacina() != null && !relatorioDto.getVacina().equals("")) {
+        if (relatorioDto.getVacina() != null && !relatorioDto.getVacina().isEmpty()) {
             if (whereClause.isEmpty()) {
                 whereClause.append(" WHERE v.id = ?");
             } else {
@@ -41,7 +41,7 @@ public class RelatorioRepository {
             params.add(Long.parseLong(relatorioDto.getVacina()));
         }
 
-        if (relatorioDto.getDataInicio() != null && !relatorioDto.getDataInicio().equals("")) {
+        if (relatorioDto.getDataInicio() != null && !relatorioDto.getDataInicio().isEmpty()) {
             if (whereClause.isEmpty()) {
                 whereClause.append(" WHERE vb.DATA_APLICACAO >= ?");
             } else {
@@ -50,7 +50,7 @@ public class RelatorioRepository {
             params.add(DateUtils.parseStringToTimestamp(relatorioDto.getDataInicio()));
         }
 
-        if (relatorioDto.getDataFim() != null && !relatorioDto.getDataFim().equals("")) {
+        if (relatorioDto.getDataFim() != null && !relatorioDto.getDataFim().isEmpty()) {
             if (whereClause.isEmpty()) {
                 whereClause.append(" WHERE vb.DATA_APLICACAO <= ?");
             } else {
@@ -59,8 +59,17 @@ public class RelatorioRepository {
             params.add(DateUtils.parseStringToTimestamp(relatorioDto.getDataFim()));
         }
 
+        if (relatorioDto.getDosagem() != null && !relatorioDto.getDosagem().isEmpty()) {
+            if (whereClause.isEmpty()) {
+                whereClause.append(" WHERE vb.DOSE = ?");
+            } else {
+                whereClause.append(" AND vb.DOSE = ?");
+            }
+            params.add(relatorioDto.getDosagem());
+        }
+
         String finalQuery = query + whereClause.toString();
-        finalQuery += " GROUP BY v.NOME, b.NOME ORDER BY v.NOME";
+        finalQuery += " GROUP BY v.NOME, b.NOME, vb.dose ORDER BY v.NOME";
 
         try (PreparedStatement stmt = conn.prepareStatement(finalQuery)) {
             for (int i = 0; i < params.size(); i++) {
@@ -74,6 +83,7 @@ public class RelatorioRepository {
                         .vacina(resultSet.getString("vacina"))
                         .bairro(resultSet.getString("bairro"))
                         .quantidade(resultSet.getInt("quantidade"))
+                        .dose(resultSet.getString("dose"))
                         .build());
             }
         } finally {
@@ -125,6 +135,15 @@ public class RelatorioRepository {
                 whereClause.append(" AND vb.DATA_APLICACAO <= ? ");
             }
             params.add(DateUtils.parseStringToTimestamp(relatorioDto.getDataFim()));
+        }
+
+        if (relatorioDto.getDosagem() != null && !relatorioDto.getDosagem().isEmpty()) {
+            if (whereClause.isEmpty()) {
+                whereClause.append(" WHERE vb.DOSE = ?");
+            } else {
+                whereClause.append(" AND vb.DOSE = ?");
+            }
+            params.add(relatorioDto.getDosagem());
         }
 
         String finalQuery = query + whereClause.toString();
