@@ -71,7 +71,7 @@ public class RelatorioController {
         List<VacinaBairroDto> vacinas = relatorioRepository.buscar(relatorioDto);
         mv.addObject("unicaDose", vacinas.stream().filter(VacinaBairroDto::isUnica).toList());
         mv.addObject("primeiraDose", vacinas.stream().filter(VacinaBairroDto::isPrimeiraDose).toList());
-        mv.addObject("segundaaDose", vacinas.stream().filter(VacinaBairroDto::isSegundaDose).toList());
+        mv.addObject("segundaDose", vacinas.stream().filter(VacinaBairroDto::isSegundaDose).toList());
         mv.addObject("terceiraDose", vacinas.stream().filter(VacinaBairroDto::isTerceiraDose).toList());
         mv.addObject("reforcoDose", vacinas.stream().filter(VacinaBairroDto::isReforco).toList());
 
@@ -114,7 +114,14 @@ public class RelatorioController {
         ModelAndView mv = new ModelAndView("listagemVacina");
         mv.addObject("bairros", vacinaBairroService.listarBairros());
         mv.addObject("vacinas", vacinaBairroService.listarVacinas());
-        mv.addObject("vacinasBairros", relatorioRepository.listar(relatorioDto));
+
+        List<VacinaBairroDto> vacinas = relatorioRepository.listar(relatorioDto);
+        mv.addObject("unicaDose", vacinas.stream().filter(VacinaBairroDto::isUnica).toList());
+        mv.addObject("primeiraDose", vacinas.stream().filter(VacinaBairroDto::isPrimeiraDose).toList());
+        mv.addObject("segundaDose", vacinas.stream().filter(VacinaBairroDto::isSegundaDose).toList());
+        mv.addObject("terceiraDose", vacinas.stream().filter(VacinaBairroDto::isTerceiraDose).toList());
+        mv.addObject("reforcoDose", vacinas.stream().filter(VacinaBairroDto::isReforco).toList());
+
         mv.addObject("dosagens",  Arrays.stream(DosagemEnum.values()).toList());
 
         String cargo = (String) session.getAttribute(NomeVariaveisSessao.CARGO);
