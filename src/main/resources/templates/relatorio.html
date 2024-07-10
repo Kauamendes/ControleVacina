@@ -110,56 +110,79 @@
                 <hr class="mb-2">
 
                 <h5>Dose única</h5>
-                <div class="row container" th:each="vacina: ${unicaDose}">
-                    <div class="col-6 bg-secondary-subtle separador" th:text="${Vacina: vacina.vacina}"></div>
-                    <div class="col-4 bg-secondary-subtle separador" th:text="${Bairro: vacina.bairro}"></div>
-                    <div class="col-2 bg-secondary-subtle separador" th:text="${Quantidade: vacina.quantidade}"></div>
-                    <p th:if="${unicaDose != null && unicaDose.size() <= 0}"
-                       class="alert alert-danger auto-hide" role="alert">Nenhum registro encontrado</p>
+                <div th:each="vacina: ${unicaDose}" class="row container mb-2">
+                    <div class="col-4 bg-secondary-subtle separador">
+                        <span class="bold-label">Vacina:</span> <span th:text="${vacina.vacina}"></span>
+                    </div>
+                    <div class="col-4 bg-secondary-subtle separador">
+                        <span class="bold-label">Bairro:</span> <span th:text="${vacina.bairro}"></span>
+                    </div>
+                    <div class="col-4 bg-secondary-subtle separador">
+                        <span class="bold-label">Quantidade:</span> <span th:text="${vacina.quantidade}"></span>
+                    </div>
                 </div>
+                <p th:if="${unicaDose != null && unicaDose.size() <= 0}" class="alert alert-danger auto-hide" role="alert">Nenhum registro encontrado</p>
                 <hr class="mb-2">
 
                 <h5>1° Dose</h5>
-                <div class="row container" th:each="vacina: ${primeiraDose}">
-                    <div class="col-6 bg-secondary-subtle" th:text="${Vacina: vacina.vacina}"></div>
-                    <div class="col-4 bg-secondary-subtle" th:text="${Bairro: vacina.bairro}"></div>
-                    <div class="col-2 bg-secondary-subtle" th:text="${Quantidade: vacina.quantidade}"></div>
-                    <p th:if="${primeiraDose != null && primeiraDose.size() <= 0}"
-                       class="alert alert-danger auto-hide" role="alert">Nenhum registro encontrado</p>
+                <div th:each="vacina: ${primeiraDose}" class="row container mb-2">
+                    <div class="col-4 bg-secondary-subtle separador">
+                        <span class="bold-label">Vacina:</span> <span th:text="${vacina.vacina}"></span>
+                    </div>
+                    <div class="col-4 bg-secondary-subtle separador">
+                        <span class="bold-label">Bairro:</span> <span th:text="${vacina.bairro}"></span>
+                    </div>
+                    <div class="col-4 bg-secondary-subtle separador">
+                        <span class="bold-label">Quantidade:</span> <span th:text="${vacina.quantidade}"></span>
+                    </div>
                 </div>
+                <p th:if="${primeiraDose != null && primeiraDose.size() <= 0}" class="alert alert-danger auto-hide" role="alert">Nenhum registro encontrado</p>
                 <hr class="mb-2">
 
                 <h5>2° Dose</h5>
-                <div class="row container" th:each="vacina: ${segundaDose}">
-                    <div class="col-6 bg-secondary-subtle" th:text="${Vacina: vacina.vacina}"></div>
-                    <div class="col-4 bg-secondary-subtle" th:text="${Bairro: vacina.bairro}"></div>
-                    <div class="col-2 bg-secondary-subtle" th:text="${Quantidade: vacina.quantidade}"></div>
-                    <p th:if="${segundaDose != null && segundaDose.size() <= 0}"
-                       class="alert alert-danger auto-hide" role="alert">Nenhum registro encontrado</p>
+                <div th:each="vacina: ${segundaDose}" class="row container mb-2">
+                    <div class="col-4 bg-secondary-subtle separador">
+                        <span class="bold-label">Vacina:</span> <span th:text="${vacina.vacina}"></span>
+                    </div>
+                    <div class="col-4 bg-secondary-subtle separador">
+                        <span class="bold-label">Bairro:</span> <span th:text="${vacina.bairro}"></span>
+                    </div>
+                    <div class="col-4 bg-secondary-subtle separador">
+                        <span class="bold-label">Quantidade:</span> <span th:text="${vacina.quantidade}"></span>
+                    </div>
                 </div>
+                <p th:if="${segundaDose != null && segundaDose.size() <= 0}" class="alert alert-danger auto-hide" role="alert">Nenhum registro encontrado</p>
                 <hr class="mb-2">
 
                 <h5>3° Dose</h5>
-                <div class="row container" th:each="vacina: ${terceiraDose}">
-                    <div class="col-6 bg-secondary-subtle" th:text="${Vacina: vacina.vacina}"></div>
-                    <div class="col-4 bg-secondary-subtle" th:text="${Bairro: vacina.bairro}"></div>
-                    <div class="col-2 bg-secondary-subtle" th:text="${Quantidade: vacina.quantidade}"></div>
-                    <p th:if="${terceiraDose != null && terceiraDose.size() <= 0}"
-                       class="alert alert-danger auto-hide" role="alert">Nenhum registro encontrado</p>
+                <div th:each="vacina: ${terceiraDose}" class="row container mb-2">
+                    <div class="col-4 bg-secondary-subtle separador">
+                        <span class="bold-label">Vacina:</span> <span th:text="${vacina.vacina}"></span>
+                    </div>
+                    <div class="col-4 bg-secondary-subtle separador">
+                        <span class="bold-label">Bairro:</span> <span th:text="${vacina.bairro}"></span>
+                    </div>
+                    <div class="col-4 bg-secondary-subtle separador">
+                        <span class="bold-label">Quantidade:</span> <span th:text="${vacina.quantidade}"></span>
+                    </div>
                 </div>
+                <p th:if="${terceiraDose != null && terceiraDose.size() <= 0}" class="alert alert-danger auto-hide" role="alert">Nenhum registro encontrado</p>
                 <hr class="mb-2">
 
                 <h5>Reforço</h5>
-                <div class="row container" th:each="vacina: ${reforcoDose}">
-                    <div class="col-6 bg-secondary-subtle" th:text="${Vacina: vacina.vacina}"></div>
-                    <div class="col-4 bg-secondary-subtle" th:text="${Bairro: vacina.bairro}"></div>
-                    <div class="col-2 bg-secondary-subtle" th:text="${Quantidade: vacina.quantidade}"></div>
-                    <p th:if="${reforcoDose != null && reforcoDose.size() <= 0}"
-                       class="alert alert-danger auto-hide" role="alert">Nenhum registro encontrado</p>
+                <div th:each="vacina: ${reforcoDose}" class="row container mb-2">
+                    <div class="col-4 bg-secondary-subtle separador">
+                        <span class="bold-label">Vacina:</span> <span th:text="${vacina.vacina}"></span>
+                    </div>
+                    <div class="col-4 bg-secondary-subtle separador">
+                        <span class="bold-label">Bairro:</span> <span th:text="${vacina.bairro}"></span>
+                    </div>
+                    <div class="col-4 bg-secondary-subtle separador">
+                        <span class="bold-label">Quantidade:</span> <span th:text="${vacina.quantidade}"></span>
+                    </div>
                 </div>
-
+                <p th:if="${reforcoDose != null && reforcoDose.size() <= 0}" class="alert alert-danger auto-hide" role="alert">Nenhum registro encontrado</p>
             </div>
-
         </div>
     </div>
 </div>
