@@ -71,7 +71,7 @@
     </form>
 
     <div class="d-flex justify-content-between mt-2 mb-2">
-        <form action="#" th:action="@{https://controlevacina.onrender.com/relatorios/exportar/descritivo}" method="post"
+        <form action="#" th:action="@{/relatorios/exportar/descritivo}" method="post"
               class="d-inline">
             <input id="bairroExportar" type="hidden" name="bairro" th:value="${bairro}">
             <input id="vacinaExportar" type="hidden" name="vacina" th:value="${vacina}">
@@ -85,7 +85,7 @@
 
     <script>
         function limparCampos() {
-           window.location.href = window.location.origin + "https://controlevacina.onrender.com/relatorios";
+           window.location.href = window.location.origin + "/relatorios";
         }
 
         function prepareData() {
@@ -108,124 +108,130 @@
         <div class="row">
             <div class="col-md-12">
                 <h2>Resultados</h2>
-
-                <div class="row">
-                    <div class="col-6 font-weight-bold">Id</div>
-                    <div class="col-4 font-weight-bold">Vacina</div>
-                    <div class="col-2 font-weight-bold">Bairro</div>
-                </div>
-                <div class="row">
-                    <div class="col-6 font-weight-bold">Dose</div>
-                    <div class="col-4 font-weight-bold">Aplicador</div>
-                    <div class="col-2 font-weight-bold">Data aplicacao</div>
-                </div>
-                <div class="row">
-                    <div class="col-6 font-weight-bold">observacoes</div>
-                </div>
                 <hr class="mb-2">
 
                 <h5>Dose única</h5>
-                <div class="container" th:each="vacina: ${unicaDose}">
-                    <div class="row container">
-                        <div class="col-6 bg-secondary-subtle separador" th:text="${vacina.id}"></div>
-                        <div class="col-4 bg-secondary-subtle separador" th:text="${vacina.vacina}"></div>
-                        <div class="col-2 bg-secondary-subtle separador" th:text="${vacina.bairro}"></div>
+                <div th:each="vacina: ${unicaDose}" class="row container mb-3">
+                    <div class="col-4 bg-secondary-subtle separador">
+                        <span style="font-weight: bold" class="bold-label">Vacina:</span> <span th:text="${vacina.vacina}"></span>
                     </div>
-                    <div class="row container">
-                        <div class="col-6 bg-secondary-subtle separador" th:text="${vacina.dose}"></div>
-                        <div class="col-4 bg-secondary-subtle separador" th:text="${vacina.aplicador}"></div>
-                        <div class="col-2 bg-secondary-subtle separador" th:text="${vacina.dataAplicacao}"></div>
+                    <div class="col-4 bg-secondary-subtle separador">
+                        <span style="font-weight: bold" class="bold-label">Bairro:</span> <span th:text="${vacina.bairro}"></span>
                     </div>
-                    <div class="row container">
-                        <div class="col-6 bg-secondary-subtle separador" th:text="${vacina.observacoes}"></div>
+                    <div class="col-4 bg-secondary-subtle separador">
+                        <span style="font-weight: bold" class="bold-label">Data:</span> <span th:text="${vacina.dataAplicacao}"></span>
                     </div>
-                    <p th:if="${unicaDose != null && unicaDose.size() <= 0}"
-                       class="alert alert-danger auto-hide" role="alert">Nenhum registro encontrado</p>
-                    <hr class="mb-2">
+
+                    <div class="mt-1"></div>
+
+                    <div class="col-2 bg-secondary-subtle separador">
+                        <span style="font-weight: bold" class="bold-label">Aplicador:</span> <span th:text="${vacina.aplicador}"></span>
+                    </div>
+                    <div class="col-10 bg-secondary-subtle separador">
+                        <span style="font-weight: bold" class="bold-label">Observações:</span> <span th:text="${vacina.observacoes}"></span>
+                    </div>
                 </div>
+                <p th:if="${unicaDose != null && unicaDose.size() <= 0}" class="alert alert-danger auto-hide" role="alert">Nenhum registro encontrado</p>
+                <hr class="mb-2">
 
                 <h5>1° Dose</h5>
-                <div class="container" th:each="vacina: ${primeiraDose}">
-                    <div class="row container">
-                        <div class="col-6 bg-secondary-subtle separador" th:text="${vacina.id}"></div>
-                        <div class="col-4 bg-secondary-subtle separador" th:text="${vacina.vacina}"></div>
-                        <div class="col-2 bg-secondary-subtle separador" th:text="${vacina.bairro}"></div>
+                <div th:each="vacina: ${primeiraDose}" class="row container mb-3">
+                    <div class="col-4 bg-secondary-subtle separador">
+                        <span style="font-weight: bold" class="bold-label">Vacina:</span> <span th:text="${vacina.vacina}"></span>
                     </div>
-                    <div class="row container">
-                        <div class="col-6 bg-secondary-subtle separador" th:text="${vacina.dose}"></div>
-                        <div class="col-4 bg-secondary-subtle separador" th:text="${vacina.aplicador}"></div>
-                        <div class="col-2 bg-secondary-subtle separador" th:text="${vacina.dataAplicacao}"></div>
+                    <div class="col-4 bg-secondary-subtle separador">
+                        <span style="font-weight: bold" class="bold-label">Bairro:</span> <span th:text="${vacina.bairro}"></span>
                     </div>
-                    <div class="row container">
-                        <div class="col-6 bg-secondary-subtle separador" th:text="${vacina.observacoes}"></div>
+                    <div class="col-4 bg-secondary-subtle separador">
+                        <span style="font-weight: bold" class="bold-label">Data:</span> <span th:text="${vacina.dataAplicacao}"></span>
                     </div>
-                    <p th:if="${primeiraDose != null && primeiraDose.size() <= 0}"
-                       class="alert alert-danger auto-hide" role="alert">Nenhum registro encontrado</p>
-                    <hr class="mb-2">
+
+                    <div class="mt-1"></div>
+
+                    <div class="col-2 bg-secondary-subtle separador">
+                        <span style="font-weight: bold" class="bold-label">Aplicador:</span> <span th:text="${vacina.aplicador}"></span>
+                    </div>
+                    <div class="col-6 bg-secondary-subtle separador">
+                        <span style="font-weight: bold" class="bold-label">Observações:</span> <span th:text="${vacina.observacoes}"></span>
+                    </div>
                 </div>
+                <p th:if="${primeiraDose != null && primeiraDose.size() <= 0}" class="alert alert-danger auto-hide" role="alert">Nenhum registro encontrado</p>
+                <hr class="mb-2">
 
                 <h5>2° Dose</h5>
-                <div class="container" th:each="vacina: ${segundaDose}">
-                    <div class="row container">
-                        <div class="col-6 bg-secondary-subtle separador" th:text="${vacina.id}"></div>
-                        <div class="col-4 bg-secondary-subtle separador" th:text="${vacina.vacina}"></div>
-                        <div class="col-2 bg-secondary-subtle separador" th:text="${vacina.bairro}"></div>
+                <div th:each="vacina: ${segundaDose}" class="row container mb-3">
+                    <div class="col-4 bg-secondary-subtle separador">
+                        <span style="font-weight: bold" class="bold-label">Vacina:</span> <span th:text="${vacina.vacina}"></span>
                     </div>
-                    <div class="row container">
-                        <div class="col-6 bg-secondary-subtle separador" th:text="${vacina.dose}"></div>
-                        <div class="col-4 bg-secondary-subtle separador" th:text="${vacina.aplicador}"></div>
-                        <div class="col-2 bg-secondary-subtle separador" th:text="${vacina.dataAplicacao}"></div>
+                    <div class="col-4 bg-secondary-subtle separador">
+                        <span style="font-weight: bold" class="bold-label">Bairro:</span> <span th:text="${vacina.bairro}"></span>
                     </div>
-                    <div class="row container">
-                        <div class="col-6 bg-secondary-subtle separador" th:text="${vacina.observacoes}"></div>
+                    <div class="col-4 bg-secondary-subtle separador">
+                        <span style="font-weight: bold" class="bold-label">Data:</span> <span th:text="${vacina.dataAplicacao}"></span>
                     </div>
-                    <p th:if="${segundaDose != null && segundaDose.size() <= 0}"
-                       class="alert alert-danger auto-hide" role="alert">Nenhum registro encontrado</p>
-                    <hr class="mb-2">
+
+                    <div class="mt-1"></div>
+
+                    <div class="col-2 bg-secondary-subtle separador">
+                        <span style="font-weight: bold" class="bold-label">Aplicador:</span> <span th:text="${vacina.aplicador}"></span>
+                    </div>
+                    <div class="col-6 bg-secondary-subtle separador">
+                        <span style="font-weight: bold" class="bold-label">Observações:</span> <span th:text="${vacina.observacoes}"></span>
+                    </div>
+
                 </div>
+                <p th:if="${segundaDose != null && segundaDose.size() <= 0}" class="alert alert-danger auto-hide" role="alert">Nenhum registro encontrado</p>
+                <hr class="mb-2">
 
                 <h5>3° Dose</h5>
-                <div class="container" th:each="vacina: ${terceiraDose}">
-                    <div class="row container">
-                        <div class="col-6 bg-secondary-subtle separador" th:text="${vacina.id}"></div>
-                        <div class="col-4 bg-secondary-subtle separador" th:text="${vacina.vacina}"></div>
-                        <div class="col-2 bg-secondary-subtle separador" th:text="${vacina.bairro}"></div>
+                <div th:each="vacina: ${terceiraDose}" class="row container mb-3">
+                    <div class="col-4 bg-secondary-subtle separador">
+                        <span style="font-weight: bold" class="bold-label">Vacina:</span> <span th:text="${vacina.vacina}"></span>
                     </div>
-                    <div class="row container">
-                        <div class="col-6 bg-secondary-subtle separador" th:text="${vacina.dose}"></div>
-                        <div class="col-4 bg-secondary-subtle separador" th:text="${vacina.aplicador}"></div>
-                        <div class="col-2 bg-secondary-subtle separador" th:text="${vacina.dataAplicacao}"></div>
+                    <div class="col-4 bg-secondary-subtle separador">
+                        <span style="font-weight: bold" class="bold-label">Bairro:</span> <span th:text="${vacina.bairro}"></span>
                     </div>
-                    <div class="row container">
-                        <div class="col-6 bg-secondary-subtle separador" th:text="${vacina.observacoes}"></div>
+                    <div class="col-4 bg-secondary-subtle separador">
+                        <span style="font-weight: bold" class="bold-label">Data:</span> <span th:text="${vacina.dataAplicacao}"></span>
                     </div>
-                    <p th:if="${terceiraDose != null && terceiraDose.size() <= 0}"
-                       class="alert alert-danger auto-hide" role="alert">Nenhum registro encontrado</p>
-                    <hr class="mb-2">
+
+                    <div class="mt-1"></div>
+
+                    <div class="col-2 bg-secondary-subtle separador">
+                        <span style="font-weight: bold" class="bold-label">Aplicador:</span> <span th:text="${vacina.aplicador}"></span>
+                    </div>
+                    <div class="col-6 bg-secondary-subtle separador">
+                        <span style="font-weight: bold" class="bold-label">Observações:</span> <span th:text="${vacina.observacoes}"></span>
+                    </div>
                 </div>
+                <p th:if="${terceiraDose != null && terceiraDose.size() <= 0}" class="alert alert-danger auto-hide" role="alert">Nenhum registro encontrado</p>
+                <hr class="mb-2">
 
                 <h5>Reforço</h5>
-                <div class="container" th:each="vacina: ${reforcoDose}">
-                    <div class="row container">
-                        <div class="col-6 bg-secondary-subtle separador" th:text="${vacina.id}"></div>
-                        <div class="col-4 bg-secondary-subtle separador" th:text="${vacina.vacina}"></div>
-                        <div class="col-2 bg-secondary-subtle separador" th:text="${vacina.bairro}"></div>
+                <div th:each="vacina: ${reforcoDose}" class="row container mb-3">
+                    <div class="col-4 bg-secondary-subtle separador">
+                        <span style="font-weight: bold" class="bold-label">Vacina:</span> <span th:text="${vacina.vacina}"></span>
                     </div>
-                    <div class="row container">
-                        <div class="col-6 bg-secondary-subtle separador" th:text="${vacina.dose}"></div>
-                        <div class="col-4 bg-secondary-subtle separador" th:text="${vacina.aplicador}"></div>
-                        <div class="col-2 bg-secondary-subtle separador" th:text="${vacina.dataAplicacao}"></div>
+                    <div class="col-4 bg-secondary-subtle separador">
+                        <span style="font-weight: bold" class="bold-label">Bairro:</span> <span th:text="${vacina.bairro}"></span>
                     </div>
-                    <div class="row container">
-                        <div class="col-6 bg-secondary-subtle separador" th:text="${vacina.observacoes}"></div>
+                    <div class="col-4 bg-secondary-subtle separador">
+                        <span style="font-weight: bold" class="bold-label">Data:</span> <span th:text="${vacina.dataAplicacao}"></span>
                     </div>
-                    <p th:if="${reforcoDose != null && reforcoDose.size() <= 0}"
-                       class="alert alert-danger auto-hide" role="alert">Nenhum registro encontrado</p>
-                    <hr class="mb-2">
+
+                    <div class="mt-1"></div>
+
+                    <div class="col-2 bg-secondary-subtle separador">
+                        <span style="font-weight: bold" class="bold-label">Aplicador:</span> <span th:text="${vacina.aplicador}"></span>
+                    </div>
+                    <div class="col-6 bg-secondary-subtle separador">
+                        <span style="font-weight: bold" class="bold-label">Observações:</span> <span th:text="${vacina.observacoes}"></span>
+                    </div>
                 </div>
+                <p th:if="${reforcoDose != null && reforcoDose.size() <= 0}" class="alert alert-danger auto-hide" role="alert">Nenhum registro encontrado</p>
 
             </div>
-
+            <div class="mb-2"></div>
         </div>
     </div>
 

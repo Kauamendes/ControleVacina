@@ -2,38 +2,30 @@ package com.example.demo.controller;
 
 import com.example.demo.NomeVariaveisSessao;
 import com.example.demo.domain.Usuario;
-import com.example.demo.domain.VacinaBairro;
 import com.example.demo.dto.RelatorioDto;
 import com.example.demo.dto.VacinaBairroDto;
 import com.example.demo.enums.DosagemEnum;
-import com.example.demo.repository.BairroRepository;
 import com.example.demo.repository.RelatorioRepository;
-import com.example.demo.repository.VacinaRepository;
 import com.example.demo.services.VacinaBairroService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
-import java.sql.Date;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.BiConsumer;
 
 @Controller
 @RequestMapping("/relatorios")
@@ -146,24 +138,57 @@ public class RelatorioController {
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         response.setHeader("Content-Disposition", "attachment; filename=relatorio.xlsx");
 
-
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Relatório de Vacinas");
 
+        CellStyle headerCellStyle = workbook.createCellStyle();
+        Font headerFont = workbook.createFont();
+        headerFont.setBold(true);
+        headerCellStyle.setFont(headerFont);
+
+        // Cabeçalho
         Row headerRow = sheet.createRow(0);
-        headerRow.createCell(0).setCellValue("Bairro");
-        headerRow.createCell(1).setCellValue("Vacina");
-        headerRow.createCell(2).setCellValue("Quantidade");
+        Cell headerCell0 = headerRow.createCell(0);
+        headerCell0.setCellValue("Bairro");
+        headerCell0.setCellStyle(headerCellStyle);
+
+        Cell headerCell1 = headerRow.createCell(1);
+        headerCell1.setCellValue("Vacina");
+        headerCell1.setCellStyle(headerCellStyle);
+
+        Cell headerCell2 = headerRow.createCell(2);
+        headerCell2.setCellValue("Quantidade");
+        headerCell2.setCellStyle(headerCellStyle);
 
         List<VacinaBairroDto> relatorios = relatorioRepository.buscar(dto);
 
-        int rowIdx = 1;
-        for (VacinaBairroDto relatorio : relatorios) {
-            Row row = sheet.createRow(rowIdx++);
-            row.createCell(0).setCellValue(relatorio.getBairro());
-            row.createCell(1).setCellValue(relatorio.getVacina());
-            row.createCell(2).setCellValue(relatorio.getQuantidade());
-        }
+        AtomicInteger rowIdx = new AtomicInteger(1);
+
+        CellStyle sectionTitleStyle = workbook.createCellStyle();
+        Font sectionTitleFont = workbook.createFont();
+        sectionTitleFont.setBold(true);
+        sectionTitleStyle.setFont(sectionTitleFont);
+
+        BiConsumer<String, List<VacinaBairroDto>> createSection = (sectionTitle, filteredReports) -> {
+            Row sectionRow = sheet.createRow(rowIdx.getAndIncrement());
+            Cell sectionTitleCell = sectionRow.createCell(0);
+            sectionTitleCell.setCellValue(sectionTitle);
+            sectionTitleCell.setCellStyle(sectionTitleStyle);
+
+            for (VacinaBairroDto relatorio : filteredReports) {
+                Row row = sheet.createRow(rowIdx.getAndIncrement());
+                row.createCell(0).setCellValue(relatorio.getBairro());
+                row.createCell(1).setCellValue(relatorio.getVacina());
+                row.createCell(2).setCellValue(relatorio.getQuantidade());
+            }
+            rowIdx.getAndIncrement();
+        };
+
+        createSection.accept("Dose Única", relatorios.stream().filter(VacinaBairroDto::isUnica).toList());
+        createSection.accept("Primeira Dose", relatorios.stream().filter(VacinaBairroDto::isPrimeiraDose).toList());
+        createSection.accept("Segunda Dose", relatorios.stream().filter(VacinaBairroDto::isSegundaDose).toList());
+        createSection.accept("Terceira Dose", relatorios.stream().filter(VacinaBairroDto::isTerceiraDose).toList());
+        createSection.accept("Reforço", relatorios.stream().filter(VacinaBairroDto::isReforco).toList());
 
         workbook.write(response.getOutputStream());
         workbook.close();
@@ -174,32 +199,57 @@ public class RelatorioController {
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         response.setHeader("Content-Disposition", "attachment; filename=relatorio.xlsx");
 
-
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Relatório de Vacinas");
 
+        CellStyle headerCellStyle = workbook.createCellStyle();
+        Font headerFont = workbook.createFont();
+        headerFont.setBold(true);
+        headerCellStyle.setFont(headerFont);
+
         Row headerRow = sheet.createRow(0);
-        headerRow.createCell(0).setCellValue("Bairro");
-        headerRow.createCell(1).setCellValue("Vacina");
-        headerRow.createCell(2).setCellValue("Dose");
-        headerRow.createCell(3).setCellValue("Aplicador");
-        headerRow.createCell(4).setCellValue("Data aplicada");
-        headerRow.createCell(5).setCellValue("Observações");
+        String[] headers = {"Bairro", "Vacina", "Dose", "Aplicador", "Data aplicada", "Observações"};
+        for (int i = 0; i < headers.length; i++) {
+            Cell cell = headerRow.createCell(i);
+            cell.setCellValue(headers[i]);
+            cell.setCellStyle(headerCellStyle);
+        }
 
         List<VacinaBairroDto> relatorios = relatorioRepository.listar(dto);
 
-        int rowIdx = 1;
-        for (VacinaBairroDto relatorio : relatorios) {
-            Row row = sheet.createRow(rowIdx++);
-            row.createCell(0).setCellValue(relatorio.getBairro());
-            row.createCell(1).setCellValue(relatorio.getVacina());
-            row.createCell(2).setCellValue(relatorio.getDose());
-            row.createCell(3).setCellValue(relatorio.getAplicador());
-            row.createCell(4).setCellValue(relatorio.getDataAplicacao());
-            row.createCell(5).setCellValue(relatorio.getObservacoes());
-        }
+        AtomicInteger rowIdx = new AtomicInteger(1);
+
+        CellStyle sectionTitleStyle = workbook.createCellStyle();
+        Font sectionTitleFont = workbook.createFont();
+        sectionTitleFont.setBold(true);
+        sectionTitleStyle.setFont(sectionTitleFont);
+
+        BiConsumer<String, List<VacinaBairroDto>> createSection = (sectionTitle, filteredReports) -> {
+            Row sectionRow = sheet.createRow(rowIdx.getAndIncrement());
+            Cell sectionTitleCell = sectionRow.createCell(0);
+            sectionTitleCell.setCellValue(sectionTitle);
+            sectionTitleCell.setCellStyle(sectionTitleStyle);
+
+            for (VacinaBairroDto relatorio : filteredReports) {
+                Row row = sheet.createRow(rowIdx.getAndIncrement());
+                row.createCell(0).setCellValue(relatorio.getBairro());
+                row.createCell(1).setCellValue(relatorio.getVacina());
+                row.createCell(2).setCellValue(relatorio.getDose());
+                row.createCell(3).setCellValue(relatorio.getAplicador());
+                row.createCell(4).setCellValue(relatorio.getDataAplicacao());
+                row.createCell(5).setCellValue(relatorio.getObservacoes());
+            }
+            rowIdx.getAndIncrement();
+        };
+
+        createSection.accept("Dose Única", relatorios.stream().filter(VacinaBairroDto::isUnica).toList());
+        createSection.accept("Primeira Dose", relatorios.stream().filter(VacinaBairroDto::isPrimeiraDose).toList());
+        createSection.accept("Segunda Dose", relatorios.stream().filter(VacinaBairroDto::isSegundaDose).toList());
+        createSection.accept("Terceira Dose", relatorios.stream().filter(VacinaBairroDto::isTerceiraDose).toList());
+        createSection.accept("Reforço", relatorios.stream().filter(VacinaBairroDto::isReforco).toList());
 
         workbook.write(response.getOutputStream());
         workbook.close();
     }
+
 }
