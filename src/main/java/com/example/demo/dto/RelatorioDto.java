@@ -11,5 +11,6 @@ public class RelatorioDto {
     private String dataFim;
     private String bairro;
     private String vacina;
+    private String dosagem;
 
 }

@@ -1,6 +1,9 @@
 package com.example.demo.dto;
 
+import com.example.demo.enums.DosagemEnum;
 import lombok.*;
+
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -23,5 +26,25 @@ public class VacinaBairroDto {
         this.bairro = bairro;
         this.vacina = vacina;
         this.quantidade = quantidade;
+    }
+
+    public boolean isUnica() {
+        return Objects.equals(DosagemEnum.UNICA.getValor().toString(), dose) || Objects.equals(DosagemEnum.UNICA.getNome(), dose);
+    }
+
+    public boolean isPrimeiraDose() {
+        return Objects.equals(DosagemEnum.PRIMEIRA_DOSE.getValor().toString(), dose) || Objects.equals(DosagemEnum.PRIMEIRA_DOSE.getNome(), dose);
+    }
+
+    public boolean isSegundaDose() {
+        return Objects.equals(DosagemEnum.SEGUNDA_DOSE.getValor().toString(), dose) || Objects.equals(DosagemEnum.SEGUNDA_DOSE.getNome(), dose);
+    }
+
+    public boolean isTerceiraDose() {
+        return Objects.equals(DosagemEnum.TERCEIRA_DOSE.getValor().toString(), dose) || Objects.equals(DosagemEnum.TERCEIRA_DOSE.getNome(), dose);
+    }
+
+    public boolean isReforco() {
+        return Objects.equals(DosagemEnum.REFORCO.getValor().toString(), dose) || Objects.equals(DosagemEnum.REFORCO.getNome(), dose);
     }
 }

@@ -115,7 +115,7 @@ public class VacinaBairroRepository {
         query.append(" INNER JOIN BAIRRO b ON b.id = vb.BAIRRO_ID ");
         query.append(" INNER JOIN VACINA v ON v.id = vb.VACINA_ID ");
         query.append(" WHERE vb.aplicador=LOWER(?) ");
-        query.append(" ORDER BY vb.data_aplicacao DESC ");
+        query.append(" ORDER BY vb.data_aplicacao DESC LIMIT 30");
 
         try (PreparedStatement stmt = conn.prepareStatement(query.toString())) {
             stmt.setObject(1, usuarioLogado);
@@ -179,7 +179,7 @@ public class VacinaBairroRepository {
 
         try {
             String query = "UPDATE VACINA_BAIRRO " +
-                    "SET VACINA_ID=?, BAIRRO_ID=?, DOSE=?, APLICADOR=?, MODIFIED_DATE=? WHERE ID=?";
+                    "SET VACINA_ID=?, BAIRRO_ID=?, DOSE=?, APLICADOR=?, MODIFIED_DATE=?, OBSERVACOES=? WHERE ID=?";
 
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setLong(1, vacinaBairro.getVacinaId());
@@ -187,7 +187,8 @@ public class VacinaBairroRepository {
             ps.setString(3, vacinaBairro.getDose());
             ps.setString(4, vacinaBairro.getAplicador());
             ps.setTimestamp(5, Timestamp.from(Instant.now()));
-            ps.setLong(6, vacinaBairro.getId());
+            ps.setString(6, vacinaBairro.getObservacoes());
+            ps.setLong(7, vacinaBairro.getId());
             ps.execute();
             ps.close();
         } catch (Exception e) {
